@@ -1,0 +1,82 @@
+---
+- hosts: production
+#  gather_facts: no
+  user: ubuntu
+  vars:
+    nodejs_version: "8.x"
+    nginx_remove_default_vhost: true
+    nginx_vhosts:
+#      - listen: "80 default_server"
+#        server_name: "default_server"
+#        return: "444"
+      - listen: "80"
+        server_name: "*.online-hautarzt.net"
+        root: "/var/www/online-hautarzt.net/current/public"
+        index: "index.php index.html index.htm"
+        state: "present"
+        template: "{{ nginx_vhost_template }}"
+        filename: "online-hautarzt.net.conf"
+        extra_parameters: |
+          if ($http_x_forwarded_proto = 'http') {
+            return 301 https://$host$request_uri;
+          }
+          location / {
+             try_files $uri $uri/ /index.php$is_args$args;
+             # try_files $uri $uri/ =404;
+          }
+          location ~ \.php$ {
+              include snippets/fastcgi-php.conf;
+              fastcgi_pass unix:/run/php/php7.1-fpm.sock;
+          }
+          location ~ /\.ht {
+              deny all;
+          }
+  roles:
+    - role: common
+    - role: geerlingguy.nodejs
+      become: yes
+    - role: php
+      become: yes
+    - role: geerlingguy.composer
+      become: yes
+    - role: geerlingguy.nginx
+      tags:
+        - nginx
+      become: yes
+  tasks:
+  - name: Make sure user ubuntu can reload php-fpm without a password prompt
+    lineinfile:
+      path: /etc/sudoers.d/php-fpm
+      line: 'ubuntu ALL=NOPASSWD: /usr/sbin/service php7.1-fpm reload'
+      create: yes
+    become: yes
+
+  - name: create folder /var/www/online-hautarzt.net
+    file:
+      path: /var/www/online-hautarzt.net
+      state: directory
+      owner: ubuntu
+      group: ubuntu
+      mode: 0755
+    become: true
+
+  - name: Add user www-data to group ubuntu, so that nginx has access to all files that ubuntu deploys
+    user:
+      name: www-data
+      groups: ubuntu
+      append: yes
+    become: yes
+
+  - name: Add artisan scheduler cron
+    cron:
+      name: "artisan scheduler"
+      minute: "*"
+      hour: "*"
+      day: "*"
+      month: "*"
+      job: "php /var/www/online-hautarzt.net/current/artisan schedule:run >> /dev/null 2>&1"
+#    become: yes
+    when: inventory_hostname == "prd0"
+    tags:
+      - cron
+

@@ -1,0 +1,497 @@
+
+// Fonts
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+//@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Variables
+@import "variables";
+
+// fine uploader
+//@import "~fine-uploader/jquery.fine-uploader/fine-uploader.css";
+@import "~fine-uploader/jquery.fine-uploader/fine-uploader-new.css";
+
+/* =============================================================================
+ * case search
+ * ========================================================================== */
+
+#case-search {
+  font-family: $mainfont;
+  background-color: transparent;
+  padding-bottom: 20px;
+}
+
+#case_search_data {
+
+  font-family: $mainfont;
+  font-size: 14px;
+  margin-top: 50px;
+
+  #case_search_descript,
+  #case_search_answer {
+    line-height: 1.8em;
+  }
+
+  .caseid {
+    border-top: 1px solid $input-border;
+    border-bottom: 1px solid $input-border;
+    padding-top: $padding;
+    padding-bottom: $padding;
+    margin-bottom: $gutterheight;
+    text-align: center;
+    font-weight: $fontweight;
+  }
+
+  .alert {
+    margin-bottom: $gutterheight;
+  }
+
+  .alert-warning {
+    color: $brand-warning;
+    background-color: lighten($brand-warning, 50%);
+    border-color: lighten($brand-warning, 30%);
+  }
+
+  .alert-success {
+    color: $brand-success;
+    background-color: lighten($brand-success, 50%);
+    border-color: lighten($brand-success, 30%);
+  }
+
+  .nav-tabs {
+    li {
+      &.active {
+        a,
+        a:hover {
+          color: $hlcolor;
+        }
+      }
+      a {
+        font-weight: $fontweight;
+        color: $maincolor1;
+        &:hover {
+          color: $maincolor2;
+        }
+        .badge {
+          background-color: $brand-danger;
+        }
+      }
+    }
+  }
+  .tab-content {
+    padding-top: $gutterheight;
+  }
+
+  .properties {
+
+    td {
+      padding: 8px 10px;
+      vertical-align: top;
+    }
+
+    .property {
+      font-weight: 700;
+      min-width: 135px;
+    }
+  }
+
+  #case_search_payment {
+
+    padding-right: 0;
+
+    h2 {
+      display: none;
+    }
+  }
+
+  #case_search_result_answered {
+    .panel-heading {
+      font-weight: $fontweight;
+    }
+  }
+
+  #case_search_answered_by {
+    figure {
+      margin-bottom: $gutterhalf;
+      img {
+        max-width: 160px;
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
+        border-radius: 100%;
+      }
+    }
+    p {
+      color: $text-color;
+      &.case_search_answered_by_name {
+        margin-bottom: 0;
+      }
+      span {
+        color: $text-color-light;
+      }
+    }
+  }
+
+  #case_search_questions {
+
+    #case_search_questions_list {
+      .question_wrapper {
+        margin-bottom: 50px;
+        .question {
+          //width: 75%;
+        }
+        .answer {
+          margin-left: 15%;
+        }
+      }
+    }
+
+  }
+
+  #case_search_evaluation {
+    font-family: $mainfont;
+    //color: $text-color-light;
+    .case_search_evaluation_icon {
+      text-align: right;
+      .glyphicon-thumbs-up {
+        font-size: 3em;
+      }
+    }
+  }
+
+  #case_search_evaluation_answered {
+    h4 {
+      margin-bottom: 20px;
+    }
+  }
+
+  .form-group-stars {
+    margin-bottom: 3px;
+  }
+
+  #stars {
+    font-size: 1.5em;
+    margin-top: 3px;
+    .glyphicon {
+      margin-right: 2px;
+    }
+  }
+
+  #case_search_my_case {
+    figure {
+      img {
+        margin-bottom: 5px;
+      }
+      figcaption {
+        color: $text-color-light;
+        text-align: center;
+      }
+    }
+    //.case_description {
+    //  margin-bottom: $gutterdouble;
+    //}
+    h4 {
+      margin-bottom: $gutterwidth;
+    }
+  }
+
+}
+
+/* =============================================================================
+ * case submission
+ * ========================================================================== */
+
+.qq-upload-button {
+  width: 100%;
+}
+
+.reduced-opacity {
+  opacity: 0.5;
+}
+
+#case-submit {
+
+  font-family: $mainfont;
+
+  h2 {
+    font-size: $font-size-large;
+    color: $brand-primary;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: $font-size-base;
+  }
+
+  label.control-label {
+    font-size: $font-size-base;
+  }
+
+  .checkbox label,
+  label.radio-inline {
+    font-size: $font-size-base;
+  }
+
+  #submission_form_container {
+    //background-color: orange;
+
+    #submission_form {
+
+      .submission_field_error {
+        color: red;
+        margin: 5px 0 0 0;
+      }
+
+      .form-group {
+        margin-right: 0;
+        margin-left: 0;
+      }
+
+      .form-group-beschreibung {
+        margin-bottom: 40px;
+      }
+
+      #submission_other_symptoms,
+      #submission_since_other,
+      #submission_treatment {
+        margin-top: 20px;
+      }
+    }
+  }
+}
+
+.container-loading {
+  background-image: url("/images/ajax-loader.gif");
+  background-repeat: no-repeat;
+  background-position: center 30px;
+}
+
+#payment_form_container {
+
+  label {
+    font-weight: normal;
+  }
+
+  .control-label {
+    font-weight: 700;
+  }
+
+  margin-top: 20px;
+
+  .submission_field_error {
+    color: red;
+    margin: 5px 0 0 0;
+  }
+
+  .form-group {
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .payment-provider-logo {
+    height: 40px;
+    margin: 0 5px 5px 0;
+  }
+
+  .payment-label-creditcard {
+    display: block;
+    margin-right: 0;
+  }
+
+  .payment-label-sofort {
+    display: block;
+    margin-right: 0;
+  }
+
+  #stripe-payment-creditcard {
+    margin-top: 20px;
+  }
+
+}
+
+#payment_submit {
+  font-size: 14px;
+}
+
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  background-color: white;
+  height: 40px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+#card-errors {
+  color: $brand-danger;
+}
+
+.uploader_description {
+}
+
+// ****************************
+// media queries
+// ****************************
+
+@media (min-width: 500px) {
+
+  #payment_form {
+    font-size: 16px;
+  }
+
+  #payment_submit {
+    font-size: 18px;
+  }
+
+  #payment_form_container {
+
+    label {
+      font-weight: 700;
+    }
+
+    .payment-label-creditcard {
+      display: inline;
+      margin-right: 72px;
+    }
+
+    .payment-label-sofort {
+      display: inline;
+      margin-right: 20px;
+    }
+  }
+
+}
+
+// ****************************
+// fineuploaders error messages
+// ****************************
+
+.qq-alert-dialog-selector {
+  border: 1px solid silver;
+}
+
+.qq-dialog-message-selector {
+}
+
+.qq-dialog-buttons {
+
+}
+
+/* =============================================================================
+ * Cee Styling - General
+ * ========================================================================== */
+.btn {
+  &.btn-custom {
+    color: #fff;
+    background-color: $maincolor1;
+    border-color: $maincolor2;
+    &:hover {
+      color: #fff;
+      background-color: $maincolor2;
+      border-color: $maincolor2;
+    }
+  }
+}
+
+h4 {
+  font-weight: $fontweight;
+}
+
+/* =============================================================================
+ * Case Submit Complete
+ * ========================================================================== */
+
+#submission_complete_container {
+
+  font-family: $mainfont;
+
+  h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 18px;
+    line-height: 26px;
+    color: #666;
+  }
+  .lead {
+    color: #333;
+  }
+}
+
+/* =============================================================================
+ * partner
+ * ========================================================================== */
+
+.partner-ita {
+
+  .btn {
+    &.btn-custom {
+      background-color: $ita-maincolor2;
+      border-color: $ita-maincolor1;
+
+      &:hover {
+        background-color: $ita-maincolor2;
+        border-color: $ita-maincolor1;
+      }
+    }
+  }
+
+  .btn-primary {
+    background-color: $ita-maincolor2;
+  }
+
+  #case_search_data {
+
+    .nav-tabs {
+      li {
+        &.active {
+          a,
+          a:hover {
+            color: $ita-maincolor1;
+          }
+        }
+
+        a {
+          color: $ita-maincolor1;
+
+          &:hover {
+            color: $ita-maincolor2;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+#case-submit.partner-ita {
+
+  h2 {
+    color: $ita-maincolor1;
+  }
+
+  .qq-upload-button {
+    background-color: $ita-maincolor2;
+  }
+
+}

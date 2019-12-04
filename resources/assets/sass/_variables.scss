@@ -1,0 +1,60 @@
+
+// Body
+$body-bg: #f5f8fa;
+
+// Borders
+$laravel-border-color: darken($body-bg, 10%);
+$list-group-border: $laravel-border-color;
+$navbar-default-border: $laravel-border-color;
+$panel-default-border: $laravel-border-color;
+$panel-inner-border: $laravel-border-color;
+
+// Brands
+$brand-primary: #2ea3f2;
+$brand-info: #eeeeee;
+$brand-success: #2ab27b;
+$brand-warning: #cb8f45;
+$brand-danger: #d83636;
+
+// Typography
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+$font-family-sans-serif: sans-serif;
+$font-size-base: 16px;
+$font-size-large: 24px;
+$font-size-xlarge: 30px;
+$line-height-base: 1.6;
+$text-color: #666666;
+$text-color-light: #999999;
+$text-color-dark: #333333;
+$mainfont: sans-serif;
+$fontweight: 600;
+
+// Navbar
+$navbar-default-bg: #fff;
+
+// Buttons
+$btn-default-color: $text-color;
+
+// Inputs
+$input-border: lighten($text-color, 40%);
+$input-border-focus: lighten($brand-primary, 25%);
+$input-color-placeholder: lighten($text-color, 30%);
+
+// Panels
+$panel-default-heading-bg: #fff;
+
+// Spacing
+$padding: 15px;
+$gutterwidth: 20px;
+$gutterheight: 25px;
+$gutterhalf: $gutterwidth / 2;
+$gutterdouble: $gutterheight * 2;
+
+// Colors
+$hlcolor: #333333;
+$maincolor1: #019CF9;
+$maincolor2: #0879C4;
+
+// partner Colors
+$ita-maincolor1: #028490;
+$ita-maincolor2: #2ea3f2 //#027490

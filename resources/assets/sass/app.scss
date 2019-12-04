@@ -1,0 +1,260 @@
+
+// Fonts
+//@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+@import "~fine-uploader/fine-uploader/fine-uploader.css";
+
+h1 {
+  font-size: 34px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 22px;
+  margin-top: 0;
+}
+
+h5 {
+  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  font-size: 14px;
+}
+
+blockquote {
+  margin-bottom: 0px;
+}
+
+.glyphicon-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid white;
+  color: white;
+  //display: inline-table;
+  text-align: center;
+}
+.glyphicon-ring .glyphicon-bordered {
+  font-size: 20px;
+  vertical-align: middle;
+  top: 15px;
+  //display: table-cell;
+}
+
+.meta {
+  color: #9d9d9d;
+}
+
+.panel-default {
+  .panel-heading {
+    background-color: $brand-info;
+  }
+
+  .panel {
+    margin-bottom: 0px;
+  }
+}
+
+.properties {
+
+  td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    vertical-align: top;
+  }
+
+  .property {
+    padding-right: 10px;
+    font-weight: 700;
+    min-width: 161px;
+  }
+}
+
+.photo_wrapper {
+  margin-bottom: 15px;
+}
+
+.arzt-photo {
+  max-width: 160px;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+}
+
+#lightbox {
+  img {
+    margin: 0 auto;
+  }
+  figcaption {
+    text-align: center;
+  }
+}
+
+#open-cases-list {
+  .timeleft {
+    color: $text-color-light;
+  }
+  & .warning {
+    color: $brand-warning;
+  }
+  & .danger {
+    color: $brand-danger;
+  }
+}
+
+#open-case-timer {
+
+  float: right;
+  color: $brand-warning;
+
+  .minutes-remaining {
+    font-weight: bold;
+  }
+
+  & .warning {
+    color: $brand-warning;
+  }
+
+}
+#permanently-assigned-notice {
+  float: right;
+  color: $brand-warning;
+}
+
+#my-cases-list {
+
+  .list-group-item-heading {
+    display: inline;
+  }
+
+  .badge {
+    &.danger {
+      background-color: $brand-danger;
+      color: white;
+    }
+    &.warning {
+      background-color: $brand-warning;
+      color: white;
+    }
+    &.success {
+      background-color: $brand-success;
+      color: white;
+    }
+  }
+}
+
+.row_questions {
+
+  margin-top: 25px;
+
+  .question_wrapper {
+
+    margin-bottom: 50px;
+    margin-top: 30px;
+
+    blockquote {
+      font-size: 14px;
+    }
+
+    footer {
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .question {
+    }
+
+    .answer {
+      margin-left: 15%;
+      margin-top: 10px;
+    }
+
+    .no_answer {
+      p {
+        color: $brand-warning;
+        font-weight: 700;
+      }
+    }
+
+  }
+}
+.row_befund {
+
+  margin-top: 25px;
+
+  blockquote {
+    p {
+      font-size: 16px;
+    }
+  }
+
+  footer {
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  label {
+    font-weight: normal;
+  }
+
+}
+.row_bewertung {
+  blockquote {
+    p {
+      font-size: 16px;
+    }
+  }
+  .bewertung_star {
+    font-size: 20px;
+    margin-right: 2px;
+  }
+}
+
+.language_notice {
+  display: inline;
+  color: $brand-warning;
+}
+
+//------------------- stats -----------------
+
+.stats-block {
+  padding-top: 30px;
+  color: white;
+  h2 {
+    font-size: 50px;
+    font-weight: lighter;
+    margin-bottom: 0;
+    margin-top: 20px;
+  }
+  .stats-footer {
+    margin-top: 50px;
+  }
+}
+
+#stats-answered-submissions {
+  background-color: $brand-primary;
+}
+#stats-average-rating {
+  background-color: lighten($brand-primary, 10%);
+}
+#stats-answered-last-month {
+  background-color: darken($brand-primary, 10%);
+}

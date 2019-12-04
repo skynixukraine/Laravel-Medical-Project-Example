@@ -1,0 +1,42 @@
+---
+- name: enable the Ondrej’s PPA for php7.1
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+
+- name: install php7.1
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - php7.1
+    - php7.1-common
+    - php7.1-bcmath
+    - php7.1-cli
+    - php7.1-fpm
+    - php7.1-json
+    - php7.1-opcache
+    - php7.1-gd
+    - php7.1-mysql
+    - php7.1-mbstring
+    - php7.1-mcrypt
+    - php7.1-zip
+    - php7.1-xml
+    - php7.1-curl
+    - php7.1-dom
+#    - php7.1-hash
+#    - php7.1-openssl
+    - php7.1-xmlwriter
+    - php-imagick
+  notify: restart php
+
+- name: configure /etc/php/7.1/fpm/php.ini
+  ini_file:
+    path: /etc/php/7.1/fpm/php.ini
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: 'PHP', option: 'cgi.fix_pathinfo', value: 0 }
+    - { section: 'PHP', option: 'max_input_time', value: 120 }
+    - { section: 'PHP', option: 'upload_max_filesize', value: 15M }
+    - { section: 'PHP', option: 'post_max_size', value: 15M }
+  notify: restart php

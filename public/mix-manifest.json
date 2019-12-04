@@ -1,0 +1,12 @@
+{
+    "/js/jquery-3.4.1-min.js": "/js/jquery-3.4.1-min.js",
+    "/js/bootstrap-3.3.7-min.js": "/js/bootstrap-3.3.7-min.js",
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/web.css": "/css/web.css",
+    "/js/case-submit-18558.js": "/js/case-submit-18558.js",
+    "/js/case-search-18558.js": "/js/case-search-18558.js",
+    "/js/app-checkout-18558.js": "/js/app-checkout-18558.js",
+    "/storage/oauth-private.key": "/storage/oauth-private.key",
+    "/storage/oauth-public.key": "/storage/oauth-public.key"
+}
