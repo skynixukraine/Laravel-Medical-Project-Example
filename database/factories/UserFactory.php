@@ -13,11 +13,11 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Models\User::class, function (Faker $faker) {
     static $password;
 
     return [
-        'user_id' => \App\User::generateUserID(),
+        'user_id' => \App\Models\User::generateUserID(),
         'photo' => null,
         'gender' => $faker->randomElement(['m', 'f']),
         'title' => $faker->randomElement([null, 'Dr.']),

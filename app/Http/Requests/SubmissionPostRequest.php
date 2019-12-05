@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Partner;
+use App\Models\Partner;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;

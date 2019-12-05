@@ -39,8 +39,8 @@ class SecureHeaders
                                                                 "default-src data: blob: http://stajing.online-hautarzt.net https://api.online-hautarzt.net https://js.stripe.com https://m.stripe.network https://code.jquery.com/ https://maxcdn.bootstrapcdn.com/ 'unsafe-inline' 'unsafe-eval'"]);
         }
         else {
-            $response->headers->set('Content-Security-Policy', ["frame-ancestors http://ohn.localhost",
-                                                                "default-src data: blob: http://ohn.localhost http://aerzte.ohn.localhost https://js.stripe.com https://m.stripe.network https://code.jquery.com/ https://maxcdn.bootstrapcdn.com/ 'unsafe-inline' 'unsafe-eval'"]);
+            $response->headers->set('Content-Security-Policy', ["frame-ancestors http://ohn",
+                                                                "default-src data: blob: http://ohn http://aerzte.ohn.localhost https://js.stripe.com https://m.stripe.network https://code.jquery.com/ https://maxcdn.bootstrapcdn.com/ 'unsafe-inline' 'unsafe-eval'"]);
         }
 
         return $response;

@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
-use App\Partner;
-use App\Submission;
+use App\Models\Partner;
+use App\Models\Submission;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

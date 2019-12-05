@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Aws\Sns\Exception\SnsException;
 use Carbon\Carbon;
@@ -88,22 +88,22 @@ class Submission extends Model
 
     public function assignedTo()
     {
-        return $this->belongsTo('App\User', 'assigned_to_user_id');
+        return $this->belongsTo('App\Models\User', 'assigned_to_user_id');
     }
 
     public function questions()
     {
-        return $this->hasMany('App\Question');
+        return $this->hasMany('App\Models\Question');
     }
 
     public function symptoms()
     {
-        return $this->belongsToMany('App\Symptom');
+        return $this->belongsToMany('App\Models\Symptom');
     }
 
     public function partner()
     {
-        return $this->belongsTo('App\Partner', 'partner_id');
+        return $this->belongsTo('App\Models\Partner', 'partner_id');
     }
 
     public function lastQuestion() {

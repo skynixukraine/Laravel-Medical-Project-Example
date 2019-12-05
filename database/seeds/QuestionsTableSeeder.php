@@ -14,7 +14,7 @@ class QuestionsTableSeeder extends Seeder
     {
         DB::table('questions')->truncate();
 
-        factory(App\Question::class)->states('answered')->times(20)->create();
-        factory(App\Question::class)->states('open')->times(5)->create();
+        factory(App\Models\Question::class)->states('answered')->times(20)->create();
+        factory(App\Models\Question::class)->states('open')->times(5)->create();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function assignedSubmissions()
     {
-        return $this->hasMany('App\Submission', 'assigned_to_user_id');
+        return $this->hasMany('App\Models\Submission', 'assigned_to_user_id');
     }
 
     public function answeredSubmissions()

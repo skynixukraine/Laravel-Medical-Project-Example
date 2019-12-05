@@ -2,7 +2,7 @@
 
 use Faker\Generator as Faker;
 
-$factory->define(App\Submission::class, function (Faker $faker) {
+$factory->define(App\Models\Submission::class, function (Faker $faker) {
 
     $responsetime = 48;
     $created_hours_ago = rand(-$responsetime, 0);
@@ -39,7 +39,7 @@ $factory->define(App\Submission::class, function (Faker $faker) {
         'gender'                => $faker->randomElement(['m', 'f']),
         'age'                   => $faker->numberBetween(8, 80),
         'email'                 => $faker->email,
-        'submission_id'         => \App\Submission::generateSubmissionID(),
+        'submission_id'         => \App\Models\Submission::generateSubmissionID(),
         'created_at'            => $created_at,
         'updated_at'            => $created_at,
         'due_at'                => $due_at,
@@ -54,7 +54,7 @@ $factory->define(App\Submission::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(App\Submission::class, 'answered', function ($faker) {
+$factory->state(App\Models\Submission::class, 'answered', function ($faker) {
 
     $responsetime = 48;
     $created_hours_ago = rand(0, 240);

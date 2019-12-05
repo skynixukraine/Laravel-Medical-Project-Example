@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Submission;
+use App\Models\Submission;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;
 

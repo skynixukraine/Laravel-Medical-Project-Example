@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Submission;
+use App\Models\Submission;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 

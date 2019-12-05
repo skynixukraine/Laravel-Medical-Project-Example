@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Submission;
+use App\Models\Submission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Value;

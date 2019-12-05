@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Notifications\ReminderNotification;
-use App\Submission;
+use App\Models\Submission;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Notification;

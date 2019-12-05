@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +18,7 @@ class Symptom extends Model
 
     public function Submission()
     {
-        return $this->belongsToMany('App\Submission');
+        return $this->belongsToMany('App\Models\Submission');
     }
 
 }
