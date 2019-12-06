@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class Partner extends Model
 
     public function submission()
     {
-        return $this->hasMany('App\Submission', 'partner_id');
+        return $this->hasMany('App\Models\Submission', 'partner_id');
     }
 
     public static function findByPartnerId($partnerID) {

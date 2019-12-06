@@ -35,7 +35,7 @@ class Submission extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Submission';
+    public static $model = 'App\Models\Submission';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -81,7 +81,7 @@ class Submission extends Resource
         return [
             Text::make('Platform', 'partner_id')
                 ->displayUsing(function ($value) {
-                    $partner = \App\Partner::find($value);
+                    $partner = \App\Models\Partner::find($value);
                     return $partner->partner_id;
                 })
         ];
@@ -171,7 +171,7 @@ class Submission extends Resource
 
             Text::make('Zugewiesen', 'assigned_to_user_id')
                 ->displayUsing(function ($value) {
-                    $user = \App\User::find($value);
+                    $user = \App\Models\User::find($value);
                     return $user
                         ? $user->name()
                         : '-';

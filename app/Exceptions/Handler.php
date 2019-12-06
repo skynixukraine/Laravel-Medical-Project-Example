@@ -64,7 +64,7 @@ class Handler extends ExceptionHandler
 
             // Same problem for Route-Model-Binding
             if ($exception instanceof ModelNotFoundException) {
-                // remove the namespace (e.g. App\Submission -> Submission)
+                // remove the namespace (e.g. App\Models\Submission -> Submission)
                 $modelName = basename(str_replace("\\", "/", $exception->getModel()));
                 return response(['errors' => [$modelName => ['not found']]], '404');
             }

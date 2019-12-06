@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\SubmissionCreatedEvent;
-use App\Submission;
+use App\Models\Submission;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

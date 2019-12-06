@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\SubmissionCreatedEvent;
 use App\Mail\NewSubmission;
 use App\Notifications\SubmissionCreatedNotification;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 

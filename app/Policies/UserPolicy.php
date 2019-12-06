@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -12,8 +12,8 @@ class UserPolicy
     /**
      * Determine whether the user(admin) can view the user(doctor).
      *
-     * @param  \App\User  $user
-     * @param  \App\User  $doctor
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $doctor
      * @return mixed
      */
     public function view(User $user, User $doctor)
@@ -24,7 +24,7 @@ class UserPolicy
     /**
      * Determine whether the user can create doctors (users).
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -35,8 +35,8 @@ class UserPolicy
     /**
      * Determine whether the user can update the user (doctor).
      *
-     * @param  \App\User  $user
-     * @param  \App\User  $doctor
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $doctor
      * @return mixed
      */
     public function update(User $user, User $doctor)
@@ -47,7 +47,7 @@ class UserPolicy
     /**
      * Determine whether the user can delete the user (doctor).
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function delete(User $user)
@@ -58,7 +58,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore the user (doctor).
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function restore(User $user)
@@ -69,7 +69,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the user (doctor).
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\User  $user
      * @return mixed
      */
     public function forceDelete(User $user)

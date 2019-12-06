@@ -8,7 +8,7 @@ use App\Nova\Metrics\SubmissionsPerDay;
 use App\Nova\Metrics\SubmissionsPerOS;
 use App\Nova\Metrics\SubsequentSubmissions;
 use App\Observers\SubmissionObserver;
-use App\Submission;
+use App\Models\Submission;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Cards\Help;
 use Illuminate\Support\Facades\Gate;

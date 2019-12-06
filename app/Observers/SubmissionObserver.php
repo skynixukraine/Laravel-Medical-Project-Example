@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Submission;
+use App\Models\Submission;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,7 +11,7 @@ class SubmissionObserver
     /**
      * Handle the submission "created" event.
      *
-     * @param  \App\Submission  $submission
+     * @param  \App\Models\Submission  $submission
      * @return void
      */
     public function created(Submission $submission)
@@ -22,7 +22,7 @@ class SubmissionObserver
     /**
      * Handle the submission "updated" event.
      *
-     * @param  \App\Submission  $submission
+     * @param  \App\Models\Submission  $submission
      * @return void
      */
     public function updated(Submission $submission)
@@ -37,7 +37,7 @@ class SubmissionObserver
     /**
      * Handle the submission "deleted" event.
      *
-     * @param  \App\Submission  $submission
+     * @param  \App\Models\Submission  $submission
      * @return void
      */
     public function deleted(Submission $submission)
@@ -66,7 +66,7 @@ class SubmissionObserver
     /**
      * Handle the submission "restored" event.
      *
-     * @param  \App\Submission  $submission
+     * @param  \App\Models\Submission  $submission
      * @return void
      */
     public function restored(Submission $submission)
@@ -77,7 +77,7 @@ class SubmissionObserver
     /**
      * Handle the submission "force deleted" event.
      *
-     * @param  \App\Submission  $submission
+     * @param  \App\Models\Submission  $submission
      * @return void
      */
     public function forceDeleted(Submission $submission)

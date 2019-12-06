@@ -2,7 +2,7 @@
 
 namespace App\Nova\Filters;
 
-use App\Partner;
+use App\Models\Partner;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Nova\Filters\Filter;

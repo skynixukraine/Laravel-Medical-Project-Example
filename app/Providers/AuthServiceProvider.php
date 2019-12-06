@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Policies\SubmissionPolicy;
 use App\Policies\UserPolicy;
-use App\Submission;
-use App\User;
+use App\Models\Submission;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
