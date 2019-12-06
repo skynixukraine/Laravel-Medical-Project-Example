@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +47,7 @@ Route::get('stripe/authorizesofort',                             'StripeControll
 Route::get('stripe/checkcreditcardstate',                        'StripeController@checkcreditcardstate')->name('checkcreditcardstate');  // returns view or json
 Route::get('stripe/app-checkout',                                'StripeController@appCheckout');  // creditcard payment for apps
 Route::post('stripe/webhook',                                    'StripeController@webhook');
-Route::post('register',                                          'UserController@store');
+Route::post('register',                                          'API\DoctorController@register');
 
 //Route::middleware('auth:api')->get('/submission/open', function (Request $request) {
 //    return "hello ";
