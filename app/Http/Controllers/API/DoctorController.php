@@ -95,5 +95,9 @@ class DoctorController extends Controller
                 event(new PasswordReset($user));
             }
         );
+
+        if ($response !== Password::PASSWORD_RESET) {
+            abort(500, __('Something went wrong, please try again later'));
+        }
     }
 }
