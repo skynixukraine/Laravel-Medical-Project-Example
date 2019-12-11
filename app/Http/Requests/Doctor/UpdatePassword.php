@@ -6,28 +6,11 @@ namespace App\Http\Requests\Doctor;
 
 use App\Models\Doctor;
 use App\Rules\Recaptcha;
-use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Password;
 
 class UpdatePassword extends FormRequest
 {
-    private $tokenRepository;
-
-    public function __construct(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        $content = null,
-        TokenRepositoryInterface $tokenRepository
-    ) {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->tokenRepository = $tokenRepository;
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -45,13 +28,23 @@ class UpdatePassword extends FormRequest
      */
     public function rules(): array
     {
-        $email = $this->input('email');
-
         return [
             'email' => 'required|email|exists:doctors',
             'password' => 'required|string|min:6|max:255|confirmed',
             'token' => 'required|string',
             'recaptcha' => ['required', 'string', new Recaptcha('reset_password')],
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $doctor = Doctor::where(['email' => $this->email])->first();
+        $token = $this->token;
+
+        $validator->after(function ($validator) use ($doctor, $token) {
+            if (!Password::broker('doctors')->tokenExists($doctor, $token)) {
+                $validator->errors()->add('token', 'Token does not exists');
+            }
+        });
     }
 }
