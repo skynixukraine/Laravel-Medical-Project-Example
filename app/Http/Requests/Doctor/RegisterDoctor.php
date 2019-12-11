@@ -42,7 +42,7 @@ class RegisterDoctor extends FormRequest
             'marker_type' => 'nullable|string|max:30',
             'language_ids' => 'required|array',
             'language_ids.*' => 'distinct|exists:languages,id',
-            'recaptcha' => ['required', 'string', new Recaptcha('register_doctor')],
+//            'recaptcha' => ['required', 'string', new Recaptcha('register_doctor')],
         ];
     }
 }

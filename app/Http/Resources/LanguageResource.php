@@ -7,6 +7,33 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *     title="Language resource",
+ *     description="Resource for a language representation",
+ * )
+ * @OA\Property(
+ *     format="int64",
+ *     title="ID",
+ *     description="A language's identificator",
+ *     example="5",
+ *     property="id"
+ * )
+ * @OA\Property(
+ *     format="string",
+ *     title="A language's code",
+ *     description="A language's code",
+ *     property="code",
+ *     example="en"
+ * )
+ * @OA\Property(
+ *     format="string",
+ *     title="A language's name",
+ *     description="A language's name",
+ *     property="name",
+ *     example="English"
+ * )
+ */
 class LanguageResource extends JsonResource
 {
     /**
