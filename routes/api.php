@@ -50,7 +50,7 @@ Route::post('stripe/webhook',                                    'StripeControll
 Route::post('register',                                          'API\DoctorController@register');
 Route::get('login',                                              'API\DoctorController@login');
 Route::post('send-reset-link',                                   'API\DoctorController@sendResetLinkEmail');
-Route::post('update-password',                                  'API\DoctorController@updatePassword')->name('password.update');
+Route::patch('update-password',                                  'API\DoctorController@updatePassword')->name('password.update');
 
 //Route::middleware('auth:api')->get('/submission/open', function (Request $request) {
 //    return "hello ";
