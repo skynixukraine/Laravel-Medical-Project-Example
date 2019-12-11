@@ -7,7 +7,7 @@ namespace App\Http\Requests\Doctor;
 use App\Rules\Recaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDoctor extends FormRequest
+class RegisterDoctor extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +31,7 @@ class StoreDoctor extends FormRequest
             'prefix' => 'required|string|max:10',
             'first_name' => 'required|string|max:20',
             'last_name' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:doctors',
             'description' => 'required|string|max:3000',
             'region_id' => 'required|exists:regions,id',
             'password' => 'required|string|min:6|max:255|confirmed',
