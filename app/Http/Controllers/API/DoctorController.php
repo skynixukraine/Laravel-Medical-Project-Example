@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API;
 
 use App\Events\DoctorRegistered;
+use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\RegisterDoctor;
 use App\Http\Requests\Doctor\SendResetLink;
 use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Models\Location;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
+use PhpParser\Comment\Doc;
 
 class DoctorController extends ApiController
 {
@@ -312,6 +317,170 @@ class DoctorController extends ApiController
     /**
      * @OA\Post(
      *     tags={"Doctors"},
+     *     path="/api/login",
+     *     summary="Create a token for a doctor",
+     *     description="Create a token for a doctor",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"email", "password", "recaptcha"},
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="E-mail",
+     *                      description="A doctor's e-mail",
+     *                      property="email",
+     *                      example="doctor@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Password",
+     *                      description="A doctor's password",
+     *                      property="password",
+     *                      example="12345678"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Recaptcha",
+     *                      description="Recaptcha value. Action must be 'login_doctor'",
+     *                      property="recaptcha"
+     *                  )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *          response=200,
+     *          description="Tocken succesfully created",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="access_token",
+     *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
+     *                      ),
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="token_type",
+     *                          example="Bearer",
+     *                      ),
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/CarbonResource",
+     *                          format="object",
+     *                          property="expires_at",
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="There are some validation errors",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  title="Validation error",
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="The given data was invalid."
+     *                      ),
+     *                      @OA\Property(
+     *                          property="errors",
+     *                          format="object",
+     *                          @OA\Property(
+     *                              property="email",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The email field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="password",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The password field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="recaptcha",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The recaptcha field is required."
+     *                              ),
+     *                          ),
+     *                      ),
+     *                  }
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unautorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function login(Login $request)
+    {
+        $doctor = Doctor::where(
+            [
+                'email' => $request->input('email'),
+                'is_active' => true,
+            ]
+        )->first();
+
+        if (!$doctor || Hash::check($doctor, $doctor->password)) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $token = $doctor->createToken('Personal Access Token');
+        $token->token->expires_at = Passport::$tokensExpireAt;
+        $token->token->save();
+
+        return response()->json(
+            [
+                'access_token' => $token->accessToken,
+                'token_type' => 'Bearer',
+                'expires_at' => $token->token->expires_at,
+            ]
+        );
+    }
+
+    /**
+     * @OA\Post(
+     *     tags={"Doctors"},
      *     path="/api/send-reset-link",
      *     summary="Send reset password link",
      *     description="Send email message for a doctor with a link for password reseting",
@@ -398,27 +567,6 @@ class DoctorController extends ApiController
         $response = Password::broker('doctors')->sendResetLink($request->only('email'));
 
         abort_if($response !== Password::RESET_LINK_SENT, 500, __('Something went wrong, please try again later'));
-    }
-
-    public function login(Request $request)
-    {
-        $http = new Client;
-
-        $response = $http->post(
-            'http://ohn/oauth/token',
-            [
-                'form_params' => [
-                    'grant_type' => 'password',
-                    'client_id' => env('CLIENT_ID'),
-                    'client_secret' => env('CLIENT_SECRET'),
-                    'username' => $request->email,
-                    'password' => $request->password,
-                    'scope' => '',
-                ],
-            ]
-        );
-
-        return json_decode((string)$response->getBody(), true);
     }
 
     /**
