@@ -13,6 +13,7 @@ use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Models\Location;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Passport\Passport;
@@ -23,7 +24,7 @@ class DoctorController extends ApiController
     /**
      * @OA\Post(
      *     tags={"Doctors"},
-     *     path="/api/register",
+     *     path="/api/v1/register",
      *     summary="Register a new doctor",
      *     description="Register a new doctor",
      *     @OA\RequestBody(
@@ -312,7 +313,7 @@ class DoctorController extends ApiController
     /**
      * @OA\Post(
      *     tags={"Doctors"},
-     *     path="/api/login",
+     *     path="/api/v1/login",
      *     summary="Create a token for a doctor",
      *     description="Create a token for a doctor",
      *     @OA\RequestBody(
@@ -347,7 +348,7 @@ class DoctorController extends ApiController
      *     ),
      *     @OA\Response(
      *          response=200,
-     *          description="Tocken succesfully created",
+     *          description="Token has been created",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
@@ -423,7 +424,7 @@ class DoctorController extends ApiController
      *                      @OA\Property(
      *                          format="string",
      *                          property="message",
-     *                          example="Unautorized."
+     *                          example="Unauthenticated."
      *                      ),
      *                  }
      *              )
@@ -457,7 +458,7 @@ class DoctorController extends ApiController
         )->first();
 
         if (!$doctor || Hash::check($doctor, $doctor->password)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
         $token = $doctor->createToken('Personal Access Token');
@@ -476,7 +477,53 @@ class DoctorController extends ApiController
     /**
      * @OA\Post(
      *     tags={"Doctors"},
-     *     path="/api/send-reset-link",
+     *     path="/api/v1/logout",
+     *     summary="Revoke current token",
+     *     description="Revoke current token",
+     *     @OA\Response(response=200, description="Token has been revoked"),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function logout(Request $request): void
+    {
+        $request->user()->token()->revoke();
+    }
+
+    /**
+     * @OA\Post(
+     *     tags={"Doctors"},
+     *     path="/api/v1/send-reset-link",
      *     summary="Send reset password link",
      *     description="Send email message for a doctor with a link for password reseting",
      *     @OA\RequestBody(
@@ -567,7 +614,7 @@ class DoctorController extends ApiController
     /**
      * @OA\Patch(
      *     tags={"Doctors"},
-     *     path="/api/update-password",
+     *     path="/api/v1/update-password",
      *     summary="Set a new password for a doctor",
      *     description="Set a new password for a doctor",
      *     @OA\RequestBody(
