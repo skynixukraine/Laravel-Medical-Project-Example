@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Resources\LanguageResource;
-use App\Http\Resources\RegionResource;
 use App\Models\Language;
-use App\Models\Region;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
