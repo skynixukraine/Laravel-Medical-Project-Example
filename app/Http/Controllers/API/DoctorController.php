@@ -6,22 +6,17 @@ namespace App\Http\Controllers\API;
 
 use App\Events\DoctorRegistered;
 use App\Http\Requests\Doctor\Login;
-use App\Http\Requests\Doctor\RegisterDoctor;
+use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
 use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Models\Location;
-use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
-use PhpParser\Comment\Doc;
 
 class DoctorController extends ApiController
 {
@@ -277,7 +272,7 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function register(RegisterDoctor $request): DoctorResource
+    public function register(Register $request): DoctorResource
     {
         $location = Location::create(
             [
