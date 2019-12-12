@@ -47,11 +47,10 @@ Route::get('stripe/authorizesofort',                             'StripeControll
 Route::get('stripe/checkcreditcardstate',                        'StripeController@checkcreditcardstate')->name('checkcreditcardstate');  // returns view or json
 Route::get('stripe/app-checkout',                                'StripeController@appCheckout');  // creditcard payment for apps
 Route::post('stripe/webhook',                                    'StripeController@webhook');
-Route::post('register',                                          'API\DoctorController@register');
-Route::post('login',                                              'API\DoctorController@login');
-Route::post('send-reset-link',                                   'API\DoctorController@sendResetLinkEmail');
-Route::patch('update-password',                                  'API\DoctorController@updatePassword')->name('password.update');
 
-//Route::middleware('auth:api')->get('/submission/open', function (Request $request) {
-//    return "hello ";
-//});
+Route::prefix('v1')->group(function () {
+    Route::post('register', 'API\V1\DoctorController@register')->name('doctor.register');
+    Route::post('login', 'API\V1\DoctorController@login')->name('doctor.login');
+    Route::post('send-reset-link', 'API\V1\DoctorController@sendResetLinkEmail');
+    Route::patch('update-password', 'API\V1\DoctorController@updatePassword')->name('password.update');
+});
