@@ -5,14 +5,14 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/register": {
+        "/api/v1/register": {
             "post": {
                 "tags": [
                     "Doctors"
                 ],
                 "summary": "Register a new doctor",
                 "description": "Register a new doctor",
-                "operationId": "App\\Http\\Controllers\\API\\DoctorController::register",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::register",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -251,14 +251,14 @@
                 }
             }
         },
-        "/api/login": {
+        "/api/v1/login": {
             "post": {
                 "tags": [
                     "Doctors"
                 ],
                 "summary": "Create a token for a doctor",
                 "description": "Create a token for a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\DoctorController::login",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::login",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -295,7 +295,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tocken succesfully created",
+                        "description": "Token has been created",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -367,7 +367,7 @@
                                     "properties": {
                                         "message": {
                                             "format": "string",
-                                            "example": "Unautorized."
+                                            "example": "Unauthenticated."
                                         }
                                     },
                                     "type": "object"
@@ -394,14 +394,61 @@
                 }
             }
         },
-        "/api/send-reset-link": {
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Revoke current token",
+                "description": "Revoke current token",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::logout",
+                "responses": {
+                    "200": {
+                        "description": "Token has been revoked"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/send-reset-link": {
             "post": {
                 "tags": [
                     "Doctors"
                 ],
                 "summary": "Send reset password link",
                 "description": "Send email message for a doctor with a link for password reseting",
-                "operationId": "App\\Http\\Controllers\\API\\DoctorController::sendResetLinkEmail",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::sendResetLinkEmail",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -488,14 +535,14 @@
                 }
             }
         },
-        "/api/update-password": {
+        "/api/v1/update-password": {
             "patch": {
                 "tags": [
                     "Doctors"
                 ],
                 "summary": "Set a new password for a doctor",
                 "description": "Set a new password for a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\DoctorController::updatePassword",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::updatePassword",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -592,6 +639,98 @@
                                             },
                                             "type": "object",
                                             "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/languages": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Get all languages",
+                "description": "Get all languages",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\LanguageController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/LanguageResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/regions": {
+            "get": {
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Get all regions",
+                "description": "Get all regions",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\RegionController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/RegionResource"
+                                            }
                                         }
                                     },
                                     "type": "object"
