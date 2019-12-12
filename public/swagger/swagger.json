@@ -7,11 +7,13 @@
     "paths": {
         "/api/register": {
             "post": {
+                "tags": [
+                    "Doctors"
+                ],
                 "summary": "Register a new doctor",
                 "description": "Register a new doctor",
                 "operationId": "App\\Http\\Controllers\\API\\DoctorController::register",
                 "requestBody": {
-                    "description": "Client side search object",
                     "required": true,
                     "content": {
                         "application/x-www-form-urlencoded": {
@@ -90,7 +92,7 @@
                                     },
                                     "recaptcha": {
                                         "title": "Recaptcha",
-                                        "description": "Recaptcha value",
+                                        "description": "Recaptcha value. Action must be 'register_doctor",
                                         "format": "string"
                                     },
                                     "marker_address": {
@@ -213,6 +215,12 @@
                                                         "type": "string",
                                                         "example": "The language ids field is required."
                                                     }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
                                                 }
                                             },
                                             "type": "object",
@@ -229,12 +237,377 @@
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Server Error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Create a token for a doctor",
+                "description": "Create a token for a doctor",
+                "operationId": "App\\Http\\Controllers\\API\\DoctorController::login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "password": {
+                                        "title": "Password",
+                                        "description": "A doctor's password",
+                                        "format": "string",
+                                        "example": "12345678"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'login_doctor'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tocken succesfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "format": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                                        },
+                                        "token_type": {
+                                            "format": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "expires_at": {
+                                            "format": "object",
+                                            "$ref": "#/components/schemas/CarbonResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unautorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/send-reset-link": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Send reset password link",
+                "description": "Send email message for a doctor with a link for password reseting",
+                "operationId": "App\\Http\\Controllers\\API\\DoctorController::sendResetLinkEmail",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'send_reset_link'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "schema": "ValidationError",
                                     "title": "Validation error",
                                     "properties": {
                                         "message": {
                                             "format": "string",
-                                            "example": "Server Error."
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/update-password": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Set a new password for a doctor",
+                "description": "Set a new password for a doctor",
+                "operationId": "App\\Http\\Controllers\\API\\DoctorController::updatePassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha",
+                                    "password",
+                                    "password_confirmation",
+                                    "token"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "password": {
+                                        "title": "Password",
+                                        "description": "A new doctor's password",
+                                        "format": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "title": "Password confirmation",
+                                        "description": "A new doctor's password confirmation",
+                                        "format": "string"
+                                    },
+                                    "token": {
+                                        "title": "Token",
+                                        "description": "Token value taken from reset password link",
+                                        "format": "string"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'update_password'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A new password has been setted"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "marker_address": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The marker address field is required."
+                                                    }
+                                                },
+                                                "token": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Token does not exists."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
                                         }
                                     },
                                     "type": "object"
