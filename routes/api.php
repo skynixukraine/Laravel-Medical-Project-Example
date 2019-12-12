@@ -49,8 +49,14 @@ Route::get('stripe/app-checkout',                                'StripeControll
 Route::post('stripe/webhook',                                    'StripeController@webhook');
 
 Route::prefix('v1')->group(function () {
-    Route::post('register', 'API\V1\DoctorController@register')->name('doctor.register');
-    Route::post('login', 'API\V1\DoctorController@login')->name('doctor.login');
+    Route::post('register', 'API\V1\DoctorController@register')->name('doctors.register');
+    Route::post('login', 'API\V1\DoctorController@login')->name('doctors.login');
     Route::post('send-reset-link', 'API\V1\DoctorController@sendResetLinkEmail');
-    Route::patch('update-password', 'API\V1\DoctorController@updatePassword')->name('password.update');
+    Route::patch('update-password', 'API\V1\DoctorController@updatePassword');
+    Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
+    Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
+});
+
+Route::prefix('v1')->middleware(['auth:api'])->group(function () {
+    Route::patch('logout', 'API\V1\DoctorController@logout')->name('doctor.logout');
 });
