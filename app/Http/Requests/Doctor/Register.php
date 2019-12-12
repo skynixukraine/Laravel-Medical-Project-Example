@@ -7,7 +7,7 @@ namespace App\Http\Requests\Doctor;
 use App\Rules\Recaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterDoctor extends FormRequest
+class Register extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
