@@ -26,7 +26,6 @@ class DoctorController extends ApiController
      *     summary="Register a new doctor",
      *     description="Register a new doctor",
      *     @OA\RequestBody(
-     *         description="Client side search object",
      *         required=true,
      *         @OA\MediaType(
      *              mediaType="application/x-www-form-urlencoded",
@@ -242,6 +241,13 @@ class DoctorController extends ApiController
      *                                  example="The language ids field is required."
      *                              ),
      *                          ),
+     *                          @OA\Property(
+     *                              property="recaptcha",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The recaptcha field is required."
+     *                              ),
+     *                          ),
      *                      ),
      *                  }
      *              ),
@@ -253,8 +259,6 @@ class DoctorController extends ApiController
      *         @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
-     *                  schema="ValidationError",
-     *                  title="Validation error",
      *                  properties={
      *                      @OA\Property(
      *                          format="string",
@@ -304,6 +308,89 @@ class DoctorController extends ApiController
         return new DoctorResource($doctor);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/send-reset-link",
+     *     summary="Send reset password link",
+     *     description="Send email message for a doctor with a link for password reseting",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"email", "recaptcha"},
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="E-mail",
+     *                      description="A doctor's e-mail",
+     *                      property="email",
+     *                      example="doctor@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Recaptcha",
+     *                      description="Recaptcha value",
+     *                      property="recaptcha",
+     *                  )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(response=200, description="An e-mail has been sent"),
+     *     @OA\Response(
+     *         response=422,
+     *         description="There are some validation errors",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  schema="ValidationError",
+     *                  title="Validation error",
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="The given data was invalid."
+     *                      ),
+     *                      @OA\Property(
+     *                          property="errors",
+     *                          format="object",
+     *                          @OA\Property(
+     *                              property="email",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The email field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="recaptcha",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The recaptcha field is required."
+     *                              ),
+     *                          ),
+     *                      ),
+     *                  }
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
     public function sendResetLinkEmail(SendResetLink $request): void
     {
         $response = Password::broker('doctors')->sendResetLink($request->only('email'));
@@ -334,6 +421,89 @@ class DoctorController extends ApiController
         return json_decode((string)$response->getBody(), true);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/send-reset-link",
+     *     summary="Send reset password link",
+     *     description="Send email message for a doctor with a link for password reseting",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"email", "recaptcha"},
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="E-mail",
+     *                      description="A doctor's e-mail",
+     *                      property="email",
+     *                      example="doctor@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Recaptcha",
+     *                      description="Recaptcha value",
+     *                      property="recaptcha",
+     *                  )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(response=200, description="An e-mail has been sent"),
+     *     @OA\Response(
+     *         response=422,
+     *         description="There are some validation errors",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  schema="ValidationError",
+     *                  title="Validation error",
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="The given data was invalid."
+     *                      ),
+     *                      @OA\Property(
+     *                          property="errors",
+     *                          format="object",
+     *                          @OA\Property(
+     *                              property="email",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The email field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="recaptcha",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The recaptcha field is required."
+     *                              ),
+     *                          ),
+     *                      ),
+     *                  }
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
     public function updatePassword(UpdatePassword $request): void
     {
         $response = Password::broker('doctors')->reset(
