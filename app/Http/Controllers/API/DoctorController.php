@@ -22,6 +22,7 @@ class DoctorController extends ApiController
 {
     /**
      * @OA\Post(
+     *     tags={"Doctors"},
      *     path="/api/register",
      *     summary="Register a new doctor",
      *     description="Register a new doctor",
@@ -103,7 +104,7 @@ class DoctorController extends ApiController
      *                  @OA\Property(
      *                      format="string",
      *                      title="Recaptcha",
-     *                      description="Recaptcha value",
+     *                      description="Recaptcha value. Action must be 'register_doctor",
      *                      property="recaptcha",
      *                  ),
      *                  @OA\Property(
@@ -310,6 +311,7 @@ class DoctorController extends ApiController
 
     /**
      * @OA\Post(
+     *     tags={"Doctors"},
      *     path="/api/send-reset-link",
      *     summary="Send reset password link",
      *     description="Send email message for a doctor with a link for password reseting",
@@ -330,7 +332,7 @@ class DoctorController extends ApiController
      *                  @OA\Property(
      *                      format="string",
      *                      title="Recaptcha",
-     *                      description="Recaptcha value",
+     *                      description="Recaptcha value. Action must be 'send_reset_link'",
      *                      property="recaptcha",
      *                  )
      *              )
@@ -395,9 +397,7 @@ class DoctorController extends ApiController
     {
         $response = Password::broker('doctors')->sendResetLink($request->only('email'));
 
-        if ($response !== Password::RESET_LINK_SENT) {
-            abort(500, __('Something went wrong, please try again later'));
-        }
+        abort_if($response !== Password::RESET_LINK_SENT, 500, __('Something went wrong, please try again later'));
     }
 
     public function login(Request $request)
@@ -422,17 +422,18 @@ class DoctorController extends ApiController
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/send-reset-link",
-     *     summary="Send reset password link",
-     *     description="Send email message for a doctor with a link for password reseting",
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/update-password",
+     *     summary="Set a new password for a doctor",
+     *     description="Set a new password for a doctor",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
      *              mediaType="application/x-www-form-urlencoded",
      *              @OA\Schema(
      *                  type="object",
-     *                  required={"email", "recaptcha"},
+     *                  required={"email", "recaptcha", "password", "password_confirmation", "token"},
      *                  @OA\Property(
      *                      format="string",
      *                      title="E-mail",
@@ -442,14 +443,32 @@ class DoctorController extends ApiController
      *                  ),
      *                  @OA\Property(
      *                      format="string",
+     *                      title="Password",
+     *                      description="A new doctor's password",
+     *                      property="password",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Password confirmation",
+     *                      description="A new doctor's password confirmation",
+     *                      property="password_confirmation",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Token",
+     *                      description="Token value taken from reset password link",
+     *                      property="token",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
      *                      title="Recaptcha",
-     *                      description="Recaptcha value",
+     *                      description="Recaptcha value. Action must be 'update_password'",
      *                      property="recaptcha",
      *                  )
      *              )
      *          )
      *     ),
-     *     @OA\Response(response=200, description="An e-mail has been sent"),
+     *     @OA\Response(response=200, description="A new password has been setted"),
      *     @OA\Response(
      *         response=422,
      *         description="There are some validation errors",
@@ -472,6 +491,27 @@ class DoctorController extends ApiController
      *                              @OA\Items(
      *                                  type="string",
      *                                  example="The email field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="password",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The password field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="marker_address",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The marker address field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="token",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="Token does not exists."
      *                              ),
      *                          ),
      *                          @OA\Property(
@@ -516,8 +556,6 @@ class DoctorController extends ApiController
             }
         );
 
-        if ($response !== Password::PASSWORD_RESET) {
-            abort(500, __('Something went wrong, please try again later'));
-        }
+        abort_if($response !== Password::PASSWORD_RESET, 500, __('Something went wrong, please try again later'));
     }
 }
