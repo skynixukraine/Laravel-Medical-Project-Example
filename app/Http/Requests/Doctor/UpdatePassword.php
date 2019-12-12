@@ -32,7 +32,7 @@ class UpdatePassword extends FormRequest
             'email' => 'required|email|exists:doctors',
             'password' => 'required|string|min:6|max:255|confirmed',
             'token' => 'required|string',
-            'recaptcha' => ['required', 'string', new Recaptcha('reset_password')],
+            'recaptcha' => ['required', 'string', new Recaptcha('update_password')],
         ];
     }
 
@@ -40,6 +40,8 @@ class UpdatePassword extends FormRequest
     {
         $doctor = Doctor::where(['email' => $this->email])->first();
         $token = $this->token;
+
+        if (!$doctor) { return; }
 
         $validator->after(function ($validator) use ($doctor, $token) {
             if (!Password::broker('doctors')->tokenExists($doctor, $token)) {
