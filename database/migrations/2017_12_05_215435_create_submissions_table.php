@@ -27,7 +27,7 @@ class CreateSubmissionsTable extends Migration
             $table->string('email')->nullable();
             $table->string('device_id')->nullable();
             $table->string('submission_id');
-            $table->string('transaction_id');
+            $table->string('transaction_id')->nullable();
             $table->timestamp('due_at')->nullable(); // We need to allow null, because this is set in a second step
             $table->enum('status', ['setup', 'open', 'assigned', 'permanently_assigned', 'answered']);
             $table->string('closeup_image_id')->nullable();

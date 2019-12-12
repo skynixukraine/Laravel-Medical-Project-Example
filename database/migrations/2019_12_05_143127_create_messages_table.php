@@ -23,11 +23,11 @@ class CreateMessagesTable extends Migration
             ]);
             $table->string('button');
             $table->boolean('is_first');
-            $table->unsignedInteger('next_question_id')->nullable();
+            $table->unsignedInteger('next_message_id')->nullable();
 
-            $table->foreign('next_question_id')
+            $table->foreign('next_message_id')
                 ->references('id')
-                ->on('questions')
+                ->on('messages')
                 ->onDelete('cascade');
         });
     }
