@@ -9,7 +9,7 @@ use App\Models\Language;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
-class LanguagesController extends ApiController
+class LanguageController extends ApiController
 {
     /**
      * @OA\Get(
