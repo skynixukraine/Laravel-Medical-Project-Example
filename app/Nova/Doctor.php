@@ -2,6 +2,9 @@
 
 namespace App\Nova;
 
+use App\Services\StorageService;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -48,7 +51,11 @@ class Doctor extends Resource
     {
         return [
             ID::make()->sortable(),
-            Image::make('Photo', 'photo'),
+            Avatar::make('Photo', 'photo')
+                ->store(function (Request $request, $doctor) {
+                    (new StorageService())->saveDoctorPhoto($doctor, $request->photo);
+                    return ['photo' => $doctor->photo,];
+                }),
             Text::make('Prefix', 'prefix'),
             Text::make('First name', 'first_name'),
             Text::make('Last name', 'last_name'),

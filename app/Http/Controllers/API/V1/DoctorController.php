@@ -12,6 +12,7 @@ use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use App\Models\Location;
+use App\Services\StorageService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -273,7 +274,7 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function register(Register $request): DoctorResource
+    public function register(Register $request, StorageService $storageService): DoctorResource
     {
         $location = Location::create(
             [
@@ -299,7 +300,7 @@ class DoctorController extends ApiController
             ]
         );
 
-        $doctor->uploadPhoto($request->file('photo'));
+        $storageService->saveDoctorPhoto($doctor, $request->photo);
 
         $doctor->save();
 
