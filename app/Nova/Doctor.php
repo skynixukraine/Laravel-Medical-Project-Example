@@ -13,6 +13,8 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\PasswordConfirmation;
+use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 
@@ -56,17 +58,18 @@ class Doctor extends Resource
                     (new StorageService())->saveDoctorPhoto($doctor, $request->photo);
                     return ['photo' => $doctor->photo,];
                 }),
-            Text::make('Prefix', 'prefix'),
-            Text::make('First name', 'first_name'),
-            Text::make('Last name', 'last_name'),
-            Text::make('Email', 'email'),
-            Password::make('Password', 'password'),
-            Textarea::make('Description', 'description'),
-            Boolean::make('Is active', 'is_active'),
-            DateTime::make('Created at', 'created_at'),
-            DateTime::make('Updated at', 'updated_at'),
-            HasOne::make('Region'),
-            HasMany::make('Languages')
+            Text::make('Prefix', 'prefix')->sortable(),
+            Text::make('First name', 'first_name')->sortable(),
+            Text::make('Last name', 'last_name')->sortable(),
+            Text::make('Email', 'email')->sortable(),
+            Password::make('Password', 'password')->hideFromIndex(),
+            PasswordConfirmation::make('Password Confirmation'),
+            Textarea::make('Description', 'description')->hideFromIndex(),
+            Boolean::make('Is active', 'is_active')->sortable(),
+            DateTime::make('Created at', 'created_at')->hideFromIndex(),
+            DateTime::make('Updated at', 'updated_at')->hideFromIndex(),
+            HasOne::make('Region')->hideFromIndex(),
+            HasMany::make('Languages')->hideFromIndex(),
         ];
     }
 
