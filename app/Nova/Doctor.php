@@ -3,20 +3,17 @@
 namespace App\Nova;
 
 use App\Services\StorageService;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\PasswordConfirmation;
-use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 
 class Doctor extends Resource
 {
@@ -56,7 +53,7 @@ class Doctor extends Resource
             Avatar::make('Photo', 'photo')
                 ->store(function (Request $request, $doctor) {
                     (new StorageService())->saveDoctorPhoto($doctor, $request->photo);
-                    return ['photo' => $doctor->photo,];
+                    return ['photo' => $doctor->photo];
                 }),
             Text::make('Prefix', 'prefix')->sortable(),
             Text::make('First name', 'first_name')->sortable(),
@@ -64,13 +61,13 @@ class Doctor extends Resource
             Text::make('Email', 'email')->sortable(),
             Password::make('Password', 'password')->hideFromIndex(),
             PasswordConfirmation::make('Password Confirmation'),
-            Textarea::make('Description', 'description')->hideFromIndex(),
+            Trix::make('Description', 'description')->hideFromIndex(),
             Boolean::make('Is active', 'is_active')->sortable(),
             DateTime::make('Created at', 'created_at')->hideFromIndex(),
             DateTime::make('Updated at', 'updated_at')->hideFromIndex(),
-            HasOne::make('Region')->hideFromIndex(),
-            HasMany::make('Languages')->hideFromIndex(),
-            HasOne::make('Location')->hideFromIndex(),
+            BelongsTo::make('Region')->hideFromIndex(),
+            BelongsToMany::make('Languages')->hideFromIndex(),
+            BelongsTo::make('Location')->hideFromIndex(),
         ];
     }
 

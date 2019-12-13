@@ -18,13 +18,6 @@ class Location extends Resource
     public static $model = 'App\Models\Location';
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'address';
-
-    /**
      * The columns that should be searched.
      *
      * @var array
@@ -32,6 +25,16 @@ class Location extends Resource
     public static $search = [
         'id',
     ];
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->country . ', ' . $this->city . ', ' . $this->state . ', ' . $this->address . ', ' . $this->postal_code;
+    }
 
     /**
      * Get the fields displayed by the resource.

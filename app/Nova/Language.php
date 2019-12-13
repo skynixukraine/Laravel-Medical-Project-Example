@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
@@ -28,7 +29,7 @@ class Language extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'code', 'name'
     ];
 
     /**
@@ -43,6 +44,7 @@ class Language extends Resource
             ID::make()->sortable(),
             Text::make('Code', 'code')->sortable(),
             Text::make('Name', 'name')->sortable(),
+            BelongsToMany::make('Doctors'),
         ];
     }
 
