@@ -12,11 +12,13 @@ class Location extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
         'address',
-        'lat',
-        'lng',
-        'type',
+        'latitude',
+        'longitude',
+        'city',
+        'state',
+        'postal_code',
+        'country',
     ];
 
     public function doctor(): HasOne

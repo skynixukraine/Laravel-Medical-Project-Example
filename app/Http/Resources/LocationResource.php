@@ -16,38 +16,58 @@ use OpenApi\Annotations as OA;
  * @OA\Property(
  *     format="int64",
  *     title="ID",
- *     description="A region's identificator",
+ *     description="A locations's identificator",
  *     example="5",
  *     property="id"
+ * )
+ * @OA\Property(
+ *     format="string",
+ *     title="A location's country",
+ *     description="A location's country",
+ *     property="country",
+ *     example="USA"
+ * )
+ * @OA\Property(
+ *     format="string",
+ *     title="A location's city",
+ *     description="A location's city",
+ *     property="city",
+ *     example="New York",
+ * )
+ * @OA\Property(
+ *     format="string",
+ *     title="A location's state",
+ *     description="A location's state",
+ *     property="state",
+ *     example="New York",
+ * )
+ * @OA\Property(
+ *     format="int64",
+ *     title="A location's postal code",
+ *     description="A location's postal code",
+ *     property="postal_code",
+ *     example="12345",
  * )
  * @OA\Property(
  *     format="string",
  *     title="A location's address",
  *     description="A location's address",
  *     property="address",
- *     example="Some address"
- * )
- * @OA\Property(
- *     format="string",
- *     title="A location's name",
- *     description="A location's name",
- *     property="name",
- *     example="Nevada",
- *     nullable=true
+ *     example="address",
  * )
  * @OA\Property(
  *     format="double",
- *     title="A location's lat",
- *     description="A location's lat",
- *     property="lat",
+ *     title="A location's latitude",
+ *     description="A location's latitude",
+ *     property="latitude",
  *     example=5.123,
  *     nullable=true
  * )
  * @OA\Property(
  *     format="double",
- *     title="A location's lng",
- *     description="A location's lng",
- *     property="lng",
+ *     title="A location's longitude",
+ *     description="A location's longitude",
+ *     property="longitude",
  *     example=8.123,
  *     nullable=true
  * )
@@ -64,11 +84,13 @@ class LocationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'country' => $this->country,
+            'city' => $this->city,
+            'state' => $this->state,
+            'postal_code' => $this->postal_code,
             'address' => $this->address,
-            'lat' => $this->lat,
-            'lng' => $this->lng,
-            'type' => $this->type,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
         ];
     }
 }

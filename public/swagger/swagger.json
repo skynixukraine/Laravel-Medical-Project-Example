@@ -30,95 +30,99 @@
                                     "language_ids",
                                     "password",
                                     "password_confirmation",
-                                    "recaptcha"
+                                    "recaptcha",
+                                    "country",
+                                    "city",
+                                    "state",
+                                    "postal_code",
+                                    "address"
                                 ],
                                 "properties": {
                                     "photo": {
-                                        "title": "Photo",
                                         "description": "A doctor's photo",
                                         "format": "binary"
                                     },
                                     "prefix": {
-                                        "title": "Prefix",
                                         "description": "A doctor's prefix",
                                         "format": "string",
                                         "example": "Dr."
                                     },
                                     "first_name": {
-                                        "title": "First name",
                                         "description": "A doctor's first name",
                                         "format": "string",
                                         "example": "Davide"
                                     },
                                     "last_name": {
-                                        "title": "Last name",
                                         "description": "A doctor's last name",
                                         "format": "string",
                                         "example": "Donghi"
                                     },
                                     "description": {
-                                        "title": "Desctiption",
                                         "description": "A doctor's description",
                                         "format": "string",
                                         "example": "I am a good doctor"
                                     },
                                     "email": {
-                                        "title": "E-mail",
                                         "description": "A doctor's e-mail",
                                         "format": "string",
                                         "example": "doctor@gmail.com"
                                     },
                                     "region_id": {
-                                        "title": "Region",
                                         "description": "A doctor's region",
                                         "format": "int64",
                                         "example": 1
                                     },
                                     "language_ids": {
-                                        "title": "Languages",
                                         "description": "A doctor's languages",
                                         "format": "array",
                                         "items": "int64"
                                     },
                                     "password": {
-                                        "title": "Password",
                                         "description": "A doctor's password",
                                         "format": "string"
                                     },
                                     "password_confirmation": {
-                                        "title": "Password confirmation",
                                         "description": "A doctor's password confirmation",
                                         "format": "string"
                                     },
                                     "recaptcha": {
-                                        "title": "Recaptcha",
                                         "description": "Recaptcha value. Action must be 'register_doctor",
                                         "format": "string"
                                     },
-                                    "marker_address": {
-                                        "title": "Marker address",
-                                        "description": "A doctor's marker address",
-                                        "format": "string"
+                                    "country": {
+                                        "description": "A location's country",
+                                        "format": "string",
+                                        "example": "USA"
                                     },
-                                    "marker_name": {
-                                        "title": "Marker name",
-                                        "description": "A doctor's marker name",
-                                        "format": "string"
+                                    "city": {
+                                        "description": "A location's city",
+                                        "format": "string",
+                                        "example": "New York"
                                     },
-                                    "marker_lat": {
-                                        "title": "Marker lat",
-                                        "description": "A doctor's marker lat",
-                                        "format": "string"
+                                    "state": {
+                                        "description": "A location's state",
+                                        "format": "string",
+                                        "example": "New York"
                                     },
-                                    "marker_lng": {
-                                        "title": "Marker lng",
-                                        "description": "A doctor's marker lng",
-                                        "format": "string"
+                                    "postal_code": {
+                                        "description": "A location's postal code",
+                                        "format": "int64",
+                                        "example": "12345"
                                     },
-                                    "marker_type": {
-                                        "title": "Marker type",
-                                        "description": "A doctor's marker type",
-                                        "format": "string"
+                                    "address": {
+                                        "description": "A location's address",
+                                        "format": "string",
+                                        "example": "address"
+                                    },
+                                    "latitude": {
+                                        "description": "A location's latitude",
+                                        "format": "double",
+                                        "example": 5.123
+                                    },
+                                    "longitude": {
+                                        "description": "A location's longitude",
+                                        "format": "double",
+                                        "example": 8.123
                                     }
                                 },
                                 "type": "object"
@@ -889,37 +893,57 @@
                     "id": {
                         "schema": "LocationResource",
                         "title": "ID",
-                        "description": "A region's identificator",
+                        "description": "A locations's identificator",
                         "format": "int64",
                         "example": "5"
+                    },
+                    "country": {
+                        "schema": "LocationResource",
+                        "title": "A location's country",
+                        "description": "A location's country",
+                        "format": "string",
+                        "example": "USA"
+                    },
+                    "city": {
+                        "schema": "LocationResource",
+                        "title": "A location's city",
+                        "description": "A location's city",
+                        "format": "string",
+                        "example": "New York"
+                    },
+                    "state": {
+                        "schema": "LocationResource",
+                        "title": "A location's state",
+                        "description": "A location's state",
+                        "format": "string",
+                        "example": "New York"
+                    },
+                    "postal_code": {
+                        "schema": "LocationResource",
+                        "title": "A location's postal code",
+                        "description": "A location's postal code",
+                        "format": "int64",
+                        "example": "12345"
                     },
                     "address": {
                         "schema": "LocationResource",
                         "title": "A location's address",
                         "description": "A location's address",
                         "format": "string",
-                        "example": "Some address"
+                        "example": "address"
                     },
-                    "name": {
+                    "latitude": {
                         "schema": "LocationResource",
-                        "title": "A location's name",
-                        "description": "A location's name",
-                        "format": "string",
-                        "example": "Nevada",
-                        "nullable": true
-                    },
-                    "lat": {
-                        "schema": "LocationResource",
-                        "title": "A location's lat",
-                        "description": "A location's lat",
+                        "title": "A location's latitude",
+                        "description": "A location's latitude",
                         "format": "double",
                         "example": 5.123,
                         "nullable": true
                     },
-                    "lng": {
+                    "longitude": {
                         "schema": "LocationResource",
-                        "title": "A location's lng",
-                        "description": "A location's lng",
+                        "title": "A location's longitude",
+                        "description": "A location's longitude",
                         "format": "double",
                         "example": 8.123,
                         "nullable": true

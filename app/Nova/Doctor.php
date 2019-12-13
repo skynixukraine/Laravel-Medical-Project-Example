@@ -70,6 +70,7 @@ class Doctor extends Resource
             DateTime::make('Updated at', 'updated_at')->hideFromIndex(),
             HasOne::make('Region')->hideFromIndex(),
             HasMany::make('Languages')->hideFromIndex(),
+            HasOne::make('Location')->hideFromIndex(),
         ];
     }
 

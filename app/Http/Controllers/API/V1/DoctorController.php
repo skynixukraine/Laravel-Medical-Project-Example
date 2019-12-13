@@ -35,110 +35,112 @@ class DoctorController extends ApiController
      *              @OA\Schema(
      *                  type="object",
      *                  required={"photo", "first_name", "last_name", "description", "prefix", "email", "marker_address",
-     *                          "region_id", "language_ids", "password", "password_confirmation", "recaptcha"},
+     *                          "region_id", "language_ids", "password", "password_confirmation", "recaptcha",
+     *                          "country", "city", "state", "postal_code", "address", "latitude", "longitude"},
      *                  @OA\Property(
      *                      format="binary",
-     *                      title="Photo",
      *                      description="A doctor's photo",
      *                      property="photo",
      *                  ),
      *                   @OA\Property(
      *                      format="string",
-     *                      title="Prefix",
      *                      description="A doctor's prefix",
      *                      property="prefix",
      *                      example="Dr."
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="First name",
      *                      description="A doctor's first name",
      *                      property="first_name",
      *                      example="Davide"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Last name",
      *                      description="A doctor's last name",
      *                      property="last_name",
      *                      example="Donghi"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Desctiption",
      *                      description="A doctor's description",
      *                      property="description",
      *                      example="I am a good doctor"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="E-mail",
      *                      description="A doctor's e-mail",
      *                      property="email",
      *                      example="doctor@gmail.com"
      *                  ),
      *                  @OA\Property(
      *                      format="int64",
-     *                      title="Region",
      *                      description="A doctor's region",
      *                      property="region_id",
      *                      example=1
      *                  ),
      *                  @OA\Property(
      *                      format="array",
-     *                      title="Languages",
      *                      description="A doctor's languages",
      *                      property="language_ids",
      *                      items="int64"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Password",
      *                      description="A doctor's password",
      *                      property="password",
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Password confirmation",
      *                      description="A doctor's password confirmation",
      *                      property="password_confirmation",
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Recaptcha",
      *                      description="Recaptcha value. Action must be 'register_doctor",
      *                      property="recaptcha",
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Marker address",
-     *                      description="A doctor's marker address",
-     *                      property="marker_address",
+     *                      description="A location's country",
+     *                      property="country",
+     *                      example="USA"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Marker name",
-     *                      description="A doctor's marker name",
-     *                      property="marker_name",
+     *                      description="A location's city",
+     *                      property="city",
+     *                      example="New York",
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Marker lat",
-     *                      description="A doctor's marker lat",
-     *                      property="marker_lat",
+     *                      description="A location's state",
+     *                      property="state",
+     *                      example="New York",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="int64",
+     *                      description="A location's postal code",
+     *                      property="postal_code",
+     *                      example="12345",
      *                  ),
      *                  @OA\Property(
      *                      format="string",
-     *                      title="Marker lng",
-     *                      description="A doctor's marker lng",
-     *                      property="marker_lng",
+     *                      description="A location's address",
+     *                      property="address",
+     *                      example="address",
      *                  ),
      *                  @OA\Property(
-     *                      format="string",
-     *                      title="Marker type",
-     *                      description="A doctor's marker type",
-     *                      property="marker_type",
+     *                      format="double",
+     *                      description="A location's latitude",
+     *                      property="latitude",
+     *                      example=5.123,
      *                  ),
+     *                  @OA\Property(
+     *                      format="double",
+     *                      description="A location's longitude",
+     *                      property="longitude",
+     *                      example=8.123,
+     *                  )
      *              )
      *          )
      *     ),
@@ -231,10 +233,10 @@ class DoctorController extends ApiController
      *                              ),
      *                          ),
      *                          @OA\Property(
-     *                              property="marker_address",
+     *                              property="address",
      *                              @OA\Items(
      *                                  type="string",
-     *                                  example="The marker address field is required."
+     *                                  example="The address field is required."
      *                              ),
      *                          ),
      *                          @OA\Property(
@@ -277,28 +279,16 @@ class DoctorController extends ApiController
     public function register(Register $request, StorageService $storageService): DoctorResource
     {
         $location = Location::create(
-            [
-                'name' => $request->input('marker_name'),
-                'address' => $request->input('marker_address'),
-                'lat' => $request->input('marker_lat'),
-                'lng' => $request->input('marker_lng'),
-                'type' => $request->input('marker_type'),
-            ]
+            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
         );
 
         $doctor = new Doctor(
-            [
-                'prefix' => $request->prefix,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'description' => $request->description,
-                'region_id' => $request->region_id,
-                'location_id' => $location->id,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'is_active' => false,
-            ]
+            $request->only(['prefix', 'first_name', 'last_name', 'description', 'region_id', 'email'])
         );
+
+        $doctor->location_id = $location->id;
+        $doctor->password = Hash::make($request->password);
+        $doctor->is_active = false;
 
         $storageService->saveDoctorPhoto($doctor, $request->photo);
 
