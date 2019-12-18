@@ -35,7 +35,9 @@
                                     "city",
                                     "state",
                                     "postal_code",
-                                    "address"
+                                    "address",
+                                    "latitude",
+                                    "longitude"
                                 ],
                                 "properties": {
                                     "photo": {
@@ -208,10 +210,10 @@
                                                         "example": "The password field is required."
                                                     }
                                                 },
-                                                "marker_address": {
+                                                "address": {
                                                     "items": {
                                                         "type": "string",
-                                                        "example": "The marker address field is required."
+                                                        "example": "The address field is required."
                                                     }
                                                 },
                                                 "language_ids": {
@@ -816,6 +818,12 @@
                         "description": "A doctor's last name",
                         "format": "string",
                         "example": "Donghi"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "description": "A doctor's slug",
+                        "format": "string",
+                        "example": "dr-davide-donghi"
                     },
                     "description": {
                         "title": "Desctiption",
