@@ -42,8 +42,15 @@ class Language extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Code', 'code')->sortable(),
-            Text::make('Name', 'name')->sortable(),
+
+            Text::make('Code', 'code')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make('Name', 'name')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
             BelongsToMany::make('Doctors'),
         ];
     }

@@ -28,9 +28,9 @@ class Register extends FormRequest
     {
         return [
             'photo' => 'required|dimensions:min_width=256,min_height=256,max_width=540,max_height=540',
-            'prefix' => 'required|string|max:10',
-            'first_name' => 'required|string|max:20',
-            'last_name' => 'required|string|max:20',
+            'prefix' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:doctors',
             'description' => 'required|string|max:3000',
             'region_id' => 'required|exists:regions,id',
@@ -39,7 +39,7 @@ class Register extends FormRequest
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'country' => 'required|string|max:255',
-            'postal_code' => 'required|max:255',
+            'postal_code' => 'required|integer',
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'language_ids' => 'required|array',
