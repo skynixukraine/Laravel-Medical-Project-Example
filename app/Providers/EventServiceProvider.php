@@ -34,7 +34,10 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\DeleteOldTokens',
         ],
         \App\Events\DoctorRegistered::class => [
-            \App\Listeners\DoctorRegistered::class,
+            \App\Listeners\SendDoctorRegisteredNotification::class,
+        ],
+        \App\Events\DoctorSaving::class => [
+            \App\Listeners\SetUpSlugForDoctor::class,
         ],
     ];
 
