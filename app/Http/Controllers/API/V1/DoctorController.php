@@ -278,7 +278,7 @@ class DoctorController extends ApiController
      */
     public function register(Register $request, StorageService $storageService): DoctorResource
     {
-        $location = Location::create(
+        $location = Location::firstOrCreate(
             $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
         );
 
