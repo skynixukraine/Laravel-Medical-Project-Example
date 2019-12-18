@@ -254,4 +254,7 @@ return [
         'name' => env('APP_NAME_SNA'),
         'MIX_WEB_URL' => env('MIX_WEB_URL_SNA'),
     ],
+
+    'RECAPTCHA_SITE_KEY' => env('RECAPTCHA_SITE_KEY'),
+    'RECAPTCHA_SECRET_KEY' => env('RECAPTCHA_SECRET_KEY')
 ];

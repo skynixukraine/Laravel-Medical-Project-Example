@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +47,16 @@ Route::get('stripe/authorizesofort',                             'StripeControll
 Route::get('stripe/checkcreditcardstate',                        'StripeController@checkcreditcardstate')->name('checkcreditcardstate');  // returns view or json
 Route::get('stripe/app-checkout',                                'StripeController@appCheckout');  // creditcard payment for apps
 Route::post('stripe/webhook',                                    'StripeController@webhook');
-Route::post('register',                                          'UserController@store');
 
-//Route::middleware('auth:api')->get('/submission/open', function (Request $request) {
-//    return "hello ";
-//});
+Route::prefix('v1')->group(function () {
+    Route::post('register', 'API\V1\DoctorController@register')->name('doctors.register');
+    Route::post('login', 'API\V1\DoctorController@login')->name('doctors.login');
+    Route::post('send-reset-link', 'API\V1\DoctorController@sendResetLinkEmail');
+    Route::patch('update-password', 'API\V1\DoctorController@updatePassword');
+    Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
+    Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
+});
+
+Route::prefix('v1')->middleware(['auth:api'])->group(function () {
+    Route::patch('logout', 'API\V1\DoctorController@logout')->name('doctor.logout');
+});

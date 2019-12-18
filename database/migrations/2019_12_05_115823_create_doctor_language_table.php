@@ -35,6 +35,6 @@ class CreateDoctorLanguageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('doctor_laguage');
+        Schema::dropIfExists('doctor_language');
     }
 }

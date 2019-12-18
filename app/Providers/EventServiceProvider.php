@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -33,7 +32,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         'Laravel\Passport\Events\AccessTokenCreated' => [
             'App\Listeners\DeleteOldTokens',
-        ]
+        ],
+        \App\Events\DoctorRegistered::class => [
+            \App\Listeners\SendDoctorRegisteredNotification::class,
+        ],
+        \App\Events\DoctorSaving::class => [
+            \App\Listeners\SetUpSlugForDoctor::class,
+        ],
     ];
 
     /**

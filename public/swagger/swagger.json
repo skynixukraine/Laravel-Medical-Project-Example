@@ -1,0 +1,985 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Online hautarzt API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Register a new doctor",
+                "description": "Register a new doctor",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "photo",
+                                    "first_name",
+                                    "last_name",
+                                    "description",
+                                    "prefix",
+                                    "email",
+                                    "marker_address",
+                                    "region_id",
+                                    "language_ids",
+                                    "password",
+                                    "password_confirmation",
+                                    "recaptcha",
+                                    "country",
+                                    "city",
+                                    "state",
+                                    "postal_code",
+                                    "address",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "photo": {
+                                        "description": "A doctor's photo",
+                                        "format": "binary"
+                                    },
+                                    "prefix": {
+                                        "description": "A doctor's prefix",
+                                        "format": "string",
+                                        "example": "Dr."
+                                    },
+                                    "first_name": {
+                                        "description": "A doctor's first name",
+                                        "format": "string",
+                                        "example": "Davide"
+                                    },
+                                    "last_name": {
+                                        "description": "A doctor's last name",
+                                        "format": "string",
+                                        "example": "Donghi"
+                                    },
+                                    "description": {
+                                        "description": "A doctor's description",
+                                        "format": "string",
+                                        "example": "I am a good doctor"
+                                    },
+                                    "email": {
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "region_id": {
+                                        "description": "A doctor's region",
+                                        "format": "int64",
+                                        "example": 1
+                                    },
+                                    "language_ids": {
+                                        "description": "A doctor's languages",
+                                        "format": "array",
+                                        "items": "int64"
+                                    },
+                                    "password": {
+                                        "description": "A doctor's password",
+                                        "format": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "A doctor's password confirmation",
+                                        "format": "string"
+                                    },
+                                    "recaptcha": {
+                                        "description": "Recaptcha value. Action must be 'register_doctor",
+                                        "format": "string"
+                                    },
+                                    "country": {
+                                        "description": "A location's country",
+                                        "format": "string",
+                                        "example": "USA"
+                                    },
+                                    "city": {
+                                        "description": "A location's city",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "state": {
+                                        "description": "A location's state",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "postal_code": {
+                                        "description": "A location's postal code",
+                                        "format": "int64",
+                                        "example": "12345"
+                                    },
+                                    "address": {
+                                        "description": "A location's address",
+                                        "format": "string",
+                                        "example": "address"
+                                    },
+                                    "latitude": {
+                                        "description": "A location's latitude",
+                                        "format": "double",
+                                        "example": 5.123
+                                    },
+                                    "longitude": {
+                                        "description": "A location's longitude",
+                                        "format": "double",
+                                        "example": 8.123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/DoctorResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "photo": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The photo field is required."
+                                                    }
+                                                },
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "prefix": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The prefix field is required."
+                                                    }
+                                                },
+                                                "first_name": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The first name field is required."
+                                                    }
+                                                },
+                                                "last_name": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The last name field is required."
+                                                    }
+                                                },
+                                                "description": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The description field is required."
+                                                    }
+                                                },
+                                                "region_id": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The region id field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "address": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The address field is required."
+                                                    }
+                                                },
+                                                "language_ids": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The language ids field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Server Error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Create a token for a doctor",
+                "description": "Create a token for a doctor",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "password": {
+                                        "title": "Password",
+                                        "description": "A doctor's password",
+                                        "format": "string",
+                                        "example": "12345678"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'login_doctor'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token has been created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "format": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                                        },
+                                        "token_type": {
+                                            "format": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "expires_at": {
+                                            "format": "object",
+                                            "$ref": "#/components/schemas/CarbonResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/logout": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Revoke current token",
+                "description": "Revoke current token",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::logout",
+                "responses": {
+                    "200": {
+                        "description": "Token has been revoked"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/send-reset-link": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Send reset password link",
+                "description": "Send email message for a doctor with a link for password reseting",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::sendResetLinkEmail",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'send_reset_link'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/update-password": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Set a new password for a doctor",
+                "description": "Set a new password for a doctor",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::updatePassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha",
+                                    "password",
+                                    "password_confirmation",
+                                    "token"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "password": {
+                                        "title": "Password",
+                                        "description": "A new doctor's password",
+                                        "format": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "title": "Password confirmation",
+                                        "description": "A new doctor's password confirmation",
+                                        "format": "string"
+                                    },
+                                    "token": {
+                                        "title": "Token",
+                                        "description": "Token value taken from reset password link",
+                                        "format": "string"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "Recaptcha value. Action must be 'update_password'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "A new password has been setted"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "marker_address": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The marker address field is required."
+                                                    }
+                                                },
+                                                "token": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Token does not exists."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/languages": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Get all languages",
+                "description": "Get all languages",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\LanguageController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/LanguageResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/regions": {
+            "get": {
+                "tags": [
+                    "Regions"
+                ],
+                "summary": "Get all regions",
+                "description": "Get all regions",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\RegionController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/RegionResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CarbonResource": {
+                "title": "Carbon resource",
+                "description": "Resource for datetime representation",
+                "properties": {
+                    "date": {
+                        "format": "string",
+                        "example": "2019-12-11 12:25:00.000000"
+                    },
+                    "timezone_type": {
+                        "format": "int64",
+                        "example": 3
+                    },
+                    "timezone": {
+                        "format": "string",
+                        "example": "Europe/Berlin"
+                    }
+                },
+                "type": "object"
+            },
+            "DoctorResource": {
+                "title": "Doctor resource",
+                "description": "Resource for a doctor representation",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "A doctors's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo",
+                        "format": "string",
+                        "example": "public/doctors/2019-12/john-sanchess89.jpeg"
+                    },
+                    "prefix": {
+                        "title": "Prefix",
+                        "description": "A doctor's prefix",
+                        "format": "string",
+                        "example": "Dr. med."
+                    },
+                    "first_name": {
+                        "title": "First name",
+                        "description": "A doctor's first name",
+                        "format": "string",
+                        "example": "Davide"
+                    },
+                    "last_name": {
+                        "title": "Last name",
+                        "description": "A doctor's last name",
+                        "format": "string",
+                        "example": "Donghi"
+                    },
+                    "slug": {
+                        "title": "Slug",
+                        "description": "A doctor's slug",
+                        "format": "string",
+                        "example": "dr-davide-donghi"
+                    },
+                    "description": {
+                        "title": "Desctiption",
+                        "description": "A doctor's description",
+                        "format": "string",
+                        "example": "I am a good doctor"
+                    },
+                    "is_active": {
+                        "title": "Is active",
+                        "description": "Is a doctor active or not",
+                        "format": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Last updated datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "region": {
+                        "$ref": "#/components/schemas/RegionResource"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/LocationResource"
+                    },
+                    "languages": {
+                        "title": "Languages",
+                        "description": "Doctor's languages",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/LanguageResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "LanguageResource": {
+                "title": "Language resource",
+                "description": "Resource for a language representation",
+                "properties": {
+                    "id": {
+                        "schema": "LanguageResource",
+                        "title": "ID",
+                        "description": "A language's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "code": {
+                        "schema": "LanguageResource",
+                        "title": "A language's code",
+                        "description": "A language's code",
+                        "format": "string",
+                        "example": "en"
+                    },
+                    "name": {
+                        "schema": "LanguageResource",
+                        "title": "A language's name",
+                        "description": "A language's name",
+                        "format": "string",
+                        "example": "English"
+                    }
+                },
+                "type": "object"
+            },
+            "LocationResource": {
+                "title": "Location resource",
+                "description": "Resource for a location representation",
+                "properties": {
+                    "id": {
+                        "schema": "LocationResource",
+                        "title": "ID",
+                        "description": "A locations's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "country": {
+                        "schema": "LocationResource",
+                        "title": "A location's country",
+                        "description": "A location's country",
+                        "format": "string",
+                        "example": "USA"
+                    },
+                    "city": {
+                        "schema": "LocationResource",
+                        "title": "A location's city",
+                        "description": "A location's city",
+                        "format": "string",
+                        "example": "New York"
+                    },
+                    "state": {
+                        "schema": "LocationResource",
+                        "title": "A location's state",
+                        "description": "A location's state",
+                        "format": "string",
+                        "example": "New York"
+                    },
+                    "postal_code": {
+                        "schema": "LocationResource",
+                        "title": "A location's postal code",
+                        "description": "A location's postal code",
+                        "format": "int64",
+                        "example": "12345"
+                    },
+                    "address": {
+                        "schema": "LocationResource",
+                        "title": "A location's address",
+                        "description": "A location's address",
+                        "format": "string",
+                        "example": "address"
+                    },
+                    "latitude": {
+                        "schema": "LocationResource",
+                        "title": "A location's latitude",
+                        "description": "A location's latitude",
+                        "format": "double",
+                        "example": 5.123,
+                        "nullable": true
+                    },
+                    "longitude": {
+                        "schema": "LocationResource",
+                        "title": "A location's longitude",
+                        "description": "A location's longitude",
+                        "format": "double",
+                        "example": 8.123,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "RegionResource": {
+                "title": "Region resource",
+                "description": "Resource for a region representation",
+                "properties": {
+                    "id": {
+                        "schema": "RegionResource",
+                        "title": "ID",
+                        "description": "A region's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "name": {
+                        "schema": "RegionResource",
+                        "title": "A region's name",
+                        "description": "A region's name",
+                        "format": "string",
+                        "example": "Nevada"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
