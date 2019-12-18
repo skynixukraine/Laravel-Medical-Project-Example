@@ -7,7 +7,7 @@ namespace App\Listeners;
 use App\Events\DoctorRegistered as DoctorRegisteredEvent;
 use App\Notifications\DoctorRegistered as DoctorRegisteredNotification;
 
-class DoctorRegistered
+class SendDoctorRegisteredNotification
 {
     /**
      * Handle the event.
