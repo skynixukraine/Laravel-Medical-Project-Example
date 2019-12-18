@@ -17,6 +17,15 @@ class AdditionalColumnsToDoctorsTable extends Migration
             $table->string('email')->after('last_name');
             $table->boolean('is_active')->default(false)->after('description');
             $table->string('password')->after('email');
+            $table->string('slug')->after('password');
+
+            $table->unsignedInteger('location_id')->nullable()->change();
+
+            $table->dropForeign('doctors_location_id_foreign');
+            $table->foreign('location_id')
+                ->references('id')
+                ->on('locations')
+                ->onDelete('set null');
         });
     }
 
@@ -31,6 +40,13 @@ class AdditionalColumnsToDoctorsTable extends Migration
             $table->dropColumn('email');
             $table->dropColumn('is_active');
             $table->dropColumn('password');
+            $table->dropColumn('slug');
+
+            $table->dropForeign('doctors_location_id_foreign');
+            $table->foreign('location_id')
+                ->references('id')
+                ->on('locations')
+                ->onDelete('cascade');
         });
     }
 }

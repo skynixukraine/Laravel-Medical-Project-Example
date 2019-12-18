@@ -72,6 +72,13 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
+ *              title="Slug",
+ *              description="A doctor's slug",
+ *              property="slug",
+ *              example="dr-davide-donghi"
+ *          ),
+ *          @OA\Property(
+ *              format="string",
  *              title="Desctiption",
  *              description="A doctor's description",
  *              property="description",
@@ -134,6 +141,7 @@ class DoctorResource extends JsonResource
             'prefix' => $this->prefix,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'slug' => $this->slug,
             'description' => $this->description,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
