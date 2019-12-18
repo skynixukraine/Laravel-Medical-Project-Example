@@ -58,5 +58,6 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {
-    Route::patch('logout', 'API\V1\DoctorController@logout')->name('doctor.logout');
+    Route::patch('logout', 'API\V1\DoctorController@logout')->name('doctors.logout');
+    Route::get('doctors/{doctor}', 'API\V1\DoctorController@show')->middleware('can:view,doctor');
 });
