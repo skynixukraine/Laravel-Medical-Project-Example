@@ -70,6 +70,7 @@ class Doctor extends Resource
             Text::make('First name', 'first_name')->sortable()->rules('required', 'max:255'),
             Text::make('Last name', 'last_name')->sortable()->rules('required', 'max:255'),
             Text::make('Email', 'email')->sortable()->rules('required', 'email', 'unique:doctors'),
+            Text::make('Slug', 'slug')->onlyOnDetail(),
             Password::make('Password', 'password')->hideFromIndex()
                 ->rules('required', 'string', 'min:6', 'max:255', 'confirmed'),
             PasswordConfirmation::make('Password Confirmation')->rules('required', 'max:255'),
