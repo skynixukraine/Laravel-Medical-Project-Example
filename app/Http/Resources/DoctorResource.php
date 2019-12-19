@@ -79,6 +79,13 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
+ *              title="E-mail",
+ *              description="A doctor's e-mail",
+ *              property="email",
+ *              example="test@gmail.com"
+ *          ),
+ *          @OA\Property(
+ *              format="string",
  *              title="Desctiption",
  *              description="A doctor's description",
  *              property="description",
@@ -142,6 +149,7 @@ class DoctorResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'slug' => $this->slug,
+            'email' => $this->email,
             'description' => $this->description,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
