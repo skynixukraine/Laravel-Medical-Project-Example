@@ -14,9 +14,9 @@ class StorageService
     private const DOCTORS_PHOTO_DIR = 'doctors';
 
     /**
-     * @param UploadedFile $photo
      * @param Doctor $doctor
-     * @return Doctor
+     * @param UploadedFile $photo
+     * @return void
      */
     public function saveDoctorPhoto(Doctor $doctor, UploadedFile $photo): void
     {
