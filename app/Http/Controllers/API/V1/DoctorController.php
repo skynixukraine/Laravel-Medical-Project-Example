@@ -16,6 +16,7 @@ use App\Models\Location;
 use App\Services\StorageService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Passport\Passport;
@@ -279,23 +280,28 @@ class DoctorController extends ApiController
      */
     public function register(Register $request, StorageService $storageService): DoctorResource
     {
-        $location = Location::create(
-            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
-        );
-
         $doctor = new Doctor(
             $request->only(['prefix', 'first_name', 'last_name', 'description', 'region_id', 'email'])
         );
 
-        $doctor->location_id = $location->id;
         $doctor->password = Hash::make($request->password);
         $doctor->is_active = false;
 
         $storageService->saveDoctorPhoto($doctor, $request->photo);
 
-        $doctor->save();
+        $location = new Location(
+            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
+        );
 
-        $doctor->languages()->attach($request->language_ids);
+        DB::transaction(function () use ($request, $doctor, $location) {
+            $doctor->save();
+
+            $location->doctor_id = $doctor->id;
+
+            $location->save();
+
+            $doctor->languages()->attach($request->language_ids);
+        }, 2);
 
         event(new DoctorRegistered($doctor));
 
@@ -936,15 +942,6 @@ class DoctorController extends ApiController
      */
     public function update(Update $request, Doctor $doctor, StorageService $storageService): DoctorResource
     {
-        $doctor->location->update(
-            $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
-        );
-
-        if ($request->has('language_ids')) {
-            $doctor->languages()->detach();
-            $doctor->languages()->attach($request->language_ids);
-        }
-
         if ($request->has('photo')) {
             $storageService->saveDoctorPhoto($doctor, $request->photo);
         }
@@ -953,9 +950,20 @@ class DoctorController extends ApiController
             $doctor->password = Hash::make($request->password);
         }
 
-        $doctor->fill(
-            $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
-        )->save();
+        DB::transaction(function () use ($request, $doctor) {
+            if ($request->has('language_ids')) {
+                $doctor->languages()->detach();
+                $doctor->languages()->attach($request->language_ids);
+            }
+
+            $doctor->fill(
+                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
+            )->save();
+
+            $doctor->location->update(
+                $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
+            );
+        }, 2);
 
         return new DoctorResource($doctor);
     }
