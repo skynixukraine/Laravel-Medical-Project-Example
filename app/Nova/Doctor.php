@@ -1,28 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Nova;
 
+use App\Nova\Actions\ActivateDoctor;
+use App\Nova\Actions\DeactivateDoctor;
 use App\Services\StorageService;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\PasswordConfirmation;
+use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 
 class Doctor extends Resource
 {
+
+    public static function label(): string
+    {
+        return __('Doctors');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Doctor');
+    }
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Models\Doctor';
+    public static $model = \App\Models\Doctor::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -37,7 +54,7 @@ class Doctor extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'first_name', 'last_name',
     ];
 
     /**
@@ -60,27 +77,60 @@ class Doctor extends Resource
     {
         return [
             ID::make()->sortable(),
-            Avatar::make('Photo', 'photo')->store(
-                function (Request $request, $doctor) {
+
+            Avatar::make(__('Photo'), 'photo')
+                ->store(function (Request $request, $doctor) {
                     (new StorageService())->saveDoctorPhoto($doctor, $request->photo);
                     return ['photo' => $doctor->photo];
                 }
-            )->rules('required', 'dimensions:min_width=256,min_height=256,max_width=540,max_height=540'),
-            Text::make('Prefix', 'prefix')->sortable()->rules('required', 'string', 'max:10'),
-            Text::make('First name', 'first_name')->sortable()->rules('required', 'max:255'),
-            Text::make('Last name', 'last_name')->sortable()->rules('required', 'max:255'),
-            Text::make('Email', 'email')->sortable()->rules('required', 'email', 'unique:doctors'),
-            Text::make('Slug', 'slug')->onlyOnDetail(),
-            Password::make('Password', 'password')->hideFromIndex()
-                ->rules('required', 'string', 'min:6', 'max:255', 'confirmed'),
-            PasswordConfirmation::make('Password Confirmation')->rules('required', 'max:255'),
-            Trix::make('Description', 'description')->hideFromIndex()->rules('required'),
-            Boolean::make('Is active', 'is_active')->sortable(),
-            DateTime::make('Created at', 'created_at')->onlyOnDetail(),
-            DateTime::make('Updated at', 'updated_at')->onlyOnDetail(),
-            BelongsTo::make('Region')->hideFromIndex()->rules('required'),
-            BelongsToMany::make('Languages')->hideFromIndex()->rules('required', 'max:255'),
-            BelongsTo::make('Location')->hideFromIndex()->rules('required', 'max:255'),
+            )
+            ->rules('dimensions:min_width=256,min_height=256,max_width=540,max_height=540')
+            ->updateRules('nullable')
+            ->creationRules('required'),
+
+            Text::make(__('Prefix'), 'prefix')->sortable()
+                ->rules('required', 'string', 'max:10'),
+
+            Text::make(__('First name'), 'first_name')->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make(__('Last name'), 'last_name')->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make(__('E-mail'), 'email')
+                ->sortable()
+                ->rules('required', 'email', 'max:255')
+                ->creationRules('unique:doctors,email')
+                ->updateRules('unique:doctors,email,{{resourceId}}'),
+
+            Text::make(__('Slug'), 'slug')->onlyOnDetail(),
+
+            Password::make('Password')
+                ->onlyOnForms()
+                ->creationRules('required', 'string', 'min:6', 'confirmed')
+                ->updateRules('nullable', 'string', 'min:6', 'confirmed'),
+
+            PasswordConfirmation::make(__('Password confirmation')),
+
+            Trix::make(__('Description'), 'description')->hideFromIndex()
+                ->rules('required'),
+
+            Boolean::make(__('Is active'), 'is_active')->sortable(),
+
+            DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
+
+            DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
+
+            BelongsTo::make(__('Region'), 'region', Region::class)->hideFromIndex()
+                ->rules('required'),
+
+            HasOne::make(__('Location'), 'location', Location::class)
+                ->hideFromIndex()
+                ->rules('required', 'max:255'),
+
+            BelongsToMany::make(__('Languages'), 'languages', Language::class)
+                ->hideFromIndex()
+                ->rules('required', 'max:255'),
         ];
     }
 
@@ -125,6 +175,6 @@ class Doctor extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [new ActivateDoctor(), new DeactivateDoctor()];
     }
 }

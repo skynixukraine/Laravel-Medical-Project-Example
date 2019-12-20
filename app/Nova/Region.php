@@ -41,7 +41,7 @@ class Region extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name', 'name')
+            Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
         ];
