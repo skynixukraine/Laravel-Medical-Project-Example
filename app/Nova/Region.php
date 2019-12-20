@@ -13,7 +13,7 @@ class Region extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Region';
+    public static $model = \App\Models\Region::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -31,6 +31,16 @@ class Region extends Resource
         'id',
     ];
 
+    public static function label(): string
+    {
+        return __('Regions');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Region');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -41,7 +51,7 @@ class Region extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name', 'name')
+            Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
         ];

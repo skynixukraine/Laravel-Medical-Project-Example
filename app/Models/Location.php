@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Location extends Model
 {
@@ -19,10 +19,11 @@ class Location extends Model
         'state',
         'postal_code',
         'country',
+        'doctor_id'
     ];
 
-    public function doctor(): HasOne
+    public function doctor(): BelongsTo
     {
-        return $this->hasOne(Doctor::class);
+        return $this->BelongsTo(Doctor::class);
     }
 }

@@ -11,6 +11,7 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
@@ -28,7 +29,6 @@ class Doctor extends Model implements CanResetPassword
         'is_active',
         'password',
         'region_id',
-        'location_id'
     ];
 
     protected $hidden = ['password'];
@@ -42,9 +42,9 @@ class Doctor extends Model implements CanResetPassword
         return $this->belongsTo(Region::class);
     }
 
-    public function location(): BelongsTo
+    public function location(): HasOne
     {
-        return $this->belongsTo(Location::class);
+        return $this->hasOne(Location::class);
     }
 
     public function languages(): BelongsToMany

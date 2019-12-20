@@ -8,6 +8,7 @@ use App\Events\DoctorRegistered;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
+use App\Http\Requests\Doctor\Update;
 use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
@@ -15,6 +16,7 @@ use App\Models\Location;
 use App\Services\StorageService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Laravel\Passport\Passport;
@@ -278,23 +280,28 @@ class DoctorController extends ApiController
      */
     public function register(Register $request, StorageService $storageService): DoctorResource
     {
-        $location = Location::create(
-            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
-        );
-
         $doctor = new Doctor(
             $request->only(['prefix', 'first_name', 'last_name', 'description', 'region_id', 'email'])
         );
 
-        $doctor->location_id = $location->id;
         $doctor->password = Hash::make($request->password);
         $doctor->is_active = false;
 
         $storageService->saveDoctorPhoto($doctor, $request->photo);
 
-        $doctor->save();
+        $location = new Location(
+            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
+        );
 
-        $doctor->languages()->attach($request->language_ids);
+        DB::transaction(function () use ($request, $doctor, $location) {
+            $doctor->save();
+
+            $location->doctor_id = $doctor->id;
+
+            $location->save();
+
+            $doctor->languages()->attach($request->language_ids);
+        }, 2);
 
         event(new DoctorRegistered($doctor));
 
@@ -738,5 +745,226 @@ class DoctorController extends ApiController
         );
 
         abort_if($response !== Password::PASSWORD_RESET, 500, __('Something went wrong, please try again later'));
+    }
+
+    /**
+     * @OA\Get(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}",
+     *     summary="Get a doctor resource by id",
+     *     description="Get a doctor resource by id",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="A doctor has been succesfully received",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/DoctorResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized.."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function show(Doctor $doctor): DoctorResource
+    {
+        return DoctorResource::make($doctor);
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}",
+     *     summary="Update a doctor resource by id",
+     *     description="Update a doctor resource by id",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="A doctor has been succesfully updated",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/DoctorResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized.."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function update(Update $request, Doctor $doctor, StorageService $storageService): DoctorResource
+    {
+        if ($request->has('photo')) {
+            $storageService->saveDoctorPhoto($doctor, $request->photo);
+        }
+
+        if ($request->has('password')) {
+            $doctor->password = Hash::make($request->password);
+        }
+
+        DB::transaction(function () use ($request, $doctor) {
+            if ($request->has('language_ids')) {
+                $doctor->languages()->detach();
+                $doctor->languages()->attach($request->language_ids);
+            }
+
+            $doctor->fill(
+                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
+            )->save();
+
+            $doctor->location->update(
+                $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
+            );
+        }, 2);
+
+        return new DoctorResource($doctor);
     }
 }

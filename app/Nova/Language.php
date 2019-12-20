@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsToMany;
@@ -14,7 +16,7 @@ class Language extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Language';
+    public static $model = \App\Models\Language::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -32,6 +34,16 @@ class Language extends Resource
         'id', 'code', 'name'
     ];
 
+    public static function label(): string
+    {
+        return __('Languages');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Language');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -43,15 +55,15 @@ class Language extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Code', 'code')
+            Text::make(__('Code'), 'code')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Name', 'name')
+            Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            BelongsToMany::make('Doctors'),
+            BelongsToMany::make(__('Doctors'), 'doctors', Doctor::class)
         ];
     }
 

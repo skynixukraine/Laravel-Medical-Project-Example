@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -16,12 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'gender', 'title', 'first_name', 'last_name',
-        'birthday', 'birthplace',
-        'street', 'zip', 'city', 'country', // 'lat', 'lng',
-        'email', 'phone', 'password',
-        'graduation_year', 'reason_for_application',
-        'user_id'
+        'first_name', 'last_name', 'email', 'phone', 'password',
     ];
 
     /**
@@ -29,66 +25,10 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = [
-        'status'
-    ];
+    protected $hidden = ['password'];
 
-    // needed for nova
-    protected $casts = [
-        'birthday' => 'date'
-    ];
-
-    public static function generateUserID()
+    public function getNameAttribute($value): string
     {
-        do {
-            $randomStr = strtolower(str_random(10));
-            $existing = self::where('user_id', $randomStr)->first();
-        } while ($existing);
-        return $randomStr;
+        return $this->first_name . ' ' . $this->last_name;
     }
-
-    public static function generatePhotoName()
-    {
-        do {
-            $randomStr = strtolower(str_random(10));
-            $existing = self::where('photo', $randomStr)->first();
-        } while ($existing);
-        return $randomStr;
-    }
-
-    public function assignedSubmissions()
-    {
-        return $this->hasMany('App\Models\Submission', 'assigned_to_user_id');
-    }
-
-    public function answeredSubmissions()
-    {
-        return $this->assignedSubmissions()->where('status', 'answered');
-    }
-
-    public function findForPassport($username) {
-        return $this->where('email', $username)
-            ->where('status', 'confirmed')->first();
-    }
-
-    public function getNameAttribute($value)
-    {
-        return $this->name();
-    }
-
-    public function getPhotoUrl() {
-        $url = config('app.MIX_AERZTEPHOTOS_FOLDER');
-        if (!$this->photo) {
-            return $url . '/no_photo.jpg';
-        }
-        else {
-            return $url . '/' . $this->photo . '.jpg';
-        }
-    }
-
-    public function name() {
-        $title = ($this->title) ?  $this->title . " " : "";
-        return $title . $this->first_name . " " . $this->last_name;
-    }
-
 }

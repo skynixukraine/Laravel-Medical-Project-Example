@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Nova;
 
 use Laravel\Nova\Fields\Country;
@@ -15,7 +17,14 @@ class Location extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Location';
+    public static $model = \App\Models\Location::class;
+
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = false;
 
     /**
      * The columns that should be searched.
@@ -25,6 +34,16 @@ class Location extends Resource
     public static $search = [
         'id',
     ];
+
+    public static function label(): string
+    {
+        return __('Locations');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Location');
+    }
 
     /**
      * Get the value that should be displayed to represent the resource.
@@ -46,13 +65,27 @@ class Location extends Resource
     {
         return [
             ID::make()->sortable(),
-            Country::make('Country', 'country')->sortable(),
-            Place::make('City')->onlyCities(),
-            Text::make('State', 'state')->sortable(),
-            Place::make('Address', 'address')->sortable(),
-            Text::make('Postal code', 'postal_code')->sortable(),
-            Text::make('Latitude', 'latitude')->sortable()->hideFromIndex(),
-            Text::make('Longitude', 'longitude')->sortable()->hideFromIndex(),
+
+            Country::make(__('Country'), 'country')->sortable()
+                ->rules('required', 'string', 'max:255'),
+
+            Place::make(__('City'), 'city')->sortable()->onlyCities()
+                ->rules('required', 'string', 'max:255'),
+
+            Text::make(__('State'), 'state')->sortable()
+                ->rules('required', 'string', 'max:255'),
+
+            Place::make(__('Address'), 'address')->sortable()->countries(['DE'])
+                ->rules('required', 'string', 'max:255'),
+
+            Text::make(__('Postal code'), 'postal_code')->sortable()
+                ->rules('required', 'integer'),
+
+            Text::make(__('Latitude'), 'latitude')->sortable()->hideFromIndex()
+                ->rules('required', 'numeric'),
+
+            Text::make(__('Longitude'), 'longitude')->sortable()->hideFromIndex()
+                ->rules('required', 'numeric'),
         ];
     }
 
