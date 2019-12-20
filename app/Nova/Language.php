@@ -34,6 +34,16 @@ class Language extends Resource
         'id', 'code', 'name'
     ];
 
+    public static function label(): string
+    {
+        return __('Languages');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Language');
+    }
+
     /**
      * Get the fields displayed by the resource.
      *

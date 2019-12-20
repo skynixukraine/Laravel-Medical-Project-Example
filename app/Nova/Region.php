@@ -13,7 +13,7 @@ class Region extends Resource
      *
      * @var string
      */
-    public static $model = 'App\Models\Region';
+    public static $model = \App\Models\Region::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -30,6 +30,16 @@ class Region extends Resource
     public static $search = [
         'id',
     ];
+
+    public static function label(): string
+    {
+        return __('Region');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Regions');
+    }
 
     /**
      * Get the fields displayed by the resource.

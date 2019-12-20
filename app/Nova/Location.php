@@ -35,6 +35,16 @@ class Location extends Resource
         'id',
     ];
 
+    public static function label(): string
+    {
+        return __('Locations');
+    }
+
+    public static function singularLabel(): string
+    {
+        return __('Location');
+    }
+
     /**
      * Get the value that should be displayed to represent the resource.
      *
