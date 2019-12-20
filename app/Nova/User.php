@@ -77,8 +77,7 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:6', 'confirmed')
                 ->updateRules('nullable', 'string', 'min:6', 'confirmed'),
 
-            PasswordConfirmation::make(__('Password confirmation'))
-                ->rules('required', 'max:255'),
+            PasswordConfirmation::make(__('Password confirmation')),
         ];
     }
 
