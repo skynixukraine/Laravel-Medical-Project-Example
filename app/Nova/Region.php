@@ -33,12 +33,12 @@ class Region extends Resource
 
     public static function label(): string
     {
-        return __('Region');
+        return __('Regions');
     }
 
     public static function singularLabel(): string
     {
-        return __('Regions');
+        return __('Region');
     }
 
     /**
