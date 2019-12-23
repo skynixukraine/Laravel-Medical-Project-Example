@@ -27,23 +27,12 @@ class Register extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => 'required|dimensions:min_width=256,min_height=256,max_width=540,max_height=540',
-            'prefix' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|unique:doctors',
             'email' => 'required|email|unique:doctors',
-            'description' => 'required|string|max:3000',
-            'region_id' => 'required|exists:regions,id',
-            'password' => 'required|string|min:6|max:255|confirmed',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'postal_code' => 'required|integer',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
-            'language_ids' => 'required|array',
-            'language_ids.*' => 'distinct|exists:languages,id',
+            'medical_degree' => 'nullable|mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg',
+            'board_certification' => 'nullable|mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg',
+            'password' => 'required|string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+            'accepted' => 'required|accepted',
             'recaptcha' => ['required', 'string', new Recaptcha('register_doctor')],
         ];
     }

@@ -7,7 +7,6 @@ namespace App\Notifications;
 use App\Models\Doctor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
 
 class DoctorRegistered extends Notification
 {
@@ -30,8 +29,6 @@ class DoctorRegistered extends Notification
 
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->markdown('mail.registration-completed', ['doctor' => $this->doctor,])
-            ->subject('Ihre Registrierung');
+        $this->doctor->sendEmailVerificationNotification();
     }
 }

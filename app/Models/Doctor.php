@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Events\DoctorSaving;
+use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,13 +17,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class Doctor extends Model implements CanResetPassword
+class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
-    use Notifiable, HasApiTokens, Authenticatable;
+    use Notifiable, HasApiTokens, Authenticatable, \Illuminate\Auth\MustVerifyEmail;
 
     protected $fillable = [
         'photo',
-        'prefix',
+        'title',
+        'phone_number',
+        'board_certification',
+        'medical_degree',
         'first_name',
         'last_name',
         'description',
@@ -71,5 +76,15 @@ class Doctor extends Model implements CanResetPassword
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
     }
 }

@@ -12,9 +12,9 @@ use App\Http\Requests\Doctor\Update;
 use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
-use App\Models\Location;
 use App\Services\StorageService;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\DB;
@@ -37,38 +37,7 @@ class DoctorController extends ApiController
      *              mediaType="application/x-www-form-urlencoded",
      *              @OA\Schema(
      *                  type="object",
-     *                  required={"photo", "first_name", "last_name", "description", "prefix", "email", "marker_address",
-     *                          "region_id", "language_ids", "password", "password_confirmation", "recaptcha",
-     *                          "country", "city", "state", "postal_code", "address", "latitude", "longitude"},
-     *                  @OA\Property(
-     *                      format="binary",
-     *                      description="A doctor's photo",
-     *                      property="photo",
-     *                  ),
-     *                   @OA\Property(
-     *                      format="string",
-     *                      description="A doctor's prefix",
-     *                      property="prefix",
-     *                      example="Dr."
-     *                  ),
-     *                  @OA\Property(
-     *                      format="string",
-     *                      description="A doctor's first name",
-     *                      property="first_name",
-     *                      example="Davide"
-     *                  ),
-     *                  @OA\Property(
-     *                      format="string",
-     *                      description="A doctor's last name",
-     *                      property="last_name",
-     *                      example="Donghi"
-     *                  ),
-     *                  @OA\Property(
-     *                      format="string",
-     *                      description="A doctor's description",
-     *                      property="description",
-     *                      example="I am a good doctor"
-     *                  ),
+     *                  required={"email", "phone_number", "password", "recaptcha", "accepted"},
      *                  @OA\Property(
      *                      format="string",
      *                      description="A doctor's e-mail",
@@ -76,16 +45,10 @@ class DoctorController extends ApiController
      *                      example="doctor@gmail.com"
      *                  ),
      *                  @OA\Property(
-     *                      format="int64",
-     *                      description="A doctor's region",
-     *                      property="region_id",
-     *                      example=1
-     *                  ),
-     *                  @OA\Property(
-     *                      format="array",
-     *                      description="A doctor's languages",
-     *                      property="language_ids",
-     *                      items="int64"
+     *                      format="string",
+     *                      description="A doctor's phone number",
+     *                      property="phone_number",
+     *                      example="+3 8(032) 345-34-34"
      *                  ),
      *                  @OA\Property(
      *                      format="string",
@@ -103,65 +66,30 @@ class DoctorController extends ApiController
      *                      property="recaptcha",
      *                  ),
      *                  @OA\Property(
-     *                      format="string",
-     *                      description="A location's country",
-     *                      property="country",
-     *                      example="USA"
+     *                      format="boolean",
+     *                      description="Accept terms and conditions",
+     *                      property="accepted",
+     *                      example="1"
      *                  ),
      *                  @OA\Property(
-     *                      format="string",
-     *                      description="A location's city",
-     *                      property="city",
-     *                      example="New York",
+     *                      format="binary",
+     *                      description="Doctor's board certification",
+     *                      property="board_certification",
      *                  ),
      *                  @OA\Property(
-     *                      format="string",
-     *                      description="A location's state",
-     *                      property="state",
-     *                      example="New York",
+     *                      format="binary",
+     *                      description="Doctor's medical degree",
+     *                      property="medical_degree",
      *                  ),
      *                  @OA\Property(
-     *                      format="int64",
-     *                      description="A location's postal code",
-     *                      property="postal_code",
-     *                      example="12345",
+     *                      format="binary",
+     *                      description="A doctor's photo",
+     *                      property="photo",
      *                  ),
-     *                  @OA\Property(
-     *                      format="string",
-     *                      description="A location's address",
-     *                      property="address",
-     *                      example="address",
-     *                  ),
-     *                  @OA\Property(
-     *                      format="double",
-     *                      description="A location's latitude",
-     *                      property="latitude",
-     *                      example=5.123,
-     *                  ),
-     *                  @OA\Property(
-     *                      format="double",
-     *                      description="A location's longitude",
-     *                      property="longitude",
-     *                      example=8.123,
-     *                  )
      *              )
      *          )
      *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Success",
-     *         @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  properties={
-     *                      @OA\Property(
-     *                          ref="#/components/schemas/DoctorResource",
-     *                          property="data"
-     *                      )
-     *                  }
-     *              )
-     *          )
-     *     ),
+     *     @OA\Response(response=201, description="Success"),
      *     @OA\Response(
      *         response=422,
      *         description="There are some validation errors",
@@ -194,41 +122,6 @@ class DoctorController extends ApiController
      *                              ),
      *                          ),
      *                          @OA\Property(
-     *                              property="prefix",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The prefix field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
-     *                              property="first_name",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The first name field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
-     *                              property="last_name",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The last name field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
-     *                              property="description",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The description field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
-     *                              property="region_id",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The region id field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
      *                              property="password",
      *                              @OA\Items(
      *                                  type="string",
@@ -236,17 +129,10 @@ class DoctorController extends ApiController
      *                              ),
      *                          ),
      *                          @OA\Property(
-     *                              property="address",
+     *                              property="accepted",
      *                              @OA\Items(
      *                                  type="string",
-     *                                  example="The address field is required."
-     *                              ),
-     *                          ),
-     *                          @OA\Property(
-     *                              property="language_ids",
-     *                              @OA\Items(
-     *                                  type="string",
-     *                                  example="The language ids field is required."
+     *                                  example="The accepted field is required."
      *                              ),
      *                          ),
      *                          @OA\Property(
@@ -279,34 +165,86 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function register(Register $request, StorageService $storageService): DoctorResource
+    public function register(Register $request, StorageService $storageService)
     {
-        $doctor = new Doctor(
-            $request->only(['prefix', 'first_name', 'last_name', 'description', 'region_id', 'email'])
-        );
+        $doctor = new Doctor($request->only(['email', 'phone_number']));
 
         $doctor->password = Hash::make($request->password);
         $doctor->is_active = false;
+        $doctor->photo = $storageService->saveDoctorPhoto($request->file('photo'));
+        $doctor->board_certification = $storageService->saveDoctorCertificate($request->file('board_certification'));
+        $doctor->medical_degree = $storageService->saveDoctorMedicalDegree($request->file('medical_degree'));
 
-        $storageService->saveDoctorPhoto($doctor, $request->photo);
-
-        $location = new Location(
-            $request->only(['address', 'city', 'state', 'postal_code', 'country', 'latitude', 'longitude'])
-        );
-
-        DB::transaction(function () use ($request, $doctor, $location) {
-            $doctor->save();
-
-            $location->doctor_id = $doctor->id;
-
-            $location->save();
-
-            $doctor->languages()->attach($request->language_ids);
-        }, 2);
+        $doctor->saveOrFail();
 
         event(new DoctorRegistered($doctor));
 
-        return new DoctorResource($doctor);
+        return response()->status(201);
+    }
+
+    /**
+     * @OA\Get(
+     *     tags={"Doctors"},
+     *     path="/api/v1/verify{id}",
+     *     summary="Verify doctor's email",
+     *     description="Verify doctor's email",
+     *     @OA\Response(response=200, description="E-mail has been verified"),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function verify(Request $request)
+    {
+        abort_if(!$request->hasValidSignature(), 401);
+
+        $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
+
+        if ($doctor->hasVerifiedEmail()) {
+            return;
+        }
+
+        if ($doctor->markEmailAsVerified()) {
+            event(new Verified($doctor));
+        }
+    }
+
+    public function resend(Request $request)
+    {
+        $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
+
+        if (!$doctor->hasVerifiedEmail()) {
+            $doctor->sendEmailVerificationNotification();
+        }
     }
 
     /**
