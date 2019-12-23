@@ -55,6 +55,7 @@ Route::prefix('v1')->group(function () {
     Route::patch('update-password', 'API\V1\DoctorController@updatePassword');
     Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
     Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
+    Route::get('doctors', 'API\V1\DoctorController@index')->name('doctors.index');
 });
 
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {
