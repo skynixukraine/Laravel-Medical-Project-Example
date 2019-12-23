@@ -36,9 +36,6 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DoctorRegistered::class => [
             \App\Listeners\SendDoctorRegisteredNotification::class,
         ],
-        \App\Events\DoctorSaving::class => [
-            \App\Listeners\SetUpSlugForDoctor::class,
-        ],
     ];
 
     /**
