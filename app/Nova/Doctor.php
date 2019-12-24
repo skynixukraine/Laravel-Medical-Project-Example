@@ -81,21 +81,39 @@ class Doctor extends Resource
             ID::make()->sortable(),
 
             Avatar::make(__('Photo'), 'photo')
-                ->store(function (Request $request) use ($storage) {
-                    return ['photo' => $storage->saveDoctorsPhoto($request->photo)];
+                ->store(function (Request $request, $doctor) use ($storage) {
+                    $photo = $storage->saveDoctorsPhoto($request->photo);
+
+                    if ($doctor->photo) {
+                        $storage->removeFile($doctor->photo);
+                    }
+
+                    return ['photo' => $photo];
                 }
             )
             ->rules('dimensions:min_width=256,min_height=256,max_width=540,max_height=540'),
 
             File::make('Board certification', 'board_certification')
-                ->store(function (Request $request) use ($storage) {
-                    return ['board_certification' => $storage->saveDoctorsBoardCertification($request->board_certification)];
+                ->store(function (Request $request, $doctor) use ($storage) {
+                    $boardCertification = $storage->saveDoctorsBoardCertification($request->board_certification);
+
+                    if ($doctor->board_certification) {
+                        $storage->removeFile($doctor->board_certification);
+                    }
+
+                    return ['board_certification' => $boardCertification];
                 })
             ->rules('mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg|max:50000'),
 
             File::make('Medical degree', 'medical_degree')
-                ->store(function (Request $request) use ($storage) {
-                    return ['medical_degree' => $storage->saveDoctorsMedicalDegree($request->medical_degree)];
+                ->store(function (Request $request, $doctor) use ($storage) {
+                    $medicalDegree = $storage->saveDoctorsMedicalDegree($request->medical_degree);
+
+                    if ($doctor->medical_degree) {
+                        $storage->removeFile($doctor->medical_degree);
+                    }
+
+                    return ['medical_degree' => $medicalDegree];
                 })
             ->rules('mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg|max:50000'),
 
@@ -123,7 +141,7 @@ class Doctor extends Resource
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed')
-                ->updateRules('string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed'),
+                ->updateRules('nullable', 'string', 'min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed'),
 
             PasswordConfirmation::make(__('Password confirmation')),
 
