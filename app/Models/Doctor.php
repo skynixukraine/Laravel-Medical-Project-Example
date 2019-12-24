@@ -21,6 +21,12 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
     use Notifiable, HasApiTokens, Authenticatable, \Illuminate\Auth\MustVerifyEmail;
 
+    public const STATUS_CREATED = 'CREATED';
+    public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
+    public const STATUS_ACTIVATED = 'ACTIVATED';
+    public const STATUS_DEACTIVATED = 'DEACTIVATED';
+    public const STATUS_CLOSED = 'CLOSED';
+
     protected $fillable = [
         'photo',
         'title',
@@ -31,7 +37,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         'last_name',
         'description',
         'email',
-        'is_active',
+        'status',
         'password',
         'region_id',
     ];

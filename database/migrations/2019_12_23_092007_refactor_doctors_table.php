@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -27,6 +28,10 @@ class RefactorDoctorsTable extends Migration
             $table->string('last_name')->nullable(true)->change();
             $table->string('description')->nullable(true)->change();
             $table->unsignedInteger('region_id')->nullable(true)->change();
+            $table->string('status')
+                ->after('description')
+                ->default('CREATED');
+            $table->dropColumn('is_active');
         });
     }
 
@@ -51,6 +56,8 @@ class RefactorDoctorsTable extends Migration
             $table->string('last_name')->nullable(false)->change();
             $table->string('description')->nullable(false)->change();
             $table->unsignedInteger('region_id')->nullable(false)->change();
+            $table->boolean('is_active')->default(0);
+            $table->dropColumn('status');
         });
     }
 }
