@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Doctor;
 
+use App\Models\Doctor;
 use App\Rules\Recaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,7 +35,7 @@ class Login extends FormRequest
                 'email',
                 Rule::exists('doctors')->where(
                     function ($query) {
-                        $query->whereIsActive(true);
+                        $query->whereIn('status', [Doctor::STATUS_CREATED, Doctor::STATUS_ACTIVATION_REQUESTED, Doctor::STATUS_ACTIVATED]);
                     }
                 ),
             ],

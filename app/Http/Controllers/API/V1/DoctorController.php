@@ -184,7 +184,7 @@ class DoctorController extends ApiController
         $doctor = new Doctor($request->only(['email', 'phone_number']));
 
         $doctor->password = Hash::make($request->password);
-        $doctor->is_active = false;
+        $doctor->status = Doctor::STATUS_CREATED;
         $doctor->photo = $request->photo ? $storage->saveDoctorsPhoto($request->photo) : null;
         $doctor->board_certification = $request->board_certification
             ? $storage->saveDoctorsBoardCertification($request->board_certification)
@@ -466,12 +466,7 @@ class DoctorController extends ApiController
      */
     public function login(Login $request)
     {
-        $doctor = Doctor::where(
-            [
-                'email' => $request->input('email'),
-                'is_active' => true,
-            ]
-        )->first();
+        $doctor = Doctor::whereEmail($request->input('email'))->first();
 
         if (!$doctor || Hash::check($doctor, $doctor->password)) {
             return response()->json(['message' => 'Unauthenticated'], 401);
