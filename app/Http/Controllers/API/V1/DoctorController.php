@@ -971,6 +971,12 @@ class DoctorController extends ApiController
             $doctor->password = Hash::make($request->password);
         }
 
+        if ($request->has('email')) {
+            $doctor->email = $request->email;
+            $doctor->email_verified_at = null;
+            $doctor->sendEmailVerificationNotification();
+        }
+
         DB::transaction(function () use ($request, $doctor) {
             if ($request->has('language_ids')) {
                 $doctor->languages()->detach();
@@ -978,7 +984,7 @@ class DoctorController extends ApiController
             }
 
             $doctor->fill(
-                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
+                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id')
             )->save();
 
             $doctor->location->update(
