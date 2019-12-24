@@ -103,7 +103,7 @@ class Doctor extends Resource
 
                     return ['board_certification' => $boardCertification];
                 })
-            ->rules('mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg|max:50000'),
+            ->rules('mimetypes:image/jpeg,image/png,application/pdf', 'mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
             File::make('Medical degree', 'medical_degree')
                 ->store(function (Request $request, $doctor) use ($storage) {
@@ -115,7 +115,7 @@ class Doctor extends Resource
 
                     return ['medical_degree' => $medicalDegree];
                 })
-            ->rules('mimetypes:image/jpeg,image/png,application/pdf|mimes:pdf,jpg,png,jpeg|max:50000'),
+            ->rules('mimetypes:image/jpeg,image/png,application/pdf', 'mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
             Text::make(__('Title'), 'title')->sortable()
                 ->rules('string', 'max:255'),
@@ -140,8 +140,8 @@ class Doctor extends Resource
 
             Password::make('Password')
                 ->onlyOnForms()
-                ->creationRules('required', 'string', 'min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed')
-                ->updateRules('nullable', 'string', 'min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed'),
+                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed')
+                ->updateRules('nullable', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed'),
 
             PasswordConfirmation::make(__('Password confirmation')),
 
