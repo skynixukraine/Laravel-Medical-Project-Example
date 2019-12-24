@@ -18,6 +18,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\PasswordConfirmation;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 
@@ -128,7 +129,7 @@ class Doctor extends Resource
 
             Trix::make(__('Description'), 'description')->hideFromIndex(),
 
-            Boolean::make(__('Is active'), 'is_active')->sortable(),
+            Text::make('Status', 'status')->hideWhenCreating()->hideWhenUpdating()->sortable(),
 
             DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
 
@@ -136,7 +137,7 @@ class Doctor extends Resource
 
             DateTime::make(__('Email verified at'), 'updated_at')->onlyOnDetail(),
 
-            BelongsTo::make(__('Region'), 'region', Region::class)->hideFromIndex()->creationRules('nullable'),
+            BelongsTo::make(__('Region'), 'region', Region::class)->hideFromIndex()->nullable(),
 
             HasOne::make(__('Location'), 'location', Location::class)->hideFromIndex(),
 
