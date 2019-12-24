@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Doctor;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,39 +18,39 @@ class StorageService
      * @param UploadedFile $photo
      * @return string
      */
-    public function saveDoctorPhoto(?UploadedFile $photo): ?string
+    public function saveDoctorsPhoto(UploadedFile $photo): string
     {
-        return $photo ? $this->saveFile(
+        return $this->saveFile(
             $photo,
             self::DOCTORS_PHOTO_DIR . '/' . date('Y/m/d'),
             $photo->hashName()
-        ) : $photo ;
+        );
     }
 
     /**
      * @param UploadedFile $file
      * @return string
      */
-    public function saveDoctorMedicalDegree(?UploadedFile $file): ?string
+    public function saveDoctorsMedicalDegree(UploadedFile $file): string
     {
-        return $file ? $this->saveFile(
+        return $this->saveFile(
             $file,
             self::DOCTORS_MEDICAL_DEGREES_DIR . '/' . date('Y/m/d'),
             $file->hashName()
-        ): null;
+        );
     }
 
     /**
      * @param UploadedFile $file
      * @return string
      */
-    public function saveDoctorCertificate(?UploadedFile $file): ?string
+    public function saveDoctorsBoardCertification(UploadedFile $file): string
     {
-        return $file ? $this->saveFile(
+        return $this->saveFile(
             $file,
             self::DOCTORS_BOARD_CERTIFICATION_DIR . '/' . date('Y/m/d'),
             $file->hashName()
-        ) : null;
+        );
     }
 
     /**

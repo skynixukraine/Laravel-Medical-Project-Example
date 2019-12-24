@@ -89,7 +89,21 @@ class DoctorController extends ApiController
      *              )
      *          )
      *     ),
-     *     @OA\Response(response=201, description="Success"),
+     *     @OA\Response(
+     *         response=201,
+     *         description="A doctor has been succesfully received",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/DoctorResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=422,
      *         description="There are some validation errors",
@@ -165,33 +179,38 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function register(Register $request, StorageService $storageService)
+    public function register(Register $request, StorageService $storage)
     {
         $doctor = new Doctor($request->only(['email', 'phone_number']));
 
         $doctor->password = Hash::make($request->password);
         $doctor->is_active = false;
-        $doctor->photo = $storageService->saveDoctorPhoto($request->file('photo'));
-        $doctor->board_certification = $storageService->saveDoctorCertificate($request->file('board_certification'));
-        $doctor->medical_degree = $storageService->saveDoctorMedicalDegree($request->file('medical_degree'));
+        $doctor->photo = $request->photo ? $storage->saveDoctorsPhoto($request->photo) : null;
+        $doctor->board_certification = $request->board_certification
+            ? $storage->saveDoctorsBoardCertification($request->board_certification)
+            : null;
+        $doctor->medical_degree = $request->medical_degree
+            ? $storage->saveDoctorsMedicalDegree($request->medical_degree)
+            : null;
 
         $doctor->saveOrFail();
 
         event(new DoctorRegistered($doctor));
 
-        return response()->status(201);
+        return DoctorResource::make($doctor);
     }
 
     /**
      * @OA\Get(
      *     tags={"Doctors"},
-     *     path="/api/v1/verify{id}",
+     *     path="/api/v1/verify/{id}",
      *     summary="Verify doctor's email",
      *     description="Verify doctor's email",
-     *     @OA\Response(response=200, description="E-mail has been verified"),
+     *     @OA\Response(response=200, description="An e-mail has been verified"),
+     *     @OA\Response(response=304, description="An e-mail already verified"),
      *     @OA\Response(
      *         response=401,
-     *         description="Authorization failed",
+     *         description="Invalid signature",
      *         @OA\MediaType(
      *              mediaType="application/json",
      *              @OA\Schema(
@@ -200,6 +219,22 @@ class DoctorController extends ApiController
      *                          format="string",
      *                          property="message",
      *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
      *                      ),
      *                  }
      *              )
@@ -230,21 +265,65 @@ class DoctorController extends ApiController
         $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
 
         if ($doctor->hasVerifiedEmail()) {
-            return;
+            return response('', 304);
         }
 
-        if ($doctor->markEmailAsVerified()) {
-            event(new Verified($doctor));
-        }
+        $doctor->markEmailAsVerified();
+
+        event(new Verified($doctor));
     }
 
+    /**
+     * @OA\Get(
+     *     tags={"Doctors"},
+     *     path="/api/v1/resend/{id}",
+     *     summary="Resend verification email",
+     *     description="Verify doctor's email",
+     *     @OA\Response(response=200, description="An e-mail has been sent"),
+     *     @OA\Response(response=304, description="An e-mail already verified"),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
     public function resend(Request $request)
     {
         $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
 
-        if (!$doctor->hasVerifiedEmail()) {
-            $doctor->sendEmailVerificationNotification();
+        if ($doctor->hasVerifiedEmail()) {
+            return response('', 304);
         }
+
+        $doctor->sendEmailVerificationNotification();
     }
 
     /**
@@ -882,7 +961,7 @@ class DoctorController extends ApiController
     public function update(Update $request, Doctor $doctor, StorageService $storageService): DoctorResource
     {
         if ($request->has('photo')) {
-            $storageService->saveDoctorPhoto($doctor, $request->photo);
+            $storageService->saveDoctorsPhoto($doctor, $request->photo);
         }
 
         if ($request->has('password')) {

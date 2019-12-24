@@ -145,6 +145,8 @@ class DoctorResource extends JsonResource
         return [
             'id' => $this->id,
             'photo' => $this->photo,
+            'board_certification' => $this->board_certification,
+            'medical_degree' => $this->medical_degree,
             'prefix' => $this->prefix,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
@@ -154,6 +156,7 @@ class DoctorResource extends JsonResource
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'email_verified_at' => $this->email_verified_at,
             'region' => new RegionResource($this->region),
             'location' => new LocationResource($this->location),
             'languages' => LanguageResource::collection($this->languages),

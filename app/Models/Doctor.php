@@ -79,12 +79,23 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     }
 
     /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     * @throws \Throwable
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
+    }
+
+    /**
      * Send the email verification notification.
      *
      * @return void
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new VerifyEmail);
+        $this->notify(new VerifyEmail());
     }
 }

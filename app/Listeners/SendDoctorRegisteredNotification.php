@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\DoctorRegistered as DoctorRegisteredEvent;
-use App\Notifications\DoctorRegistered as DoctorRegisteredNotification;
 
 class SendDoctorRegisteredNotification
 {
@@ -17,8 +16,6 @@ class SendDoctorRegisteredNotification
      */
     public function handle(DoctorRegisteredEvent $event): void
     {
-        $doctor = $event->getDoctor();
-
-        $doctor->notify(new DoctorRegisteredNotification($event->getDoctor()));
+        $event->getDoctor()->sendEmailVerificationNotification();
     }
 }
