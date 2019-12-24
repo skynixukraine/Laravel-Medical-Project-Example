@@ -468,7 +468,7 @@ class DoctorController extends ApiController
     {
         $doctor = Doctor::whereEmail($request->input('email'))->first();
 
-        if (!$doctor || Hash::check($doctor, $doctor->password)) {
+        if (!$doctor || Hash::check($request->input('password'), $doctor->password)) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
@@ -956,7 +956,15 @@ class DoctorController extends ApiController
     public function update(Update $request, Doctor $doctor, StorageService $storageService): DoctorResource
     {
         if ($request->has('photo')) {
-            $storageService->saveDoctorsPhoto($doctor, $request->photo);
+            $doctor->photo = $storageService->saveDoctorsPhoto($request->photo);
+        }
+
+        if ($request->has('medical_degree')) {
+            $doctor->medical_degree = $storageService->saveDoctorsMedicalDegree($request->medical_degree);
+        }
+
+        if ($request->has('board_certification')) {
+            $doctor->medical_degree = $storageService->saveDoctorsBoardCertification($request->board_certification);
         }
 
         if ($request->has('password')) {
@@ -1135,7 +1143,7 @@ class DoctorController extends ApiController
     public function index(Request $request): ResourceCollection
     {
         $doctorsQuery = Doctor::query()
-            ->whereIsActive(true)
+            ->whereStatus(Doctor::STATUS_ACTIVATED)
             ->where($request->only(['region_id', 'first_name', 'last_name']))
             ->orderBy(
                 $request->query('order_by', 'first_name'),
