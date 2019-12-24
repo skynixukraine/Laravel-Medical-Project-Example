@@ -67,6 +67,11 @@ class StorageService
         return Storage::putFileAs($path, $file, $name . '.' . $file->extension());
     }
 
+    public function removeFile(string $file)
+    {
+        return Storage::delete($file);
+    }
+
     /**
      * @param string $path
      * @param string $name
