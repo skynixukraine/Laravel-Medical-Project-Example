@@ -6,6 +6,7 @@ namespace App\Http\Requests\Doctor;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class Update extends FormRequest
@@ -35,7 +36,8 @@ class Update extends FormRequest
             'email' => ['email', Rule::unique('doctors')->ignore(Auth::id())],
             'description' => 'string|max:3000',
             'region_id' => 'exists:regions,id',
-            'password' => 'string|min:6|max:255|confirmed',
+            'old_password' => 'string|min:6|max:255',
+            'password' => 'string|min:6|max:255|confirmed|required_with:old_password',
             'address' => 'string|max:255',
             'city' => 'string|max:255',
             'state' => 'string|max:255',
