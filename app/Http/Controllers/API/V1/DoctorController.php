@@ -12,6 +12,7 @@ use App\Http\Requests\Doctor\Update;
 use App\Http\Requests\Doctor\UpdatePassword;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
+use App\Models\Location;
 use App\Services\StorageService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Verified;
@@ -468,7 +469,7 @@ class DoctorController extends ApiController
     {
         $doctor = Doctor::whereEmail($request->input('email'))->first();
 
-        if (!$doctor || Hash::check($request->input('password'), $doctor->password)) {
+        if (!$doctor || !Hash::check($request->input('password'), $doctor->password)) {
             return response()->json(['message' => 'Unauthenticated'], 401);
         }
 
@@ -987,7 +988,8 @@ class DoctorController extends ApiController
                 $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id')
             )->save();
 
-            $doctor->location->update(
+            Location::updateOrCreate(
+                ['doctor_id' => $doctor->id],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
         }, 2);
