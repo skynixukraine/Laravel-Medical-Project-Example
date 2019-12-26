@@ -36,8 +36,8 @@ class Update extends FormRequest
             'email' => ['email', Rule::unique('doctors')->ignore(Auth::id())],
             'description' => 'string|max:3000',
             'region_id' => 'exists:regions,id',
-            'old_password' => 'string|min:6|max:255',
-            'password' => 'string|min:6|max:255|confirmed|required_with:old_password',
+            'old_password' => 'string|min:6|max:255|required_with:password',
+            'password' => 'string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed|required_with:old_password',
             'address' => 'string|max:255',
             'city' => 'string|max:255',
             'state' => 'string|max:255',
@@ -48,5 +48,22 @@ class Update extends FormRequest
             'language_ids' => 'array',
             'language_ids.*' => 'distinct|exists:languages,id',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $doctor = $this->route('doctor');
+
+            if ($this->has('old_password') && !Hash::check($this->old_password, $doctor->password)) {
+                $validator->errors()->add('old_password', 'The old password is invalid.');
+            }
+        });
     }
 }
