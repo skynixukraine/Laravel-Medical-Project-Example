@@ -36,9 +36,6 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DoctorSaved::class => [
             \App\Listeners\SendVerifyEmailNotification::class,
         ],
-        \App\Events\DoctorUpdated::class => [
-            \App\Listeners\SendVerifyEmailNotification::class,
-        ],
     ];
 
     /**

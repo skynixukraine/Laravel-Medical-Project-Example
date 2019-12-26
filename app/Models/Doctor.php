@@ -48,7 +48,6 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 
     protected $dispatchesEvents = [
         'saved' => DoctorSaved::class,
-        'updated' => DoctorUpdated::class,
     ];
 
     public function region(): BelongsTo
