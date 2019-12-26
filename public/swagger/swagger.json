@@ -1182,12 +1182,6 @@
                         "format": "string",
                         "example": "Donghi"
                     },
-                    "slug": {
-                        "title": "Slug",
-                        "description": "A doctor's slug",
-                        "format": "string",
-                        "example": "dr-davide-donghi"
-                    },
                     "email": {
                         "title": "E-mail",
                         "description": "A doctor's e-mail",
@@ -1200,11 +1194,11 @@
                         "format": "string",
                         "example": "I am a good doctor"
                     },
-                    "is_active": {
-                        "title": "Is active",
-                        "description": "Is a doctor active or not",
+                    "status": {
+                        "title": "Status",
+                        "description": "A doctor's status",
                         "format": "boolean",
-                        "example": false
+                        "example": "CREATED"
                     },
                     "created_at": {
                         "title": "Created at",

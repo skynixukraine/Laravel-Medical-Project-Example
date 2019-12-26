@@ -72,13 +72,6 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
- *              title="Slug",
- *              description="A doctor's slug",
- *              property="slug",
- *              example="dr-davide-donghi"
- *          ),
- *          @OA\Property(
- *              format="string",
  *              title="E-mail",
  *              description="A doctor's e-mail",
  *              property="email",
@@ -93,10 +86,10 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="boolean",
- *              title="Is active",
- *              description="Is a doctor active or not",
- *              property="is_active",
- *              example=false
+ *              title="Status",
+ *              description="A doctor's status",
+ *              property="status",
+ *              example="CREATED"
  *          ),
  *          @OA\Property(
  *              ref="#/components/schemas/CarbonResource",
@@ -152,6 +145,7 @@ class DoctorResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'description' => $this->description,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'email_verified_at' => $this->email_verified_at,
