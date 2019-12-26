@@ -954,18 +954,21 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function update(Update $request, Doctor $doctor, StorageService $storageService): DoctorResource
+    public function update(Update $request, Doctor $doctor, StorageService $storage): DoctorResource
     {
         if ($request->has('photo')) {
-            $doctor->photo = $storageService->saveDoctorsPhoto($request->photo);
+            $storage->removeFile($doctor->photo);
+            $doctor->photo = $storage->saveDoctorsPhoto($request->photo);
         }
 
         if ($request->has('medical_degree')) {
-            $doctor->medical_degree = $storageService->saveDoctorsMedicalDegree($request->medical_degree);
+            $storage->removeFile($doctor->medical_degree);
+            $doctor->medical_degree = $storage->saveDoctorsMedicalDegree($request->medical_degree);
         }
 
         if ($request->has('board_certification')) {
-            $doctor->medical_degree = $storageService->saveDoctorsBoardCertification($request->board_certification);
+            $storage->removeFile($doctor->board_certification);
+            $doctor->board_certification = $storage->saveDoctorsBoardCertification($request->board_certification);
         }
 
         if ($request->has('password')) {
