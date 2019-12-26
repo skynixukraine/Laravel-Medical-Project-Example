@@ -995,6 +995,10 @@ class DoctorController extends ApiController
                 ['doctor_id' => $doctor->id],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
+
+            if ($request->has('email')) {
+                $doctor->sendEmailVerificationNotification();
+            }
         }, 2);
 
         return new DoctorResource($doctor);
