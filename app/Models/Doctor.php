@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\DoctorSaved;
 use App\Events\DoctorSaving;
+use App\Events\DoctorUpdated;
 use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
@@ -45,7 +47,8 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     protected $hidden = ['password'];
 
     protected $dispatchesEvents = [
-        'saving' => DoctorSaving::class,
+        'saved' => DoctorSaved::class,
+        'updated' => DoctorUpdated::class,
     ];
 
     public function region(): BelongsTo

@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class DoctorRegistered
+class DoctorSaved
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

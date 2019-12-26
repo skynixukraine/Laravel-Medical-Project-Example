@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Events\DoctorRegistered;
+use App\Events\DoctorSaved;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
@@ -195,8 +195,6 @@ class DoctorController extends ApiController
             : null;
 
         $doctor->saveOrFail();
-
-        event(new DoctorRegistered($doctor));
 
         return DoctorResource::make($doctor);
     }
