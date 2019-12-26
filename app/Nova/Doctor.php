@@ -118,13 +118,13 @@ class Doctor extends Resource
             ->rules('mimetypes:image/jpeg,image/png,application/pdf', 'mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
             Text::make(__('Title'), 'title')->sortable()
-                ->rules('string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('First name'), 'first_name')->sortable()
-                ->rules('string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('Last name'), 'last_name')->sortable()
-                ->rules('string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('E-mail'), 'email')
                 ->sortable()
