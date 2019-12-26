@@ -33,11 +33,8 @@ class EventServiceProvider extends ServiceProvider
         'Laravel\Passport\Events\AccessTokenCreated' => [
             'App\Listeners\DeleteOldTokens',
         ],
-        \App\Events\DoctorRegistered::class => [
-            \App\Listeners\SendDoctorRegisteredNotification::class,
-        ],
-        \App\Events\DoctorSaving::class => [
-            \App\Listeners\SetUpSlugForDoctor::class,
+        \App\Events\DoctorSaved::class => [
+            \App\Listeners\SendVerifyEmailNotification::class,
         ],
     ];
 

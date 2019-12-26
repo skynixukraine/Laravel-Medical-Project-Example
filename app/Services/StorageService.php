@@ -4,25 +4,53 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Doctor;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class StorageService
 {
-    private const DOCTORS_PHOTO_DIR = 'doctors';
+    private const DOCTORS_PHOTO_DIR = 'doctors/photos';
+    private const DOCTORS_MEDICAL_DEGREES_DIR = 'doctors/medical_degrees';
+    private const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
 
     /**
-     * @param Doctor $doctor
      * @param UploadedFile $photo
-     * @return void
+     * @return string
      */
-    public function saveDoctorPhoto(Doctor $doctor, UploadedFile $photo): void
+    public function saveDoctorsPhoto(UploadedFile $photo): string
     {
-        $photoName = $doctor->first_name . '-' . $doctor->last_name;
+        return $this->saveFile(
+            $photo,
+            self::DOCTORS_PHOTO_DIR . '/' . date('Y/m/d'),
+            $photo->hashName()
+        );
+    }
 
-        $doctor->photo = $this->saveFile($photo,  self::DOCTORS_PHOTO_DIR . '/' . date('Y-m-d'), $photoName);
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function saveDoctorsMedicalDegree(UploadedFile $file): string
+    {
+        return $this->saveFile(
+            $file,
+            self::DOCTORS_MEDICAL_DEGREES_DIR . '/' . date('Y/m/d'),
+            $file->hashName()
+        );
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
+    public function saveDoctorsBoardCertification(UploadedFile $file): string
+    {
+        return $this->saveFile(
+            $file,
+            self::DOCTORS_BOARD_CERTIFICATION_DIR . '/' . date('Y/m/d'),
+            $file->hashName()
+        );
     }
 
     /**
@@ -37,6 +65,11 @@ class StorageService
         $name = $this->getUniqueFileName($path, Str::slug(trim($name)), $file->extension());
 
         return Storage::putFileAs($path, $file, $name . '.' . $file->extension());
+    }
+
+    public function removeFile(string $file)
+    {
+        return Storage::delete($file);
     }
 
     /**

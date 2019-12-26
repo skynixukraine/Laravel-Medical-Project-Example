@@ -56,6 +56,8 @@ Route::prefix('v1')->group(function () {
     Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
     Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
     Route::get('doctors', 'API\V1\DoctorController@index')->name('doctors.index');
+    Route::get('doctors/verify/{id}', 'API\V1\DoctorController@verify')->name('verification.verify');
+    Route::get('doctors/resend/{id}', 'API\V1\DoctorController@resend')->name('verification.resend');
 });
 
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {

@@ -67,25 +67,25 @@ class Location extends Resource
             ID::make()->sortable(),
 
             Country::make(__('Country'), 'country')->sortable()
-                ->rules('required', 'string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Place::make(__('City'), 'city')->sortable()->onlyCities()
-                ->rules('required', 'string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('State'), 'state')->sortable()
-                ->rules('required', 'string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Place::make(__('Address'), 'address')->sortable()->countries(['DE'])
-                ->rules('required', 'string', 'max:255'),
+                ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('Postal code'), 'postal_code')->sortable()
-                ->rules('required', 'integer'),
+                ->rules('nullable', 'string'),
 
             Text::make(__('Latitude'), 'latitude')->sortable()->hideFromIndex()
-                ->rules('required', 'numeric'),
+                ->rules('nullable', 'numeric'),
 
             Text::make(__('Longitude'), 'longitude')->sortable()->hideFromIndex()
-                ->rules('required', 'numeric'),
+                ->rules('nullable', 'numeric'),
         ];
     }
 

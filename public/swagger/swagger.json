@@ -19,65 +19,22 @@
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "required": [
-                                    "photo",
-                                    "first_name",
-                                    "last_name",
-                                    "description",
-                                    "prefix",
                                     "email",
-                                    "marker_address",
-                                    "region_id",
-                                    "language_ids",
+                                    "phone_number",
                                     "password",
-                                    "password_confirmation",
                                     "recaptcha",
-                                    "country",
-                                    "city",
-                                    "state",
-                                    "postal_code",
-                                    "address",
-                                    "latitude",
-                                    "longitude"
+                                    "accepted"
                                 ],
                                 "properties": {
-                                    "photo": {
-                                        "description": "A doctor's photo",
-                                        "format": "binary"
-                                    },
-                                    "prefix": {
-                                        "description": "A doctor's prefix",
-                                        "format": "string",
-                                        "example": "Dr."
-                                    },
-                                    "first_name": {
-                                        "description": "A doctor's first name",
-                                        "format": "string",
-                                        "example": "Davide"
-                                    },
-                                    "last_name": {
-                                        "description": "A doctor's last name",
-                                        "format": "string",
-                                        "example": "Donghi"
-                                    },
-                                    "description": {
-                                        "description": "A doctor's description",
-                                        "format": "string",
-                                        "example": "I am a good doctor"
-                                    },
                                     "email": {
                                         "description": "A doctor's e-mail",
                                         "format": "string",
                                         "example": "doctor@gmail.com"
                                     },
-                                    "region_id": {
-                                        "description": "A doctor's region",
-                                        "format": "int64",
-                                        "example": 1
-                                    },
-                                    "language_ids": {
-                                        "description": "A doctor's languages",
-                                        "format": "array",
-                                        "items": "int64"
+                                    "phone_number": {
+                                        "description": "A doctor's phone number",
+                                        "format": "string",
+                                        "example": "+3 8(032) 345-34-34"
                                     },
                                     "password": {
                                         "description": "A doctor's password",
@@ -91,40 +48,22 @@
                                         "description": "Recaptcha value. Action must be 'register_doctor",
                                         "format": "string"
                                     },
-                                    "country": {
-                                        "description": "A location's country",
-                                        "format": "string",
-                                        "example": "USA"
+                                    "accepted": {
+                                        "description": "Accept terms and conditions",
+                                        "format": "boolean",
+                                        "example": "1"
                                     },
-                                    "city": {
-                                        "description": "A location's city",
-                                        "format": "string",
-                                        "example": "New York"
+                                    "board_certification": {
+                                        "description": "Doctor's board certification",
+                                        "format": "binary"
                                     },
-                                    "state": {
-                                        "description": "A location's state",
-                                        "format": "string",
-                                        "example": "New York"
+                                    "medical_degree": {
+                                        "description": "Doctor's medical degree",
+                                        "format": "binary"
                                     },
-                                    "postal_code": {
-                                        "description": "A location's postal code",
-                                        "format": "int64",
-                                        "example": "12345"
-                                    },
-                                    "address": {
-                                        "description": "A location's address",
-                                        "format": "string",
-                                        "example": "address"
-                                    },
-                                    "latitude": {
-                                        "description": "A location's latitude",
-                                        "format": "double",
-                                        "example": 5.123
-                                    },
-                                    "longitude": {
-                                        "description": "A location's longitude",
-                                        "format": "double",
-                                        "example": 8.123
+                                    "photo": {
+                                        "description": "A doctor's photo",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -134,7 +73,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Success",
+                        "description": "A doctor has been succesfully received",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -174,52 +113,16 @@
                                                         "example": "The email field is required."
                                                     }
                                                 },
-                                                "prefix": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The prefix field is required."
-                                                    }
-                                                },
-                                                "first_name": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The first name field is required."
-                                                    }
-                                                },
-                                                "last_name": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The last name field is required."
-                                                    }
-                                                },
-                                                "description": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The description field is required."
-                                                    }
-                                                },
-                                                "region_id": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The region id field is required."
-                                                    }
-                                                },
                                                 "password": {
                                                     "items": {
                                                         "type": "string",
                                                         "example": "The password field is required."
                                                     }
                                                 },
-                                                "address": {
+                                                "accepted": {
                                                     "items": {
                                                         "type": "string",
-                                                        "example": "The address field is required."
-                                                    }
-                                                },
-                                                "language_ids": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The language ids field is required."
+                                                        "example": "The accepted field is required."
                                                     }
                                                 },
                                                 "recaptcha": {
@@ -247,6 +150,122 @@
                                         "message": {
                                             "format": "string",
                                             "example": "Server Error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/verify/{id}": {
+            "get": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Verify doctor's email",
+                "description": "Verify doctor's email",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::verify",
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been verified"
+                    },
+                    "304": {
+                        "description": "An e-mail already verified"
+                    },
+                    "401": {
+                        "description": "Invalid signature",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/resend/{id}": {
+            "get": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Resend verification email",
+                "description": "Verify doctor's email",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::resend",
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "304": {
+                        "description": "An e-mail already verified"
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
                                         }
                                     },
                                     "type": "object"
@@ -930,7 +949,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A doctor has been succesfully received",
+                        "description": "Doctors has been succesfully received",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -989,54 +1008,6 @@
                                                 },
                                                 "type": "object"
                                             }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authorization failed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Current user has not permissions to do this action",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "This action is unauthorized.."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "No query results for model [App\\Models\\Doctor]."
                                         }
                                     },
                                     "type": "object"
