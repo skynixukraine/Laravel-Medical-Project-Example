@@ -73,13 +73,22 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "A doctor has been succesfully received",
+                        "description": "A doctor has been succesfully registered",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "$ref": "#/components/schemas/DoctorResource"
+                                        "doctor_id": {
+                                            "format": "integer",
+                                            "example": "1"
+                                        },
+                                        "access_token": {
+                                            "format": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                                        },
+                                        "expires_at": {
+                                            "format": "object",
+                                            "$ref": "#/components/schemas/CarbonResource"
                                         }
                                     },
                                     "type": "object"
@@ -325,13 +334,13 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "doctor_id": {
+                                            "format": "integer",
+                                            "example": "1"
+                                        },
                                         "access_token": {
                                             "format": "string",
                                             "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
-                                        },
-                                        "token_type": {
-                                            "format": "string",
-                                            "example": "Bearer"
                                         },
                                         "expires_at": {
                                             "format": "object",

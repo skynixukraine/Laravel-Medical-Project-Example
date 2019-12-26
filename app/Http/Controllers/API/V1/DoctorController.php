@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Events\DoctorSaved;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
@@ -92,18 +91,29 @@ class DoctorController extends ApiController
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="A doctor has been succesfully received",
+     *         description="A doctor has been succesfully registered",
      *         @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  properties={
-     *                      @OA\Property(
-     *                          ref="#/components/schemas/DoctorResource",
-     *                          property="data"
-     *                      )
-     *                  }
-     *              )
-     *          )
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 properties={
+     *                     @OA\Property(
+     *                         format="integer",
+     *                         property="doctor_id",
+     *                         example="1"
+     *                     ),
+     *                     @OA\Property(
+     *                         format="string",
+     *                         property="access_token",
+     *                         example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
+     *                     ),
+     *                     @OA\Property(
+     *                         ref="#/components/schemas/CarbonResource",
+     *                         format="object",
+     *                         property="expires_at",
+     *                     ),
+     *                 }
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -196,7 +206,17 @@ class DoctorController extends ApiController
 
         $doctor->saveOrFail();
 
-        return DoctorResource::make($doctor);
+        $token = $doctor->createToken('Personal Access Token');
+        $token->token->expires_at = Passport::$tokensExpireAt;
+        $token->token->save();
+
+        return response()->json(
+            [
+                'doctor_id' => $doctor->id,
+                'access_token' => $token->accessToken,
+                'expires_at' => $token->token->expires_at,
+            ]
+        );
     }
 
     /**
@@ -369,14 +389,14 @@ class DoctorController extends ApiController
      *              @OA\Schema(
      *                  properties={
      *                      @OA\Property(
-     *                          format="string",
-     *                          property="access_token",
-     *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
+     *                          format="integer",
+     *                          property="doctor_id",
+     *                          example="1"
      *                      ),
      *                      @OA\Property(
      *                          format="string",
-     *                          property="token_type",
-     *                          example="Bearer",
+     *                          property="access_token",
+     *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
      *                      ),
      *                      @OA\Property(
      *                          ref="#/components/schemas/CarbonResource",
@@ -477,8 +497,8 @@ class DoctorController extends ApiController
 
         return response()->json(
             [
+                'doctor_id' => $doctor->id,
                 'access_token' => $token->accessToken,
-                'token_type' => 'Bearer',
                 'expires_at' => $token->token->expires_at,
             ]
         );
