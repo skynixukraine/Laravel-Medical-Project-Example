@@ -18,7 +18,7 @@ class MakeFieldsNullableInLocationsTable extends Migration
             $table->string('city')->nullable(true)->change();
             $table->string('state')->nullable(true)->change();
             $table->string('country')->nullable(true)->change();
-            $table->integer('postal_code')->nullable(true)->change();
+            $table->string('postal_code')->nullable(true)->change();
             $table->float('latitude', 10, 6)->nullable(true)->change();
             $table->float('longitude', 10, 6)->nullable(true)->change();
         });

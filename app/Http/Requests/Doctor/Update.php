@@ -42,7 +42,7 @@ class Update extends FormRequest
             'city' => 'string|max:255',
             'state' => 'string|max:255',
             'country' => 'string|max:255',
-            'postal_code' => 'integer',
+            'postal_code' => 'string|max:255',
             'latitude' => 'numeric',
             'longitude' => 'numeric',
             'language_ids' => 'array',
