@@ -153,7 +153,7 @@ class Doctor extends Resource
 
             DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
 
-            DateTime::make(__('Email verified at'), 'updated_at')->onlyOnDetail(),
+            DateTime::make(__('Email verified at'), 'email_verified_at')->onlyOnDetail(),
 
             BelongsTo::make(__('Region'), 'region', Region::class)->hideFromIndex()->nullable(),
 
