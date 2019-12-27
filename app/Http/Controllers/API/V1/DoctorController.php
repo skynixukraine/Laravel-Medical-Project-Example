@@ -1268,8 +1268,19 @@ class DoctorController extends ApiController
     {
         abort_if($doctor->status !== Doctor::STATUS_CREATED, 403, __('This action is unauthorized.'));
 
-        foreach ($doctor->getFillable() as $attribute) {
+        $requiredAttributes = [
+            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
+            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at'
+        ];
+
+        foreach ($requiredAttributes as $attribute) {
             abort_if(blank($doctor->{$attribute}), 403, __('This action is unauthorized.'));
+        }
+
+        if ($doctor->location) {
+            foreach ($doctor->location->getFillable() as $attribute) {
+                abort_if(blank($doctor->location->{$attribute}), 403, __('This action is unauthorized.'));
+            }
         }
 
         $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
