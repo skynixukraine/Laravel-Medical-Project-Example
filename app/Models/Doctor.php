@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Events\DoctorSaved;
-use App\Events\DoctorSaving;
-use App\Events\DoctorUpdated;
 use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\ResetPassword as ResetPasswordNotification;
@@ -42,6 +40,10 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         'status',
         'password',
         'region_id',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime'
     ];
 
     protected $hidden = ['password'];
