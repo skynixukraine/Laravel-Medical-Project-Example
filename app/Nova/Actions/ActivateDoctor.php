@@ -18,7 +18,7 @@ class ActivateDoctor extends Action
 
     public function name()
     {
-        return __('Activate doctors');
+        return __('Activate');
     }
 
     /**
