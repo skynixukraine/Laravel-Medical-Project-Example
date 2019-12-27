@@ -28,7 +28,7 @@ class DoctorController extends ApiController
     /**
      * @OA\Post(
      *     tags={"Doctors"},
-     *     path="/api/v1/register",
+     *     path="/api/v1/doctors/register",
      *     summary="Register a new doctor",
      *     description="Register a new doctor",
      *     @OA\RequestBody(
@@ -80,11 +80,6 @@ class DoctorController extends ApiController
      *                      format="binary",
      *                      description="Doctor's medical degree",
      *                      property="medical_degree",
-     *                  ),
-     *                  @OA\Property(
-     *                      format="binary",
-     *                      description="A doctor's photo",
-     *                      property="photo",
      *                  ),
      *              )
      *          )
@@ -196,7 +191,6 @@ class DoctorController extends ApiController
 
         $doctor->password = Hash::make($request->password);
         $doctor->status = Doctor::STATUS_CREATED;
-        $doctor->photo = $request->photo ? $storage->saveDoctorsPhoto($request->photo) : null;
         $doctor->board_certification = $request->board_certification
             ? $storage->saveDoctorsBoardCertification($request->board_certification)
             : null;
@@ -1007,10 +1001,6 @@ class DoctorController extends ApiController
                 ['doctor_id' => $doctor->id],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
-
-            if ($request->has('email')) {
-                $doctor->sendEmailVerificationNotification();
-            }
         }, 2);
 
         return new DoctorResource($doctor);

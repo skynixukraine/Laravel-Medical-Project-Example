@@ -6,6 +6,7 @@ namespace App\Http\Requests\Doctor;
 
 use App\Models\Doctor;
 use App\Rules\Recaptcha;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,8 +35,9 @@ class Login extends FormRequest
                 'string',
                 'email',
                 Rule::exists('doctors')->where(
-                    function ($query) {
-                        $query->whereIn('status', [Doctor::STATUS_CREATED, Doctor::STATUS_ACTIVATION_REQUESTED, Doctor::STATUS_ACTIVATED]);
+                    static function (Builder $query) {
+                        $query->whereIn('status', [Doctor::STATUS_CREATED, Doctor::STATUS_ACTIVATION_REQUESTED, Doctor::STATUS_ACTIVATED])
+                            ->whereNotNull('email_verified_at');
                     }
                 ),
             ],

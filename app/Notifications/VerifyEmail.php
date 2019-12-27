@@ -49,8 +49,11 @@ class VerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable)
     {
-        return URL::temporarySignedRoute(
+        $url = URL::to('verify', [$notifiable->getKey()]);
+        $route = route('verification.verify', [$notifiable->getKey()]);
+
+        return str_replace($route, $url, URL::temporarySignedRoute(
             'verification.verify', Carbon::now()->addHours(3), ['id' => $notifiable->getKey()]
-        );
+        ));
     }
 }
