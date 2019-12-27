@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Events\DoctorRequestedActivation;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
@@ -827,7 +828,7 @@ class DoctorController extends ApiController
      *                      @OA\Property(
      *                          format="string",
      *                          property="message",
-     *                          example="This action is unauthorized.."
+     *                          example="This action is unauthorized."
      *                      ),
      *                  }
      *              )
@@ -1167,5 +1168,112 @@ class DoctorController extends ApiController
                 $request->query('direction', 'asc'));
 
         return DoctorResource::collection($doctorsQuery->paginate($request->query('per_page')));
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/activate",
+     *     summary="Create a request for activation a doctor",
+     *     description="Create a request for doctor activation",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="A request has been succesfully created",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/DoctorResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function activate(Doctor $doctor)
+    {
+        abort_if($doctor->status !== Doctor::STATUS_CREATED, 403, __('This action is unauthorized.'));
+
+        foreach ($doctor->getFillable() as $attribute) {
+            abort_if(blank($doctor->{$attribute}), 403, __('This action is unauthorized.'));
+        }
+
+        $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
+
+        event(new DoctorRequestedActivation($doctor));
     }
 }

@@ -5,7 +5,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/v1/register": {
+        "/api/v1/doctors/register": {
             "post": {
                 "tags": [
                     "Doctors"
@@ -59,10 +59,6 @@
                                     },
                                     "medical_degree": {
                                         "description": "Doctor's medical degree",
-                                        "format": "binary"
-                                    },
-                                    "photo": {
-                                        "description": "A doctor's photo",
                                         "format": "binary"
                                     }
                                 },
@@ -756,7 +752,7 @@
                                     "properties": {
                                         "message": {
                                             "format": "string",
-                                            "example": "This action is unauthorized.."
+                                            "example": "This action is unauthorized."
                                         }
                                     },
                                     "type": "object"
@@ -1017,6 +1013,106 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/{id}/activate": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Create a request for activation a doctor",
+                "description": "Create a request for doctor activation",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::activate",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A request has been succesfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/DoctorResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
                                         }
                                     },
                                     "type": "object"

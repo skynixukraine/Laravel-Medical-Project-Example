@@ -28,6 +28,7 @@
   "Postal code": "Postal code",
   "Latitude": "Latitude",
   "Longitude": "Longitude",
-  "Deactivate doctors": "Deactivate doctors",
-  "Activate doctors": "Activate doctors"
+  "Deactivate": "Deactivate",
+  "Activate": "Activate",
+  "This action is unauthorized." : "This action is unauthorized."
 }
