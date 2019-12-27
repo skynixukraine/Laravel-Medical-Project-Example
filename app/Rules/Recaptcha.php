@@ -24,7 +24,7 @@ class Recaptcha implements Rule
             ->setExpectedAction($this->action)
             ->verify($value, request()->ip());
 
-        return $response->isSuccess() && $response->getScore() < 0.6;
+        return $response->isSuccess() && $response->getScore() > 0.6;
     }
 
     /**
