@@ -65,4 +65,5 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
     Route::get('doctors/{doctor}', 'API\V1\DoctorController@show')->middleware('can:view,doctor');
     Route::patch('doctors/{doctor}', 'API\V1\DoctorController@update')->middleware('can:update,doctor');
     Route::patch('doctors/{doctor}/activate', 'API\V1\DoctorController@activate')->middleware('can:update,doctor');
+    Route::patch('doctors/{doctor}/close', 'API\V1\DoctorController@close')->middleware('can:update,doctor');
 });

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Events\DoctorClosedAccount;
 use App\Events\DoctorRequestedActivation;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
@@ -1286,5 +1287,106 @@ class DoctorController extends ApiController
         $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
 
         event(new DoctorRequestedActivation($doctor));
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/close",
+     *     summary="Close doctor account",
+     *     description="Close doctor account",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="A request has been succesfully created",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/DoctorResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function close(Doctor $doctor)
+    {
+        $doctor->update(['status' => Doctor::STATUS_CLOSED]);
+
+        event(new DoctorClosedAccount($doctor));
     }
 }
