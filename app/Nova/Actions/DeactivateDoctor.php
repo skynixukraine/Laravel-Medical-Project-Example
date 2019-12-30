@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Events\DoctorDeactivated;
 use App\Models\Doctor;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
@@ -31,7 +32,10 @@ class DeactivateDoctor extends Action
     public function handle(ActionFields $fields, Collection $doctors)
     {
         foreach ($doctors as $doctor) {
-            $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
+            if ($doctor->getOriginal('status') !== Doctor::STATUS_DEACTIVATED) {
+                $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
+                event(new DoctorDeactivated($doctor));
+            }
         }
     }
 
