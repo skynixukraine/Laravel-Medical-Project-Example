@@ -20,4 +20,35 @@ class DoctorPolicy
     {
         return $user->is($doctor);
     }
+
+    public function activate(Doctor $user, Doctor $doctor): bool
+    {
+        if (!$user->is($doctor)) {
+            return false;
+        }
+
+        $requiredAttributes = [
+            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
+            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at'
+        ];
+
+        foreach ($requiredAttributes as $attribute) {
+            if (blank($doctor->{$attribute})) {
+                return false;
+            }
+        }
+
+        foreach ($doctor->location->getFillable() as $attribute) {
+            if (blank($doctor->location->{$attribute})) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function close(Doctor $user, Doctor $doctor): bool
+    {
+        return $user->is($doctor);
+    }
 }

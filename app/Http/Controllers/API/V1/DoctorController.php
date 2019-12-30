@@ -1176,7 +1176,7 @@ class DoctorController extends ApiController
      *     tags={"Doctors"},
      *     path="/api/v1/doctors/{id}/activate",
      *     summary="Create a request for activation a doctor",
-     *     description="Create a request for doctor activation",
+     *     description="Create a request for activation a doctor",
      *     @OA\Parameter(
      *          name="id",
      *          required=true,
@@ -1184,21 +1184,8 @@ class DoctorController extends ApiController
      *          in="query",
      *          example="1"
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="A request has been succesfully created",
-     *         @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  properties={
-     *                      @OA\Property(
-     *                          ref="#/components/schemas/DoctorResource",
-     *                          property="data"
-     *                      )
-     *                  }
-     *              )
-     *          )
-     *     ),
+     *     @OA\Response(response=200, description="A request has been succesfully created"),
+     *     @OA\Response(response=304, description="A request already created or a doctor activated"),
      *     @OA\Response(
      *         response=401,
      *         description="Authorization failed",
@@ -1265,24 +1252,12 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function activate(Doctor $doctor)
+    public function activate(Doctor $doctor): void
     {
-        abort_if($doctor->status !== Doctor::STATUS_CREATED, 403, __('This action is unauthorized.'));
-
-        $requiredAttributes = [
-            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
-            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at'
-        ];
-
-        foreach ($requiredAttributes as $attribute) {
-            abort_if(blank($doctor->{$attribute}), 403, __('This action is unauthorized.'));
-        }
-
-        if ($doctor->location) {
-            foreach ($doctor->location->getFillable() as $attribute) {
-                abort_if(blank($doctor->location->{$attribute}), 403, __('This action is unauthorized.'));
-            }
-        }
+        abort_if(
+            $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED || $doctor->status === Doctor::STATUS_ACTIVATED,
+            304
+        );
 
         $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
 
@@ -1293,8 +1268,8 @@ class DoctorController extends ApiController
      * @OA\Patch(
      *     tags={"Doctors"},
      *     path="/api/v1/doctors/{id}/close",
-     *     summary="Close doctor account",
-     *     description="Close doctor account",
+     *     summary="Close a doctor's account",
+     *     description="Close a doctor's account",
      *     @OA\Parameter(
      *          name="id",
      *          required=true,
@@ -1302,21 +1277,8 @@ class DoctorController extends ApiController
      *          in="query",
      *          example="1"
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="A request has been succesfully created",
-     *         @OA\MediaType(
-     *              mediaType="application/json",
-     *              @OA\Schema(
-     *                  properties={
-     *                      @OA\Property(
-     *                          ref="#/components/schemas/DoctorResource",
-     *                          property="data"
-     *                      )
-     *                  }
-     *              )
-     *          )
-     *     ),
+     *     @OA\Response(response=200, description="An account has been succesfully closed"),
+     *     @OA\Response(response=304, description="An account already closed"),
      *     @OA\Response(
      *         response=401,
      *         description="Authorization failed",
@@ -1383,8 +1345,10 @@ class DoctorController extends ApiController
      *      )
      * )
      */
-    public function close(Doctor $doctor)
+    public function close(Doctor $doctor): void
     {
+        abort_if($doctor->status === Doctor::STATUS_CLOSED, 304);
+
         $doctor->update(['status' => Doctor::STATUS_CLOSED]);
 
         event(new DoctorClosedAccount($doctor));
