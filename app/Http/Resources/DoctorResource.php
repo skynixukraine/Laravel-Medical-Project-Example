@@ -110,6 +110,10 @@ use OpenApi\Annotations as OA;
  *              property="region"
  *          ),
  *          @OA\Property(
+ *              ref="#/components/schemas/SpecializationResource",
+ *              property="specialization"
+ *          ),
+ *          @OA\Property(
  *              ref="#/components/schemas/LocationResource",
  *              property="location"
  *          ),
@@ -150,6 +154,7 @@ class DoctorResource extends JsonResource
             'updated_at' => $this->updated_at,
             'email_verified_at' => $this->email_verified_at,
             'region' => new RegionResource($this->region),
+            'specialization' => new SpecializationResource($this->specialization),
             'location' => new LocationResource($this->location),
             'languages' => LanguageResource::collection($this->languages),
         ];

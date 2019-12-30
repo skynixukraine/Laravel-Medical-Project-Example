@@ -29,7 +29,7 @@ class DoctorPolicy
 
         $requiredAttributes = [
             'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
-            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at'
+            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
         ];
 
         foreach ($requiredAttributes as $attribute) {

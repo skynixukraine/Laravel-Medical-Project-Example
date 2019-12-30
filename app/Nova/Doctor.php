@@ -157,6 +157,8 @@ class Doctor extends Resource
 
             BelongsTo::make(__('Region'), 'region', Region::class)->hideFromIndex()->nullable(),
 
+            BelongsTo::make(__('Specialization'), 'specialization', Specialization::class)->hideFromIndex()->nullable(),
+
             HasOne::make(__('Location'), 'location', Location::class)->hideFromIndex(),
 
             BelongsToMany::make(__('Languages'), 'languages', Language::class)->hideFromIndex()

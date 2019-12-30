@@ -54,6 +54,7 @@ Route::prefix('v1')->group(function () {
     Route::post('send-reset-link', 'API\V1\DoctorController@sendResetLinkEmail');
     Route::patch('update-password', 'API\V1\DoctorController@updatePassword');
     Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
+    Route::get('specializations', 'API\V1\SpecializationController@index')->name('specializations.index');
     Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
     Route::get('doctors', 'API\V1\DoctorController@index')->name('doctors.index');
     Route::get('verify/{id}', 'API\V1\DoctorController@verify')->name('verification.verify');
@@ -64,6 +65,6 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
     Route::patch('logout', 'API\V1\DoctorController@logout')->name('doctors.logout');
     Route::get('doctors/{doctor}', 'API\V1\DoctorController@show')->middleware('can:view,doctor');
     Route::patch('doctors/{doctor}', 'API\V1\DoctorController@update')->middleware('can:update,doctor');
-    Route::patch('doctors/{doctor}/activate', 'API\V1\DoctorController@activate')->middleware('can:update,doctor');
-    Route::patch('doctors/{doctor}/close', 'API\V1\DoctorController@close')->middleware('can:update,doctor');
+    Route::patch('doctors/{doctor}/activate', 'API\V1\DoctorController@activate')->middleware('can:activate,doctor');
+    Route::patch('doctors/{doctor}/close', 'API\V1\DoctorController@close')->middleware('can:close,doctor');
 });

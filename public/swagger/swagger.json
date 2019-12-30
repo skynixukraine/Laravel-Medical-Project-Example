@@ -810,6 +810,108 @@
                         "example": "1"
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "title": {
+                                        "description": "A doctor's title",
+                                        "format": "string",
+                                        "example": "Dr."
+                                    },
+                                    "first_name": {
+                                        "description": "A doctor's first name",
+                                        "format": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "description": "A doctor's last name",
+                                        "format": "string",
+                                        "example": "Carter"
+                                    },
+                                    "description": {
+                                        "description": "A doctor's description",
+                                        "format": "string",
+                                        "example": "I am a good doctor"
+                                    },
+                                    "phone_number": {
+                                        "description": "A doctor's phone number",
+                                        "format": "string",
+                                        "example": "+3 8(032) 345-34-34"
+                                    },
+                                    "old_password": {
+                                        "description": "A doctor's old password",
+                                        "format": "string"
+                                    },
+                                    "password": {
+                                        "description": "A doctor's password",
+                                        "format": "string"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "A doctor's password confirmation",
+                                        "format": "string"
+                                    },
+                                    "board_certification": {
+                                        "description": "A doctor's board certification",
+                                        "format": "binary"
+                                    },
+                                    "medical_degree": {
+                                        "description": "A doctor's medical degree",
+                                        "format": "binary"
+                                    },
+                                    "photo": {
+                                        "description": "A doctor's photo",
+                                        "format": "binary"
+                                    },
+                                    "regions_id": {
+                                        "description": "A doctor's region ID",
+                                        "format": "integer"
+                                    },
+                                    "specialization_id": {
+                                        "description": "A doctor's specialization ID",
+                                        "format": "integer"
+                                    },
+                                    "city": {
+                                        "description": "A doctor's city",
+                                        "format": "string"
+                                    },
+                                    "country": {
+                                        "description": "A doctor's country",
+                                        "format": "string"
+                                    },
+                                    "address": {
+                                        "description": "A doctor's address",
+                                        "format": "string"
+                                    },
+                                    "postal_code": {
+                                        "description": "A doctor's postal code",
+                                        "format": "string"
+                                    },
+                                    "state": {
+                                        "description": "A doctor's state",
+                                        "format": "string"
+                                    },
+                                    "latitude": {
+                                        "description": "A doctor's latitude",
+                                        "format": "number"
+                                    },
+                                    "longitude": {
+                                        "description": "A doctor's longitude",
+                                        "format": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "A doctor has been succesfully updated",
@@ -920,6 +1022,13 @@
                         "name": "region_id",
                         "in": "query",
                         "description": "Filter doctors by region id",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "specialization_id",
+                        "in": "query",
+                        "description": "Filter doctors by specialization id",
                         "required": false,
                         "example": "1"
                     },
@@ -1312,6 +1421,52 @@
                     }
                 }
             }
+        },
+        "/api/v1/specializations": {
+            "get": {
+                "tags": [
+                    "Specializations"
+                ],
+                "summary": "Get all specializations",
+                "description": "Get all specializations",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\SpecializationController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/SpecializationResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -1401,6 +1556,9 @@
                     },
                     "region": {
                         "$ref": "#/components/schemas/RegionResource"
+                    },
+                    "specialization": {
+                        "$ref": "#/components/schemas/SpecializationResource"
                     },
                     "location": {
                         "$ref": "#/components/schemas/LocationResource"
@@ -1526,6 +1684,27 @@
                         "description": "A region's name",
                         "format": "string",
                         "example": "Nevada"
+                    }
+                },
+                "type": "object"
+            },
+            "SpecializationResource": {
+                "title": "Specialization resource",
+                "description": "Resource for a specialization representation",
+                "properties": {
+                    "id": {
+                        "schema": "SpecializationResource",
+                        "title": "ID",
+                        "description": "A specialization's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "name": {
+                        "schema": "SpecializationResource",
+                        "title": "A specialization's name",
+                        "description": "A specialization's name",
+                        "format": "string",
+                        "example": "Dermatologist"
                     }
                 },
                 "type": "object"

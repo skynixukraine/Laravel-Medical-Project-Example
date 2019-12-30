@@ -887,6 +887,126 @@ class DoctorController extends ApiController
      *          in="query",
      *          example="1"
      *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's e-mail",
+     *                      property="email",
+     *                      example="doctor@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's title",
+     *                      property="title",
+     *                      example="Dr."
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's first name",
+     *                      property="first_name",
+     *                      example="John"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's last name",
+     *                      property="last_name",
+     *                      example="Carter"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's description",
+     *                      property="description",
+     *                      example="I am a good doctor"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's phone number",
+     *                      property="phone_number",
+     *                      example="+3 8(032) 345-34-34"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's old password",
+     *                      property="old_password",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's password",
+     *                      property="password",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's password confirmation",
+     *                      property="password_confirmation",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's board certification",
+     *                      property="board_certification",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's medical degree",
+     *                      property="medical_degree",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's photo",
+     *                      property="photo",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="integer",
+     *                      description="A doctor's region ID",
+     *                      property="regions_id",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="integer",
+     *                      description="A doctor's specialization ID",
+     *                      property="specialization_id",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's city",
+     *                      property="city",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's country",
+     *                      property="country",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's address",
+     *                      property="address",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's postal code",
+     *                      property="postal_code",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's state",
+     *                      property="state",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="number",
+     *                      description="A doctor's latitude",
+     *                      property="latitude",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="number",
+     *                      description="A doctor's longitude",
+     *                      property="longitude",
+     *                  ),
+     *              )
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="A doctor has been succesfully updated",
@@ -996,7 +1116,7 @@ class DoctorController extends ApiController
             }
 
             $doctor->fill(
-                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
+                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email')
             )->save();
 
             Location::updateOrCreate(
@@ -1032,6 +1152,13 @@ class DoctorController extends ApiController
      *          name="region_id",
      *          required=false,
      *          description="Filter doctors by region id",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Parameter(
+     *          name="specialization_id",
+     *          required=false,
+     *          description="Filter doctors by specialization id",
      *          in="query",
      *          example="1"
      *     ),
@@ -1163,7 +1290,7 @@ class DoctorController extends ApiController
     {
         $doctorsQuery = Doctor::query()
             ->whereStatus(Doctor::STATUS_ACTIVATED)
-            ->where($request->only(['region_id', 'first_name', 'last_name']))
+            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name']))
             ->orderBy(
                 $request->query('order_by', 'first_name'),
                 $request->query('direction', 'asc'));

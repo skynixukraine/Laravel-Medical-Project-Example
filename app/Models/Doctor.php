@@ -34,6 +34,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string password
  * @property integer region_id
  * @property Region|null region
+ * @property Specialization|null specialization
  * @property Language[] languages
  * @property Location|null location
  */
@@ -75,6 +76,10 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+    public function specialization(): BelongsTo
+    {
+        return $this->belongsTo(Specialization::class);
     }
 
     public function location(): HasOne
