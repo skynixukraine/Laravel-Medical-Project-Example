@@ -61,6 +61,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         'status',
         'password',
         'region_id',
+        'specialization_id',
     ];
 
     protected $casts = [
