@@ -36,6 +36,18 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DoctorSaving::class => [
             \App\Listeners\SendVerifyEmailNotification::class,
         ],
+        \App\Events\DoctorClosedAccount::class => [
+            \App\Listeners\SendDoctorAccountClosedNotification::class,
+        ],
+        \App\Events\DoctorRequestedActivation::class => [
+            \App\Listeners\SendDoctorRequestedActivationNotification::class,
+        ],
+        \App\Events\DoctorActivated::class => [
+            \App\Listeners\SendDoctorActivatedNotification::class,
+        ],
+        \App\Events\DoctorDeactivated::class => [
+            \App\Listeners\SendDoctorDeactivatedNotification::class,
+        ],
     ];
 
     /**

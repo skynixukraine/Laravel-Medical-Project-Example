@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Events\DoctorSaved;
 use App\Events\DoctorSaving;
 use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Authenticatable;
@@ -18,6 +17,27 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * Class Doctor
+ * @package App\Models
+ *
+ * @property string|null photo
+ * @property string|null board_certification
+ * @property string|null medical_degree
+ * @property string|null title
+ * @property string|null first_name
+ * @property string|null last_name
+ * @property string|null description
+ * @property string phone_number
+ * @property string email
+ * @property string status
+ * @property string password
+ * @property integer region_id
+ * @property Region|null region
+ * @property Specialization|null specialization
+ * @property Language[] languages
+ * @property Location|null location
+ */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
     use Notifiable, HasApiTokens, Authenticatable, \Illuminate\Auth\MustVerifyEmail;
@@ -41,6 +61,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         'status',
         'password',
         'region_id',
+        'specialization_id',
     ];
 
     protected $casts = [
@@ -56,6 +77,10 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+    public function specialization(): BelongsTo
+    {
+        return $this->belongsTo(Specialization::class);
     }
 
     public function location(): HasOne

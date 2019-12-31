@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Events\DoctorClosedAccount;
+use App\Events\DoctorRequestedActivation;
 use App\Http\Requests\Doctor\Login;
 use App\Http\Requests\Doctor\Register;
 use App\Http\Requests\Doctor\SendResetLink;
@@ -827,7 +829,7 @@ class DoctorController extends ApiController
      *                      @OA\Property(
      *                          format="string",
      *                          property="message",
-     *                          example="This action is unauthorized.."
+     *                          example="This action is unauthorized."
      *                      ),
      *                  }
      *              )
@@ -884,6 +886,126 @@ class DoctorController extends ApiController
      *          description="A doctor's identificator",
      *          in="query",
      *          example="1"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's e-mail",
+     *                      property="email",
+     *                      example="doctor@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's title",
+     *                      property="title",
+     *                      example="Dr."
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's first name",
+     *                      property="first_name",
+     *                      example="John"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's last name",
+     *                      property="last_name",
+     *                      example="Carter"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's description",
+     *                      property="description",
+     *                      example="I am a good doctor"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's phone number",
+     *                      property="phone_number",
+     *                      example="+3 8(032) 345-34-34"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's old password",
+     *                      property="old_password",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's password",
+     *                      property="password",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's password confirmation",
+     *                      property="password_confirmation",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's board certification",
+     *                      property="board_certification",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's medical degree",
+     *                      property="medical_degree",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="binary",
+     *                      description="A doctor's photo",
+     *                      property="photo",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="integer",
+     *                      description="A doctor's region ID",
+     *                      property="regions_id",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="integer",
+     *                      description="A doctor's specialization ID",
+     *                      property="specialization_id",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's city",
+     *                      property="city",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's country",
+     *                      property="country",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's address",
+     *                      property="address",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's postal code",
+     *                      property="postal_code",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="A doctor's state",
+     *                      property="state",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="number",
+     *                      description="A doctor's latitude",
+     *                      property="latitude",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="number",
+     *                      description="A doctor's longitude",
+     *                      property="longitude",
+     *                  ),
+     *              )
+     *          )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -994,7 +1116,7 @@ class DoctorController extends ApiController
             }
 
             $doctor->fill(
-                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'email')
+                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email')
             )->save();
 
             Location::updateOrCreate(
@@ -1030,6 +1152,13 @@ class DoctorController extends ApiController
      *          name="region_id",
      *          required=false,
      *          description="Filter doctors by region id",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Parameter(
+     *          name="specialization_id",
+     *          required=false,
+     *          description="Filter doctors by specialization id",
      *          in="query",
      *          example="1"
      *     ),
@@ -1161,11 +1290,194 @@ class DoctorController extends ApiController
     {
         $doctorsQuery = Doctor::query()
             ->whereStatus(Doctor::STATUS_ACTIVATED)
-            ->where($request->only(['region_id', 'first_name', 'last_name']))
+            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name']))
             ->orderBy(
                 $request->query('order_by', 'first_name'),
                 $request->query('direction', 'asc'));
 
         return DoctorResource::collection($doctorsQuery->paginate($request->query('per_page')));
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/activate",
+     *     summary="Create a request for activation a doctor",
+     *     description="Create a request for activation a doctor",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(response=200, description="A request has been succesfully created"),
+     *     @OA\Response(response=304, description="A request already created or a doctor activated"),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function activate(Doctor $doctor): void
+    {
+        abort_if(
+            $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED || $doctor->status === Doctor::STATUS_ACTIVATED,
+            304
+        );
+
+        $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
+
+        event(new DoctorRequestedActivation($doctor));
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/close",
+     *     summary="Close a doctor's account",
+     *     description="Close a doctor's account",
+     *     @OA\Parameter(
+     *          name="id",
+     *          required=true,
+     *          description="A doctor's identificator",
+     *          in="query",
+     *          example="1"
+     *     ),
+     *     @OA\Response(response=200, description="An account has been succesfully closed"),
+     *     @OA\Response(response=304, description="An account already closed"),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function close(Doctor $doctor): void
+    {
+        abort_if($doctor->status === Doctor::STATUS_CLOSED, 304);
+
+        $doctor->update(['status' => Doctor::STATUS_CLOSED]);
+
+        event(new DoctorClosedAccount($doctor));
     }
 }
