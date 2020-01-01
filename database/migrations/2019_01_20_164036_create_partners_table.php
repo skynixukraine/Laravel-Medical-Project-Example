@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Partner;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -23,23 +22,6 @@ class CreatePartnersTable extends Migration
             $table->string('mail_cc_address');
             $table->timestamps();
         });
-
-        // We are adding both partners through this migration
-        $ohn = new Partner;
-        $ohn->name="online-hautarzt.net";
-        $ohn->partner_id="ohn";
-        $ohn->mail_from_address="info@online-hautarzt.net";
-        $ohn->mail_from_name="Online Hautarzt - Appdoc";
-        $ohn->mail_cc_address="info@online-hautarzt.net";
-        $ohn->save();
-
-        $ohn = new Partner;
-        $ohn->name="intimarzt.de";
-        $ohn->partner_id="ita";
-        $ohn->mail_from_address="info@intimarzt.de";
-        $ohn->mail_from_name="Intimarzt.de";
-        $ohn->mail_cc_address="info@intimarzt.net";
-        $ohn->save();
     }
 
     /**

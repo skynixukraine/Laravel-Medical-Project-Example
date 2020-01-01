@@ -31,14 +31,6 @@ class MakeFieldsNullableInLocationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->string('address')->nullable(false)->change();
-            $table->string('city')->nullable(false)->change();
-            $table->string('state')->nullable(false)->change();
-            $table->string('country')->nullable(false)->change();
-            $table->integer('postal_code')->nullable(false)->change();
-            $table->float('latitude', 10, 6)->nullable(false)->change();
-            $table->float('longitude', 10, 6)->nullable(false)->change();
-        });
+
     }
 }

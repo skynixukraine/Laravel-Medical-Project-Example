@@ -41,10 +41,6 @@ class AddDoctorIdColumnToLocationsTable extends Migration
 
         Schema::table('doctors', function (Blueprint $table) {
             $table->unsignedInteger('location_id')->nullable(false);
-            $table->foreign('location_id')
-                ->references('id')
-                ->on('locations')
-                ->onDelete('cascade');
         });
     }
 }

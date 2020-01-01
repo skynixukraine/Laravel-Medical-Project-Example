@@ -54,8 +54,6 @@ class RefactorDoctorsTable extends Migration
             $table->dropColumn('title');
             $table->string('first_name')->nullable(false)->change();
             $table->string('last_name')->nullable(false)->change();
-            $table->string('description')->nullable(false)->change();
-            $table->unsignedInteger('region_id')->nullable(false)->change();
             $table->boolean('is_active')->default(0);
             $table->dropColumn('status');
         });
