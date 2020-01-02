@@ -32,8 +32,11 @@ use OpenApi\Annotations as OA;
  *     property="message"
  * )
  * @OA\Property(
- *     ref="#/components/schemas/MessageResource",
- *     property="next_message"
+ *     format="int64",
+ *     title="ID",
+ *     description="Next message identificator",
+ *     example="5",
+ *     property="next_message_id"
  * )
  */
 class MessageOptionResource extends JsonResource
