@@ -13,7 +13,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
@@ -78,14 +79,20 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     {
         return $this->belongsTo(Region::class);
     }
+
     public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class);
     }
 
-    public function location(): HasOne
+    public function location(): MorphOne
     {
-        return $this->hasOne(Location::class);
+        return $this->morphOne(Location::class, 'model');
+    }
+
+    public function enquires(): HasMany
+    {
+        return $this->hasMany(Enquire::class);
     }
 
     public function languages(): BelongsToMany

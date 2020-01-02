@@ -1120,7 +1120,7 @@ class DoctorController extends ApiController
             )->save();
 
             Location::updateOrCreate(
-                ['doctor_id' => $doctor->id],
+                ['model_id' => $doctor->id, 'model_type' => Doctor::class],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
         }, 2);

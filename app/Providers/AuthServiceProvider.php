@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Doctor;
+use App\Models\Enquire;
 use App\Policies\DoctorPolicy;
+use App\Policies\EnquirePolicy;
 use App\Policies\SubmissionPolicy;
 use App\Policies\UserPolicy;
 use App\Models\Submission;
@@ -20,10 +22,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-        Submission::class => SubmissionPolicy::class,
         User::class => UserPolicy::class,
         Doctor::class => DoctorPolicy::class,
+        Enquire::class => EnquirePolicy::class,
     ];
 
     /**

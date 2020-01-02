@@ -1376,6 +1376,133 @@
                 }
             }
         },
+        "/api/v1/messages/first": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get first message",
+                "description": "Get first message",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\MessageController::first",
+                "responses": {
+                    "200": {
+                        "description": "First message has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/MessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/messages/{id}": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get a message resource by id",
+                "description": "Get a message resource by id",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\MessageController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "A message's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A message has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/MessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/regions": {
             "get": {
                 "tags": [
@@ -1663,6 +1790,103 @@
                         "format": "double",
                         "example": 8.123,
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "MessageOptionResource": {
+                "title": "Message option resource",
+                "description": "Resource for a message option representation",
+                "properties": {
+                    "id": {
+                        "schema": "MessageOptionResource",
+                        "title": "ID",
+                        "description": "A message option's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "value": {
+                        "schema": "MessageOptionResource",
+                        "title": "A message option's value",
+                        "description": "A message option's value",
+                        "format": "string",
+                        "example": "value"
+                    },
+                    "message": {
+                        "schema": "MessageOptionResource",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "next_message_id": {
+                        "schema": "MessageOptionResource",
+                        "title": "ID",
+                        "description": "Next message identificator",
+                        "format": "int64",
+                        "example": "5"
+                    }
+                },
+                "type": "object"
+            },
+            "MessageResource": {
+                "title": "Message resource",
+                "description": "Resource for a message representation",
+                "properties": {
+                    "id": {
+                        "schema": "MessageResource",
+                        "title": "ID",
+                        "description": "A message's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "title": {
+                        "schema": "MessageResource",
+                        "title": "A message's title",
+                        "description": "A message's title",
+                        "format": "string",
+                        "example": "How are you?"
+                    },
+                    "content": {
+                        "schema": "MessageResource",
+                        "title": "A message's content",
+                        "description": "A message's content",
+                        "format": "string",
+                        "example": "How are you?"
+                    },
+                    "questioner": {
+                        "schema": "MessageResource",
+                        "title": "A message's questioner",
+                        "description": "A message's questioner",
+                        "format": "string",
+                        "example": "Doctor"
+                    },
+                    "type": {
+                        "schema": "MessageResource",
+                        "title": "A message's type",
+                        "description": "A message's type",
+                        "format": "string",
+                        "example": "simple"
+                    },
+                    "button": {
+                        "schema": "MessageResource",
+                        "title": "A message's button",
+                        "description": "A message's button",
+                        "format": "string",
+                        "example": "Click here!"
+                    },
+                    "next_message_id": {
+                        "schema": "MessageResource",
+                        "title": "ID",
+                        "description": "Next message identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "options": {
+                        "schema": "MessageResource",
+                        "title": "Options",
+                        "description": "Message's options",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/MessageOptionResource"
+                        }
                     }
                 },
                 "type": "object"

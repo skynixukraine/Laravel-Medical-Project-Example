@@ -5,48 +5,54 @@ declare(strict_types=1);
 namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Select;
 
-class MessageOption extends Resource
+class Enquire extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\MessageOption::class;
+    public static $model = \App\Models\Enquire::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
+     * Indicates if the resource should be displayed in the sidebar.
      *
-     * @var string
+     * @var bool
      */
-    public static $title = 'value';
+    public static $displayInNavigation = true;
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id', 'first_name', 'last_name', 'email', 'phone_number'];
 
     public static function label(): string
     {
-        return __('Message options');
+        return __('Enquires');
     }
 
     public static function singularLabel(): string
     {
-        return __('Message option');
+        return __('Enquire');
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return 'Enquire ' . $this->id;
     }
 
     /**
@@ -59,14 +65,27 @@ class MessageOption extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make(__('Value'), 'value')->sortable()->rules('required', 'max:255'),
-            Select::make(__('Next message'), 'next_message_id')->options(
-                \App\Models\Message::all()->mapWithKeys(function ($item) {
-                    return [$item->id => $item->title];
-                })
-            )->onlyOnForms(),
-            BelongsTo::make(__('Next message'), 'next', Message::class)->exceptOnForms(),
-            BelongsTo::make(__('Message'), 'message', Message::class),
+
+            Text::make(__('First name'), 'first_name')->sortable(),
+
+            Text::make(__('Last name'), 'last_name')->sortable(),
+
+            Text::make(__('E-mail'), 'email')->sortable(),
+
+            Text::make(__('Phone number'), 'phone_number')->sortable(),
+
+            Select::make(__('Gender'), 'gender')->sortable()->options([
+                \App\Models\Enquire::GENDER_MALE => 'MALE',
+                \App\Models\Enquire::GENDER_FEMALE => 'FEMALE',
+            ]),
+
+            BelongsTo::make(__('Doctor'), 'doctor', Doctor::class),
+
+            Date::make(__('Date of birth'), 'date_of_birth'),
+
+            DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
+
+            DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
         ];
     }
 

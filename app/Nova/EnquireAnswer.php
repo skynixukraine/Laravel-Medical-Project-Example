@@ -5,48 +5,68 @@ declare(strict_types=1);
 namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class MessageOption extends Resource
+class EnquireAnswer extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\MessageOption::class;
+    public static $model = \App\Models\EnquireAnswer::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
+     * Indicates if the resource should be displayed in the sidebar.
      *
-     * @var string
+     * @var bool
      */
-    public static $title = 'value';
+    public static $displayInNavigation = false;
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
     public static function label(): string
     {
-        return __('Message options');
+        return __('Enquire answers');
     }
 
     public static function singularLabel(): string
     {
-        return __('Message option');
+        return __('Enquire answer');
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return 'Enquire answer ' . $this->id;
+    }
+
+    public static $defaultSort = [
+        'message_id' => 'asc'
+    ];
+
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (static::$defaultSort && empty($request->get('orderBy'))) {
+            $query->getQuery()->orders = [];
+            foreach (static::$defaultSort as $field => $order) {
+                $query->orderBy($field, $order);
+            }
+        }
+
+        return $query;
     }
 
     /**
@@ -59,14 +79,14 @@ class MessageOption extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make(__('Value'), 'value')->sortable()->rules('required', 'max:255'),
-            Select::make(__('Next message'), 'next_message_id')->options(
-                \App\Models\Message::all()->mapWithKeys(function ($item) {
-                    return [$item->id => $item->title];
-                })
-            )->onlyOnForms(),
-            BelongsTo::make(__('Next message'), 'next', Message::class)->exceptOnForms(),
-            BelongsTo::make(__('Message'), 'message', Message::class),
+
+            BelongsTo::make(__('Enquire'), 'enquire', Enquire::class),
+
+            BelongsTo::make(__('Message'), 'message', Message::class, 'message')->sortable(),
+
+            BelongsTo::make(__('Message option'), 'option', MessageOption::class),
+
+            Text::make(__('Value'), 'value')->sortable(),
         ];
     }
 
