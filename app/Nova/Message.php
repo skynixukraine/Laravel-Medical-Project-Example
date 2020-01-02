@@ -87,7 +87,7 @@ class Message extends Resource
     private function optionsField()
     {
         $message = $this->model();
-        return $this->mergeWhen(in_array($message->type, [MessageModel::TYPE_RADIO, MessageModel::TYPE_SELECT], true), [
+        return $this->mergeWhen($message->id === null || in_array($message->type, [MessageModel::TYPE_RADIO, MessageModel::TYPE_SELECT], true), [
             HasMany::make(__('Options'), 'options', MessageOption::class)->onlyOnDetail()
         ]);
     }
