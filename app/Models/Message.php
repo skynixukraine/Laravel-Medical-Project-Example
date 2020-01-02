@@ -38,6 +38,6 @@ class Message extends Model
     {
         return $this->hasMany(MessageOption::class)
             ->leftJoin('messages', 'message_options.message_id', '=', 'messages.id')
-            ->whereIn('messages.type', [self::TYPE_SELECT, self::TYPE_RADIO, self::TYPE_BODY_SELECT]);
+            ->whereIn('messages.type', [self::TYPE_SELECT, self::TYPE_RADIO]);
     }
 }
