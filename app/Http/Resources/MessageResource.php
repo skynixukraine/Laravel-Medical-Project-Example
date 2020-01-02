@@ -78,7 +78,7 @@ class MessageResource extends JsonResource
             'type' => $this->type,
             'button' => $this->type,
             'next_message_id' => $this->next_message_id,
-            'options' => $this->options,
+            'options' => MessageOptionResource::collection($this->options),
         ];
     }
 }
