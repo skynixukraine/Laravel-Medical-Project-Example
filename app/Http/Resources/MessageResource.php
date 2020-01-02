@@ -76,7 +76,7 @@ class MessageResource extends JsonResource
             'content' => $this->content,
             'questioner' => $this->questioner,
             'type' => $this->type,
-            'button' => $this->type,
+            'button' => $this->button,
             'next_message_id' => $this->next_message_id,
             'options' => MessageOptionResource::collection($this->options),
         ];
