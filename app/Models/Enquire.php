@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Enquire extends Model
 {
-    public const GENDER_MALE = 'male';
-    public const GENDER_FEMALE = 'female';
+    public const STATUS_UNREAD = 'UNREAD';
+    public const STATUS_READ = 'READ';
+    public const STATUS_ARCHIVED = 'ARCHIVED';
+
+    public const GENDER_MALE = 'MALE';
+    public const GENDER_FEMALE = 'FEMALE';
 
     protected $fillable = [
         'first_name',
@@ -27,6 +30,7 @@ class Enquire extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'date_of_birth' => 'date',
+        'is_paid' => 'boolean',
     ];
 
     public function location(): MorphOne
