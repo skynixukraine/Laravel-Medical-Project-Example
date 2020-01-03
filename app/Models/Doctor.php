@@ -22,6 +22,7 @@ use Laravel\Passport\HasApiTokens;
  * Class Doctor
  * @package App\Models
  *
+ * @property int id
  * @property string|null photo
  * @property string|null board_certification
  * @property string|null medical_degree
