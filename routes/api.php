@@ -69,4 +69,6 @@ Route::prefix('v1')->middleware(['auth:api'])->group(function () {
     Route::patch('doctors/{doctor}', 'API\V1\DoctorController@update')->middleware('can:update,doctor');
     Route::patch('doctors/{doctor}/activate', 'API\V1\DoctorController@activate')->middleware('can:activate,doctor');
     Route::patch('doctors/{doctor}/close', 'API\V1\DoctorController@close')->middleware('can:close,doctor');
+    Route::get('enquires', 'API\V1\EnquireController@index')->name('enquires.index');
+    Route::get('enquires/{enquire}', 'API\V1\EnquireController@show')->middleware('can:view,enquire');
 });
