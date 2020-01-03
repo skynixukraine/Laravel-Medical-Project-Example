@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Enquire;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class EnquirePolicy
@@ -16,6 +17,10 @@ class EnquirePolicy
 
     public function view($user, Enquire $enquire)
     {
-        return true;
+        if ($user instanceof User) {
+            return true;
+        }
+
+        return $enquire->doctor_id === $user->id;
     }
 }
