@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Enquire;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,13 +21,19 @@ class RefactorEnquiresTable extends Migration
             $table->dropColumn('city');
             $table->string('phone_number');
             $table->string('email');
-
+            $table->text('conclusion')->nullable(true);
+            $table->enum('status', [Enquire::STATUS_UNREAD, Enquire::STATUS_READ, Enquire::STATUS_ARCHIVED])
+                ->default(Enquire::STATUS_UNREAD);
+            $table->boolean('is_paid')->default(false);
             $table->unsignedInteger('doctor_id')->nullable();
             $table->foreign('doctor_id')
                 ->references('id')
                 ->on('doctors')
                 ->onDelete('set null');
         });
+
+        DB::statement('ALTER TABLE enquires MODIFY COLUMN gender ENUM(\''
+            . Enquire::GENDER_MALE . '\', \'' . Enquire::GENDER_FEMALE . '\')');
 
         Schema::table('locations', function (Blueprint $table) {
             $table->dropForeign('locations_doctor_id_foreign');
@@ -49,6 +57,10 @@ class RefactorEnquiresTable extends Migration
             $table->string('street');
             $table->dropForeign('enquires_doctor_id_foreign');
             $table->dropColumn('doctor_id');
+            $table->dropColumn('status');
+            $table->dropColumn('is_paid');
+            $table->dropColumn('conclusion');
+            DB::statement("ALTER TABLE enquires MODIFY COLUMN gender ENUM('male', 'female')");
         });
 
         Schema::table('locations', function (Blueprint $table) {
