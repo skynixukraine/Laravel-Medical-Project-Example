@@ -11,7 +11,7 @@ class EnquireAnswer extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['value'];
+    protected $fillable = ['message_id', 'enquire_id', 'message_option_id', 'value'];
 
     public function enquire(): BelongsTo
     {
