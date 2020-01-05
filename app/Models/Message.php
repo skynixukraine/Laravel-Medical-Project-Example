@@ -37,6 +37,7 @@ class Message extends Model
     public function options(): HasMany
     {
         return $this->hasMany(MessageOption::class)
+            ->select('message_options.*')
             ->leftJoin('messages', 'message_options.message_id', '=', 'messages.id')
             ->whereIn('messages.type', [self::TYPE_SELECT, self::TYPE_RADIO]);
     }
