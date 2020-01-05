@@ -14,6 +14,8 @@ class StorageService
     private const DOCTORS_MEDICAL_DEGREES_DIR = 'doctors/medical_degrees';
     private const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
 
+    private const ENQUIRE_IMAGES_DIR = 'enquires/images';
+
     /**
      * @param UploadedFile $photo
      * @return string
@@ -50,6 +52,15 @@ class StorageService
             $file,
             self::DOCTORS_BOARD_CERTIFICATION_DIR . '/' . date('Y/m/d'),
             $file->hashName()
+        );
+    }
+
+    public function saveEnquireImage(UploadedFile $image): string
+    {
+        return $this->saveFile(
+            $image,
+            self::ENQUIRE_IMAGES_DIR . '/' . date('Y/m/d'),
+            $image->hashName()
         );
     }
 
