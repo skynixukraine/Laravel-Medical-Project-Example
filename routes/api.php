@@ -61,6 +61,7 @@ Route::prefix('v1')->group(function () {
     Route::get('resend/{id}', 'API\V1\DoctorController@resend')->name('verification.resend');
     Route::get('messages/first', 'API\V1\MessageController@first')->name('messages.first');
     Route::get('messages/{message}', 'API\V1\MessageController@show')->name('messages.show');
+    Route::post('enquires', 'API\V1\EnquireController@create')->name('enquire.create');
 });
 
 Route::prefix('v1')->middleware(['auth:api'])->group(function () {
