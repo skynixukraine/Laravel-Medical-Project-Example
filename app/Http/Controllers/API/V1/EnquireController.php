@@ -6,15 +6,29 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Resources\EnquireResource;
 use App\Models\Enquire;
+use App\Models\EnquireAnswer;
 use App\Models\Message;
 use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class EnquireController extends ApiController
 {
+    private $storage;
+
+    /**
+     * EnquireController constructor.
+     * @param $storage
+     */
+    public function __construct(StorageService $storage)
+    {
+        $this->storage = $storage;
+    }
+
     /**
      * @OA\Get(
      *     tags={"Enquires"},
@@ -205,33 +219,71 @@ class EnquireController extends ApiController
         return EnquireResource::collection($enquires->paginate($request->query('per_page', 50)));
     }
 
-    public function create(Request $request, StorageService $storage)
+    public function create(Request $request)
     {
-        DB::transaction(function () use ($request, $storage) {
-            $enquire = Enquire::create($request->only([
-                'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'email', 'doctor_id'
-            ]));
+        $enquire = new Enquire($request->only([
+            'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'email', 'doctor_id'
+        ]));
 
+        DB::transaction(function () use ($request, $enquire) {
+            $enquire->save();
             $enquire->location()->create($request->only([
                 'address', 'state', 'city', 'country', 'postal_code', 'latitude', 'longitude'
             ]));
 
             foreach ($request->answers as $messageId => $answers) {
                 $message = Message::query()->findOrFail($messageId);
-                if ($message->type === Message::TYPE_SIMPLE) {
-                    continue;
-                }
-
-                foreach ($answers as $answer) {
-                    $message->answers()->create([
+                $processMethod = 'create' . Str::ucfirst(Str::camel($message->type)) . 'Answer';
+                if (method_exists($this, $processMethod)) {
+                    $this->$processMethod(new EnquireAnswer([
+                        'message_id' => $message->id,
                         'enquire_id' => $enquire->id,
-                        'value' => $answer,
-                        'message_option_id' => collect([Message::TYPE_BODY_SELECT, Message::TYPE_SELECT, Message::TYPE_RADIO])
-                            ->contains($message->type) ? $answer : null,
-                    ]);
+                    ]), $answers);
                 }
             }
         });
+
+        return EnquireResource::make($enquire->fresh());
+    }
+
+    private function createTextAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    {
+        $enquireAnswer->value = is_array($answers) ? ($answers[0] ?? null) : $answers;
+        $enquireAnswer->saveOrFail();
+    }
+
+    private function createSelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    {
+        $answers = is_array($answers) ? $answers : [$answers];
+
+        foreach ($answers as $answer) {
+            $currentEnquireAnswer = clone $enquireAnswer;
+            $currentEnquireAnswer->message_option_id = (int) $answer;
+            $currentEnquireAnswer->saveOrFail();
+        }
+    }
+
+    private function createRadioAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    {
+        $enquireAnswer->message_option_id = (int) is_array($answers) ? $answers[0] : $answers;
+        $enquireAnswer->saveOrFail();
+    }
+
+    private function createBodySelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    {
+        $this->createSelectAnswer($enquireAnswer, $answers);
+    }
+
+    private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    {
+        $image = is_array($answers) ? ($answers[0] ?? null) : $answers;
+
+        Validator::make(['image' => $image], [
+            'image' => 'mimes:jpg,png,jpeg|max:50000'
+        ])->validate();
+
+        $enquireAnswer->value = $this->storage->saveEnquireImage($image);
+        $enquireAnswer->saveOrFail();
     }
 
     /**
