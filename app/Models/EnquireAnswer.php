@@ -23,6 +23,11 @@ class EnquireAnswer extends Model
         return $this->BelongsTo(Message::class);
     }
 
+    public function message_option(): BelongsTo
+    {
+        return $this->BelongsTo(MessageOption::class);
+    }
+
     public function option(): BelongsTo
     {
         return $this->BelongsTo(MessageOption::class, 'message_option_id', 'id');
