@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Http\Requests\Enquire\Create;
 use App\Http\Resources\EnquireResource;
 use App\Models\Enquire;
 use App\Models\EnquireAnswer;
@@ -218,8 +219,185 @@ class EnquireController extends ApiController
 
         return EnquireResource::collection($enquires->paginate($request->query('per_page', 50)));
     }
-
-    public function create(Request $request)
+    /**
+     * @OA\Post(
+     *     tags={"Enquires"},
+     *     path="/api/v1/enquires",
+     *     summary="Create a new enquire",
+     *     description="Create a new enquire",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"first_name", "last_name", "gender", "date_of_birth", "phone_number", "email", "doctor_id"},
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's first name",
+     *                      property="first_name",
+     *                      example="John"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's last name",
+     *                      property="last_name",
+     *                      example="Carter"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's e-mail",
+     *                      property="email",
+     *                      example="test@gmail.com"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's gender",
+     *                      property="gender",
+     *                      example="MALE"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's date of birth",
+     *                      property="date_of_birth",
+     *                      example="1993-02-05"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire customer's phone number",
+     *                      property="phone_number",
+     *                      example="+38 (099) 548-54-85"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      description="An enquire's doctor ID",
+     *                      property="doctor_id",
+     *                      example="5"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="A location's country",
+     *                      description="A location's country",
+     *                      property="country",
+     *                      example="USA"
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="A location's city",
+     *                      description="A location's city",
+     *                      property="city",
+     *                      example="New York",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="A location's state",
+     *                      description="A location's state",
+     *                      property="state",
+     *                      example="New York",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="A location's postal code",
+     *                      description="A location's postal code",
+     *                      property="postal_code",
+     *                      example="12345",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="A location's address",
+     *                      description="A location's address",
+     *                      property="address",
+     *                      example="address",
+     *                  ),
+     *                  @OA\Property(
+     *                      format="double",
+     *                      title="A location's latitude",
+     *                      description="A location's latitude",
+     *                      property="latitude",
+     *                      example=5.123,
+     *                      nullable=true
+     *                  ),
+     *                  @OA\Property(
+     *                      format="double",
+     *                      title="A location's longitude",
+     *                      description="A location's longitude",
+     *                      property="longitude",
+     *                      example=8.123,
+     *                      nullable=true
+     *                  )
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="An enquire has been succesfully created",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          ref="#/components/schemas/EnquireResource",
+     *                          property="data"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="There are some validation errors",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  schema="ValidationError",
+     *                  title="Validation error",
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="The given data was invalid."
+     *                      ),
+     *                      @OA\Property(
+     *                          property="errors",
+     *                          format="object",
+     *                          @OA\Property(
+     *                              property="email",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The email field is required."
+     *                              ),
+     *                          ),
+     *                          @OA\Property(
+     *                              property="first_name",
+     *                              @OA\Items(
+     *                                  type="string",
+     *                                  example="The first name field is required."
+     *                              ),
+     *                          ),
+     *                      ),
+     *                  }
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Server Error."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function create(Create $request)
     {
         $enquire = new Enquire($request->only([
             'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'email', 'doctor_id'
@@ -243,7 +421,10 @@ class EnquireController extends ApiController
             }
         });
 
-        return EnquireResource::make($enquire->fresh());
+        $enquire = $enquire->fresh();
+        $enquire->wasRecentlyCreated = true;
+
+        return EnquireResource::make($enquire);
     }
 
     private function createTextAnswer(EnquireAnswer $enquireAnswer, $answers): void
