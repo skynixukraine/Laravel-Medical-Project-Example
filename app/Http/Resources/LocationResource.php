@@ -42,7 +42,7 @@ use OpenApi\Annotations as OA;
  *     example="New York",
  * )
  * @OA\Property(
- *     format="int64",
+ *     format="string",
  *     title="A location's postal code",
  *     description="A location's postal code",
  *     property="postal_code",
