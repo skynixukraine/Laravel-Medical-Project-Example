@@ -97,6 +97,19 @@ use OpenApi\Annotations as OA;
  *     property="is_paid",
  *     example="true"
  * ),
+ * @OA\Property(
+ *     ref="#/components/schemas/LocationResource",
+ *     property="location"
+ * ),
+ * @OA\Property(
+ *     @OA\Items(
+ *          type="object",
+ *          ref="#/components/schemas/EnquireAnswerResource"
+ *     ),
+ *     title="Answers",
+ *     description="An enquire's answers",
+ *     property="answers",
+ * ),
  */
 class EnquireResource extends JsonResource
 {
@@ -121,6 +134,8 @@ class EnquireResource extends JsonResource
             'conclusion' => $this->conclusion,
             'status' => $this->status,
             'is_paid' => $this->is_paid,
+            'location' => new LocationResource($this->location),
+            'answers' => EnquireAnswerResource::collection($this->answers),
         ];
     }
 }
