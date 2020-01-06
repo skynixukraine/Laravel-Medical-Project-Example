@@ -1472,6 +1472,183 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Create a new enquire",
+                "description": "Create a new enquire",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "gender",
+                                    "date_of_birth",
+                                    "phone_number",
+                                    "email",
+                                    "doctor_id"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "description": "An enquire customer's first name",
+                                        "format": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "description": "An enquire customer's last name",
+                                        "format": "string",
+                                        "example": "Carter"
+                                    },
+                                    "email": {
+                                        "description": "An enquire customer's e-mail",
+                                        "format": "string",
+                                        "example": "test@gmail.com"
+                                    },
+                                    "gender": {
+                                        "description": "An enquire customer's gender",
+                                        "format": "string",
+                                        "example": "MALE"
+                                    },
+                                    "date_of_birth": {
+                                        "description": "An enquire customer's date of birth",
+                                        "format": "string",
+                                        "example": "1993-02-05"
+                                    },
+                                    "phone_number": {
+                                        "description": "An enquire customer's phone number",
+                                        "format": "string",
+                                        "example": "+38 (099) 548-54-85"
+                                    },
+                                    "doctor_id": {
+                                        "description": "An enquire's doctor ID",
+                                        "format": "string",
+                                        "example": "5"
+                                    },
+                                    "country": {
+                                        "title": "A location's country",
+                                        "description": "A location's country",
+                                        "format": "string",
+                                        "example": "USA"
+                                    },
+                                    "city": {
+                                        "title": "A location's city",
+                                        "description": "A location's city",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "state": {
+                                        "title": "A location's state",
+                                        "description": "A location's state",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "postal_code": {
+                                        "title": "A location's postal code",
+                                        "description": "A location's postal code",
+                                        "format": "string",
+                                        "example": "12345"
+                                    },
+                                    "address": {
+                                        "title": "A location's address",
+                                        "description": "A location's address",
+                                        "format": "string",
+                                        "example": "address"
+                                    },
+                                    "latitude": {
+                                        "title": "A location's latitude",
+                                        "description": "A location's latitude",
+                                        "format": "double",
+                                        "example": 5.123,
+                                        "nullable": true
+                                    },
+                                    "longitude": {
+                                        "title": "A location's longitude",
+                                        "description": "A location's longitude",
+                                        "format": "double",
+                                        "example": 8.123,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "An enquire has been succesfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "first_name": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The first name field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Server Error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/v1/enquires/{id}": {
@@ -1942,6 +2119,37 @@
                 },
                 "type": "object"
             },
+            "EnquireAnswerResource": {
+                "title": "Location resource",
+                "description": "Resource for a location representation",
+                "properties": {
+                    "id": {
+                        "schema": "EnquireAnswerResource",
+                        "title": "ID",
+                        "description": "An enquire answers's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "message": {
+                        "schema": "EnquireAnswerResource",
+                        "description": "An enquire answers's message",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "message_option": {
+                        "schema": "EnquireAnswerResource",
+                        "description": "An enquire answers's selected message option",
+                        "$ref": "#/components/schemas/MessageOptionResource"
+                    },
+                    "value": {
+                        "schema": "EnquireAnswerResource",
+                        "title": "Value",
+                        "description": "An enquire answers's value",
+                        "format": "string",
+                        "example": "Test"
+                    }
+                },
+                "type": "object"
+            },
             "EnquireResource": {
                 "title": "Enquire resource",
                 "description": "Resource for an enquire representation",
@@ -2029,6 +2237,19 @@
                         "description": "Is an enquire paid",
                         "format": "boolean",
                         "example": "true"
+                    },
+                    "location": {
+                        "schema": "EnquireResource",
+                        "$ref": "#/components/schemas/LocationResource"
+                    },
+                    "answers": {
+                        "schema": "EnquireResource",
+                        "title": "Answers",
+                        "description": "An enquire's answers",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/EnquireAnswerResource"
+                        }
                     }
                 },
                 "type": "object"
@@ -2097,7 +2318,7 @@
                         "schema": "LocationResource",
                         "title": "A location's postal code",
                         "description": "A location's postal code",
-                        "format": "int64",
+                        "format": "string",
                         "example": "12345"
                     },
                     "address": {
