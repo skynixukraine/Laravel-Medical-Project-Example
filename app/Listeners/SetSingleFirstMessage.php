@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\MessageSaved;
-use App\Events\UserRegisteredEvent;
 use App\Models\Message;
-use App\Notifications\RegistrationCompletedNotification;
-use Illuminate\Support\Facades\Notification;
 
 class SetSingleFirstMessage
 {
