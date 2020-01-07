@@ -452,7 +452,13 @@ class EnquireController extends ApiController
 
     private function createBodySelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
     {
-        $this->createSelectAnswer($enquireAnswer, $answers);
+        $answers = is_array($answers) ? $answers : [$answers];
+
+        foreach ($answers as $answer) {
+            $currentEnquireAnswer = clone $enquireAnswer;
+            $currentEnquireAnswer->value = $answer;
+            $currentEnquireAnswer->saveOrFail();
+        }
     }
 
     private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers): void
