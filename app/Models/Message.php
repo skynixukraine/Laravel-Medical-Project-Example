@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\MessageSaved;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +19,15 @@ class Message extends Model
     public const TYPE_SELECT = 'select';
     public const TYPE_BODY_SELECT = 'body-select';
     public const TYPE_IMAGE = 'image';
+
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saved' => MessageSaved::class,
+    ];
 
     protected $fillable = [
         'title',

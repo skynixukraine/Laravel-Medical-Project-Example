@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\MessageSaved;
+use App\Listeners\SetSingleFirstMessage;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -48,6 +50,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DoctorDeactivated::class => [
             \App\Listeners\SendDoctorDeactivatedNotification::class,
         ],
+
+        \App\Events\MessageSaved::class => [
+            \App\Listeners\SetSingleFirstMessage::class
+        ]
     ];
 
     /**
