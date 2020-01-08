@@ -13,12 +13,12 @@ class Message extends Model
 {
     public $timestamps = false;
 
-    public const TYPE_SIMPLE = 'simple';
-    public const TYPE_TEXT = 'text';
-    public const TYPE_RADIO = 'radio';
-    public const TYPE_SELECT = 'select';
-    public const TYPE_BODY_SELECT = 'body-select';
-    public const TYPE_IMAGE = 'image';
+    public const TYPE_SIMPLE = 'SIMPLE';
+    public const TYPE_TEXT = 'TEXT';
+    public const TYPE_RADIO = 'RADIO';
+    public const TYPE_SELECT = 'SELECT';
+    public const TYPE_BODY_SELECT = 'BODY-SELECT';
+    public const TYPE_IMAGE = 'IMAGE';
 
     /**
      * The event map for the model.
