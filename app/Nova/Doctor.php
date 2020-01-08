@@ -46,7 +46,7 @@ class Doctor extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'first_name', 'last_name',
+        'id', 'first_name', 'last_name', 'email', 'phone_number', 'title'
     ];
 
     public function title()
