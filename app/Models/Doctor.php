@@ -34,7 +34,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string email
  * @property string status
  * @property string password
- * @property integer region_id
+ * @property int region_id
  * @property Region|null region
  * @property Specialization|null specialization
  * @property Language[] languages
