@@ -25,8 +25,6 @@ class MakeDescriptionTextTypeInDoctorsTable extends Migration
      */
     public function down()
     {
-        Schema::table('doctors_column', function (Blueprint $table) {
-            $table->string('description')->nullable(true)->change();
-        });
+
     }
 }

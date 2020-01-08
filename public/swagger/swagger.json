@@ -703,15 +703,6 @@
                 "summary": "Get a doctor resource by id",
                 "description": "Get a doctor resource by id",
                 "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::show",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "A doctor's identificator",
-                        "required": true,
-                        "example": "1"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "A doctor has been succesfully received",
@@ -1330,6 +1321,427 @@
                 }
             }
         },
+        "/api/v1/enquires": {
+            "get": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Get enquires page",
+                "description": "Get enquires page",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::index",
+                "parameters": [
+                    {
+                        "name": "with_archived",
+                        "in": "query",
+                        "description": "Include archived enquires or not. Default not",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter enquires by status. Possible values: UNREAD, READ, ARCHIVED",
+                        "required": false,
+                        "example": "UNREAD"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items amount on page",
+                        "required": false,
+                        "example": "15"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search string",
+                        "required": false,
+                        "example": "John"
+                    },
+                    {
+                        "name": "search_field",
+                        "in": "query",
+                        "description": "Search field. Possible values: id, first_name, last_name, phone_number, email",
+                        "required": false,
+                        "example": "first_name"
+                    },
+                    {
+                        "name": "order_field",
+                        "in": "query",
+                        "description": "Order field. Possible values: id, first_name, last_name, phone_number, email, status, conclusion, created_at",
+                        "required": false,
+                        "example": "first_name"
+                    },
+                    {
+                        "name": "order_direction",
+                        "in": "query",
+                        "description": "Order direction. Possible values: asc, desc",
+                        "required": false,
+                        "example": "asc"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Enquires has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "Enquires",
+                                            "description": "Enquires list",
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/EnquireResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "items": {
+                                                "properties": {
+                                                    "first": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=1"
+                                                    },
+                                                    "last": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=10"
+                                                    },
+                                                    "prev": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=4"
+                                                    },
+                                                    "next": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=6"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "items": {
+                                                "properties": {
+                                                    "current_page": {
+                                                        "example": "5"
+                                                    },
+                                                    "from": {
+                                                        "example": "9"
+                                                    },
+                                                    "last_page": {
+                                                        "example": "10"
+                                                    },
+                                                    "path": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires"
+                                                    },
+                                                    "per_page": {
+                                                        "example": "2"
+                                                    },
+                                                    "to": {
+                                                        "example": "10"
+                                                    },
+                                                    "total": {
+                                                        "example": "19"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Create a new enquire",
+                "description": "Create a new enquire",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "first_name",
+                                    "last_name",
+                                    "gender",
+                                    "date_of_birth",
+                                    "phone_number",
+                                    "email",
+                                    "doctor_id"
+                                ],
+                                "properties": {
+                                    "first_name": {
+                                        "description": "An enquire customer's first name",
+                                        "format": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "description": "An enquire customer's last name",
+                                        "format": "string",
+                                        "example": "Carter"
+                                    },
+                                    "email": {
+                                        "description": "An enquire customer's e-mail",
+                                        "format": "string",
+                                        "example": "test@gmail.com"
+                                    },
+                                    "gender": {
+                                        "description": "An enquire customer's gender",
+                                        "format": "string",
+                                        "example": "MALE"
+                                    },
+                                    "date_of_birth": {
+                                        "description": "An enquire customer's date of birth",
+                                        "format": "string",
+                                        "example": "1993-02-05"
+                                    },
+                                    "phone_number": {
+                                        "description": "An enquire customer's phone number",
+                                        "format": "string",
+                                        "example": "+38 (099) 548-54-85"
+                                    },
+                                    "doctor_id": {
+                                        "description": "An enquire's doctor ID",
+                                        "format": "string",
+                                        "example": "5"
+                                    },
+                                    "country": {
+                                        "title": "A location's country",
+                                        "description": "A location's country",
+                                        "format": "string",
+                                        "example": "USA"
+                                    },
+                                    "city": {
+                                        "title": "A location's city",
+                                        "description": "A location's city",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "state": {
+                                        "title": "A location's state",
+                                        "description": "A location's state",
+                                        "format": "string",
+                                        "example": "New York"
+                                    },
+                                    "postal_code": {
+                                        "title": "A location's postal code",
+                                        "description": "A location's postal code",
+                                        "format": "string",
+                                        "example": "12345"
+                                    },
+                                    "address": {
+                                        "title": "A location's address",
+                                        "description": "A location's address",
+                                        "format": "string",
+                                        "example": "address"
+                                    },
+                                    "latitude": {
+                                        "title": "A location's latitude",
+                                        "description": "A location's latitude",
+                                        "format": "double",
+                                        "example": 5.123,
+                                        "nullable": true
+                                    },
+                                    "longitude": {
+                                        "title": "A location's longitude",
+                                        "description": "A location's longitude",
+                                        "format": "double",
+                                        "example": 8.123,
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "An enquire has been succesfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "first_name": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The first name field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Server Error."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}": {
+            "get": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Get an enquires resource by id",
+                "description": "Get a enquires resource by id",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::show",
+                "responses": {
+                    "200": {
+                        "description": "An enquire has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/languages": {
             "get": {
                 "tags": [
@@ -1350,6 +1762,133 @@
                                                 "type": "object",
                                                 "$ref": "#/components/schemas/LanguageResource"
                                             }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/messages/first": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get first message",
+                "description": "Get first message",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\MessageController::first",
+                "responses": {
+                    "200": {
+                        "description": "First message has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/MessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/messages/{id}": {
+            "get": {
+                "tags": [
+                    "Messages"
+                ],
+                "summary": "Get a message resource by id",
+                "description": "Get a message resource by id",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\MessageController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "A message's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A message has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/MessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
                                         }
                                     },
                                     "type": "object"
@@ -1530,6 +2069,12 @@
                         "format": "string",
                         "example": "test@gmail.com"
                     },
+                    "phone_number": {
+                        "title": "Phone number",
+                        "description": "An doctor's phone number",
+                        "format": "string",
+                        "example": "+38 024-548-58-55"
+                    },
                     "description": {
                         "title": "Desctiption",
                         "description": "A doctor's description",
@@ -1569,6 +2114,141 @@
                         "items": {
                             "type": "object",
                             "$ref": "#/components/schemas/LanguageResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "EnquireAnswerResource": {
+                "title": "Location resource",
+                "description": "Resource for a location representation",
+                "properties": {
+                    "id": {
+                        "schema": "EnquireAnswerResource",
+                        "title": "ID",
+                        "description": "An enquire answers's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "message": {
+                        "schema": "EnquireAnswerResource",
+                        "description": "An enquire answers's message",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "message_option": {
+                        "schema": "EnquireAnswerResource",
+                        "description": "An enquire answers's selected message option",
+                        "$ref": "#/components/schemas/MessageOptionResource"
+                    },
+                    "value": {
+                        "schema": "EnquireAnswerResource",
+                        "title": "Value",
+                        "description": "An enquire answers's value",
+                        "format": "string",
+                        "example": "Test"
+                    }
+                },
+                "type": "object"
+            },
+            "EnquireResource": {
+                "title": "Enquire resource",
+                "description": "Resource for an enquire representation",
+                "properties": {
+                    "id": {
+                        "schema": "EnquireResource",
+                        "title": "ID",
+                        "description": "An enquire's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "first_name": {
+                        "schema": "EnquireResource",
+                        "title": "First name",
+                        "description": "An enquire customer's first name",
+                        "format": "string",
+                        "example": "Davide"
+                    },
+                    "last_name": {
+                        "schema": "EnquireResource",
+                        "title": "Last name",
+                        "description": "An enquire customers's last name",
+                        "format": "string",
+                        "example": "Donghi"
+                    },
+                    "gender": {
+                        "schema": "EnquireResource",
+                        "title": "Gender",
+                        "description": "An enquire customer's gender",
+                        "format": "string",
+                        "example": "MALE"
+                    },
+                    "date_of_birth": {
+                        "schema": "EnquireResource",
+                        "title": "Date of birth",
+                        "description": "Date of birth representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "created_at": {
+                        "schema": "EnquireResource",
+                        "title": "Created at",
+                        "description": "Created datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "updated_at": {
+                        "schema": "EnquireResource",
+                        "title": "Updated at",
+                        "description": "Last updated datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "phone_number": {
+                        "schema": "EnquireResource",
+                        "title": "Phone number",
+                        "description": "An enquire customer's phone number",
+                        "format": "string",
+                        "example": "+38 024-548-58-55"
+                    },
+                    "email": {
+                        "schema": "EnquireResource",
+                        "title": "E-mail",
+                        "description": "An enquire customer's e-mail",
+                        "format": "string",
+                        "example": "test@gmail.com"
+                    },
+                    "conclusion": {
+                        "schema": "EnquireResource",
+                        "title": "Conclusion",
+                        "description": "A doctors's conclusion",
+                        "format": "string",
+                        "example": "Everythink will be fine"
+                    },
+                    "status": {
+                        "schema": "EnquireResource",
+                        "title": "Status",
+                        "description": "An enquire's status",
+                        "format": "string",
+                        "example": "UNREAD"
+                    },
+                    "is_paid": {
+                        "schema": "EnquireResource",
+                        "title": "Is paid",
+                        "description": "Is an enquire paid",
+                        "format": "boolean",
+                        "example": "true"
+                    },
+                    "location": {
+                        "schema": "EnquireResource",
+                        "$ref": "#/components/schemas/LocationResource"
+                    },
+                    "answers": {
+                        "schema": "EnquireResource",
+                        "title": "Answers",
+                        "description": "An enquire's answers",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/EnquireAnswerResource"
                         }
                     }
                 },
@@ -1638,7 +2318,7 @@
                         "schema": "LocationResource",
                         "title": "A location's postal code",
                         "description": "A location's postal code",
-                        "format": "int64",
+                        "format": "string",
                         "example": "12345"
                     },
                     "address": {
@@ -1663,6 +2343,103 @@
                         "format": "double",
                         "example": 8.123,
                         "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "MessageOptionResource": {
+                "title": "Message option resource",
+                "description": "Resource for a message option representation",
+                "properties": {
+                    "id": {
+                        "schema": "MessageOptionResource",
+                        "title": "ID",
+                        "description": "A message option's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "value": {
+                        "schema": "MessageOptionResource",
+                        "title": "A message option's value",
+                        "description": "A message option's value",
+                        "format": "string",
+                        "example": "value"
+                    },
+                    "message": {
+                        "schema": "MessageOptionResource",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "next_message_id": {
+                        "schema": "MessageOptionResource",
+                        "title": "ID",
+                        "description": "Next message identificator",
+                        "format": "int64",
+                        "example": "5"
+                    }
+                },
+                "type": "object"
+            },
+            "MessageResource": {
+                "title": "Message resource",
+                "description": "Resource for a message representation",
+                "properties": {
+                    "id": {
+                        "schema": "MessageResource",
+                        "title": "ID",
+                        "description": "A message's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "title": {
+                        "schema": "MessageResource",
+                        "title": "A message's title",
+                        "description": "A message's title",
+                        "format": "string",
+                        "example": "How are you?"
+                    },
+                    "content": {
+                        "schema": "MessageResource",
+                        "title": "A message's content",
+                        "description": "A message's content",
+                        "format": "string",
+                        "example": "How are you?"
+                    },
+                    "questioner": {
+                        "schema": "MessageResource",
+                        "title": "A message's questioner",
+                        "description": "A message's questioner",
+                        "format": "string",
+                        "example": "Doctor"
+                    },
+                    "type": {
+                        "schema": "MessageResource",
+                        "title": "A message's type",
+                        "description": "A message's type",
+                        "format": "string",
+                        "example": "simple"
+                    },
+                    "button": {
+                        "schema": "MessageResource",
+                        "title": "A message's button",
+                        "description": "A message's button",
+                        "format": "string",
+                        "example": "Click here!"
+                    },
+                    "next_message_id": {
+                        "schema": "MessageResource",
+                        "title": "ID",
+                        "description": "Next message identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "options": {
+                        "schema": "MessageResource",
+                        "title": "Options",
+                        "description": "Message's options",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/MessageOptionResource"
+                        }
                     }
                 },
                 "type": "object"

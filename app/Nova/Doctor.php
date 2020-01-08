@@ -10,15 +10,14 @@ use App\Services\StorageService;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\File;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\PasswordConfirmation;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 
@@ -42,20 +41,22 @@ class Doctor extends Resource
     public static $model = \App\Models\Doctor::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
-
-    /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = [
-        'id', 'first_name', 'last_name',
+        'id', 'first_name', 'last_name', 'email', 'phone_number', 'title'
     ];
+
+    public function title()
+    {
+        if ($this->first_name || $this->last_name) {
+            return (($this->title . ' ') ?: '') . (($this->first_name . ' ') ?: '') . (($this->last_name . ' ') ?: '');
+        }
+
+        return $this->email;
+    }
 
     /**
      * Determine if the given resource is authorizable.
@@ -159,9 +160,11 @@ class Doctor extends Resource
 
             BelongsTo::make(__('Specialization'), 'specialization', Specialization::class)->hideFromIndex()->nullable(),
 
-            HasOne::make(__('Location'), 'location', Location::class)->hideFromIndex(),
+            HasMany::make(__('Enquires'), 'enquires', Enquire::class)->hideFromIndex(),
 
-            BelongsToMany::make(__('Languages'), 'languages', Language::class)->hideFromIndex()
+            MorphOne::make(__('Location'), 'location', Location::class)->hideFromIndex(),
+
+            BelongsToMany::make(__('Languages'), 'languages', Language::class)->hideFromIndex(),
         ];
     }
 

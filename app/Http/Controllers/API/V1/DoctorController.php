@@ -781,13 +781,6 @@ class DoctorController extends ApiController
      *     path="/api/v1/doctors/{id}",
      *     summary="Get a doctor resource by id",
      *     description="Get a doctor resource by id",
-     *     @OA\Parameter(
-     *          name="id",
-     *          required=true,
-     *          description="A doctor's identificator",
-     *          in="query",
-     *          example="1"
-     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="A doctor has been succesfully received",
@@ -1120,7 +1113,7 @@ class DoctorController extends ApiController
             )->save();
 
             Location::updateOrCreate(
-                ['doctor_id' => $doctor->id],
+                ['model_id' => $doctor->id, 'model_type' => Doctor::class],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
         }, 2);
