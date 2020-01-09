@@ -35,6 +35,7 @@ use Laravel\Passport\HasApiTokens;
  * @property string status
  * @property string password
  * @property int region_id
+ * @property int stripe_account_id
  * @property Region|null region
  * @property Specialization|null specialization
  * @property Language[] languages
@@ -64,6 +65,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         'password',
         'region_id',
         'specialization_id',
+        'stripe_account_id',
     ];
 
     protected $casts = [
