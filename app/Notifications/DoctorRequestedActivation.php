@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorDeactivatedNotification extends Notification
+class DoctorRequestedActivation extends Notification
 {
     use Queueable;
 
@@ -40,8 +40,8 @@ class DoctorDeactivatedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->markdown('mail.doctor.doctor-deactivated', ['doctor' => $this->doctor])
-            ->subject('Account deactivated');
+            ->markdown('mail.doctor.doctor-activation-request-created', ['doctor' => $this->doctor])
+            ->subject('Activation request created');
     }
 
     /**

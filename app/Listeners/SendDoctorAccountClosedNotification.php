@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\DoctorClosedAccount;
-use App\Notifications\DoctorClosedAccountNotification;
+use App\Notifications\DoctorClosedAccount as DoctorClosedAccountNotification;
 
 class SendDoctorAccountClosedNotification
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\DoctorDeactivated;
-use App\Notifications\DoctorDeactivatedNotification;
+use App\Notifications\DoctorDeactivated as DoctorDeactivatedNotification;
 
 class SendDoctorDeactivatedNotification
 {

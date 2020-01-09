@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorClosedAccountNotification extends Notification
+class DoctorClosedAccount extends Notification
 {
     use Queueable;
 
