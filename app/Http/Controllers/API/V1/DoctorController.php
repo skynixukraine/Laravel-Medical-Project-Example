@@ -22,8 +22,12 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
+use Stripe\Exception\OAuth\InvalidGrantException;
+use Stripe\OAuth;
 
 class DoctorController extends ApiController
 {
@@ -1472,5 +1476,233 @@ class DoctorController extends ApiController
         $doctor->update(['status' => Doctor::STATUS_CLOSED]);
 
         event(new DoctorClosedAccount($doctor));
+    }
+
+    /**
+     * @OA\Get(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/stripe-connect",
+     *     summary="Get a doctors url to connect to stripe",
+     *     description="Get a doctors url to connect to stripe and current stripe account id",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data has been succesfully received",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="url",
+     *                          example="https://connect.stripe.com/oauth/authorize?scope=read_write&client_id=ca_GVeaDvdqFNbcuNimN3M9c7Z9SLVCfd1X&response_type=code"
+     *                      ),
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="stripe_account_id",
+     *                          example="ca_GVeaDvdqFNbcuNimN3M9c7Z9SLVCfd1X"
+     *                      )
+     *                  }
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function stripeConnect(Doctor $doctor)
+    {
+        return [
+            'url' => OAuth::authorizeUrl(['scope' => 'read_write']),
+            'stripe_account_id' => $doctor->stripe_account_id
+        ];
+    }
+
+    /**
+     * @OA\Patch(
+     *     tags={"Doctors"},
+     *     path="/api/v1/doctors/{id}/stripe-token",
+     *     summary="Set stripe account id for a doctor",
+     *     description="Set stripe account id for a doctor",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"code"},
+     *                  @OA\Property(
+     *                      format="string",
+     *                      title="Code",
+     *                      description="Code from stripe",
+     *                      property="code",
+     *                      example="ac_GW5JDW26mx3GRGimieN78KWUzG8wwcfg"
+     *                  ),
+     *              )
+     *          )
+     *     ),
+     *     @OA\Response(response=200, description="Doctor's stripe account id has been setted"),
+     *     @OA\Response(
+     *         response=422,
+     *         description="There are some validation errors",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  title="Validation error",
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="code",
+     *                          example="The given data was invalid."
+     *                      ),
+     *                  }
+     *              ),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Authorization failed",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Unauthenticated."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Current user has not permissions to do this action",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="This action is unauthorized."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Resource not found",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="No query results for model [App\Models\Doctor]."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal technical error was happened",
+     *         @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  properties={
+     *                      @OA\Property(
+     *                          format="string",
+     *                          property="message",
+     *                          example="Something went wrong, please try again later."
+     *                      ),
+     *                  }
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function stripeToken(Request $request, Doctor $doctor)
+    {
+        $validator = Validator::make($request->all(), ['code' => 'required|string|max:255']);
+        $validator->validate();
+
+        try {
+            $response = OAuth::token([
+                'code' => $request->code,
+                'grant_type' => 'authorization_code',
+            ]);
+        } catch (InvalidGrantException $exception) {
+            $validator->errors()->add('code', $exception->getMessage());
+            throw new ValidationException($validator);
+        }
+
+        $doctor->update(['stripe_account_id' => $response->stripe_user_id]);
+
+        return $response;
     }
 }
