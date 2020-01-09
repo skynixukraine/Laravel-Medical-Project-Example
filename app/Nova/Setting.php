@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 
 class Setting extends Resource
@@ -28,7 +30,7 @@ class Setting extends Resource
      *
      * @var array
      */
-    public static $search = ['key', 'value'];
+    public static $search = ['id', 'key', 'value'];
 
     public static function label(): string
     {
@@ -56,8 +58,15 @@ class Setting extends Resource
     public function fields(Request $request)
     {
         return [
+            ID::make()
+                ->sortable()
+                ->hideFromIndex()
+                ->hideFromDetail(),
+
             Text::make(__('Key'), 'key')->sortable()
-                ->rules('string', 'max:255', 'required', 'unique:settings,key'),
+                ->rules('string', 'max:255', 'required', 'regex:/^\S*$/u')
+                ->creationRules('unique:settings,key')
+                ->updateRules('unique:settings,key,{{resourceId}}'),
 
             Text::make(__('Value'), 'value')->sortable()
                 ->rules('string', 'max:255', 'required'),

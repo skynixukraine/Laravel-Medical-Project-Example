@@ -53,7 +53,9 @@ class Region extends Resource
             ID::make()->sortable(),
             Text::make(__('Name'), 'name')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'max:255')
+                ->creationRules('unique:regions,name')
+                ->updateRules('unique:regions,name,{{resourceId}}')
         ];
     }
 

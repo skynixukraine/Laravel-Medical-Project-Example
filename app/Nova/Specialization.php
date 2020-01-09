@@ -53,7 +53,9 @@ class Specialization extends Resource
             ID::make()->sortable(),
             Text::make(__('Name'), 'name')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'max:255')
+                ->creationRules('unique:specializations,name')
+                ->updateRules('unique:specializations,name,{{resourceId}}')
         ];
     }
 
