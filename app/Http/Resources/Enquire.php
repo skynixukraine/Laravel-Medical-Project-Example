@@ -111,7 +111,7 @@ use OpenApi\Annotations as OA;
  *     property="answers",
  * ),
  */
-class EnquireResource extends JsonResource
+class Enquire extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -134,8 +134,8 @@ class EnquireResource extends JsonResource
             'conclusion' => $this->conclusion,
             'status' => $this->status,
             'is_paid' => $this->is_paid,
-            'location' => new LocationResource($this->location),
-            'answers' => EnquireAnswerResource::collection($this->answers),
+            'location' => new Location($this->location),
+            'answers' => EnquireAnswer::collection($this->answers),
         ];
     }
 }

@@ -72,7 +72,7 @@ use OpenApi\Annotations as OA;
  *     property="options",
  * ),
  */
-class MessageResource extends JsonResource
+class Message extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -90,7 +90,7 @@ class MessageResource extends JsonResource
             'type' => $this->type,
             'button' => $this->button,
             'next_message_id' => $this->next_message_id,
-            'options' => MessageOptionResource::collection($this->options),
+            'options' => MessageOption::collection($this->options),
         ];
     }
 }

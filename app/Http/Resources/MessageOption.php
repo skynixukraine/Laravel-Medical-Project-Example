@@ -39,7 +39,7 @@ use OpenApi\Annotations as OA;
  *     property="next_message_id"
  * )
  */
-class MessageOptionResource extends JsonResource
+class MessageOption extends JsonResource
 {
     /**
      * Transform the resource into an array.

@@ -10,25 +10,25 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *     title="Specialization resource",
- *     description="Resource for a specialization representation",
+ *     title="Region resource",
+ *     description="Resource for a region representation",
  * )
  * @OA\Property(
  *     format="int64",
  *     title="ID",
- *     description="A specialization's identificator",
+ *     description="A region's identificator",
  *     example="5",
  *     property="id"
  * )
  * @OA\Property(
  *     format="string",
- *     title="A specialization's name",
- *     description="A specialization's name",
+ *     title="A region's name",
+ *     description="A region's name",
  *     property="name",
- *     example="Dermatologist"
+ *     example="Nevada"
  * )
  */
-class SpecializationResource extends JsonResource
+class Region extends JsonResource
 {
     /**
      * Transform the resource into an array.

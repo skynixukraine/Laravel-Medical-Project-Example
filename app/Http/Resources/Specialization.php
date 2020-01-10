@@ -6,35 +6,29 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *     title="Language resource",
- *     description="Resource for a language representation",
+ *     title="Specialization resource",
+ *     description="Resource for a specialization representation",
  * )
  * @OA\Property(
  *     format="int64",
  *     title="ID",
- *     description="A language's identificator",
+ *     description="A specialization's identificator",
  *     example="5",
  *     property="id"
  * )
  * @OA\Property(
  *     format="string",
- *     title="A language's code",
- *     description="A language's code",
- *     property="code",
- *     example="en"
- * )
- * @OA\Property(
- *     format="string",
- *     title="A language's name",
- *     description="A language's name",
+ *     title="A specialization's name",
+ *     description="A specialization's name",
  *     property="name",
- *     example="English"
+ *     example="Dermatologist"
  * )
  */
-class LanguageResource extends JsonResource
+class Specialization extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -46,7 +40,6 @@ class LanguageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'code' => $this->code,
             'name' => $this->name,
         ];
     }

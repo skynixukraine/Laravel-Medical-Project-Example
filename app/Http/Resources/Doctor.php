@@ -136,7 +136,7 @@ use OpenApi\Annotations as OA;
  *     }
  * )
  */
-class DoctorResource extends JsonResource
+class Doctor extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -161,10 +161,11 @@ class DoctorResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'email_verified_at' => $this->email_verified_at,
-            'region' => new RegionResource($this->region),
-            'specialization' => new SpecializationResource($this->specialization),
-            'location' => new LocationResource($this->location),
-            'languages' => LanguageResource::collection($this->languages),
+            'region' => new Region($this->region),
+            'specialization' => new Specialization($this->specialization),
+            'location' => new Location($this->location),
+            'languages' => Language::collection($this->languages),
+            'enquire_price' => app('settings')->display_enquire_price,
         ];
     }
 }

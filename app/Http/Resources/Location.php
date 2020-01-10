@@ -72,7 +72,7 @@ use OpenApi\Annotations as OA;
  *     nullable=true
  * )
  */
-class LocationResource extends JsonResource
+class Location extends JsonResource
 {
     /**
      * Transform the resource into an array.

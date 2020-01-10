@@ -38,7 +38,7 @@ use OpenApi\Annotations as OA;
  *     property="value"
  * )
  */
-class EnquireAnswerResource extends JsonResource
+class EnquireAnswer extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -50,8 +50,8 @@ class EnquireAnswerResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'message' => MessageResource::make($this->message),
-            'message_option' => MessageOptionResource::make($this->message_option),
+            'message' => Message::make($this->message),
+            'message_option' => MessageOption::make($this->message_option),
             'value' => $this->value
         ];
     }
