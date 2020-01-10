@@ -5,23 +5,21 @@ declare(strict_types=1);
 namespace App\Nova;
 
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasOne;
+use Laravel\Nova\Fields\Country;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
 
-class Enquire extends Resource
+class Billing extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Enquire::class;
+    public static $model = \App\Models\Billing::class;
 
     /**
      * Indicates if the resource should be displayed in the sidebar.
@@ -35,26 +33,18 @@ class Enquire extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'first_name', 'last_name', 'email', 'phone_number'];
+    public static $search = [
+        'id', 'enquire_id', 'amount'
+    ];
 
     public static function label(): string
     {
-        return __('Enquires');
+        return __('Billings');
     }
 
     public static function singularLabel(): string
     {
-        return __('Enquire');
-    }
-
-    /**
-     * Get the value that should be displayed to represent the resource.
-     *
-     * @return string
-     */
-    public function title()
-    {
-        return $this->first_name . ' ' . $this->last_name;
+        return __('Billing');
     }
 
     /**
@@ -68,30 +58,13 @@ class Enquire extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make(__('First name'), 'first_name')->sortable(),
+            Currency::make('Amount', function () {
+                return $this->amount / 100;
+            })->format('%.2n'),
 
-            Text::make(__('Last name'), 'last_name')->sortable(),
+            Text::make(__('Currency'), 'currency')->sortable(),
 
-            Text::make(__('E-mail'), 'email')->sortable(),
-
-            Text::make(__('Phone number'), 'phone_number')->sortable(),
-
-            Select::make(__('Gender'), 'gender')->sortable()->options([
-                \App\Models\Enquire::GENDER_MALE => __('Male'),
-                \App\Models\Enquire::GENDER_FEMALE => __('Female'),
-            ]),
-
-            BelongsTo::make(__('Doctor'), 'doctor', Doctor::class),
-
-            Date::make(__('Date of birth'), 'date_of_birth'),
-
-            DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
-
-            DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
-
-            HasOne::make(__('Billing'), 'billing')->onlyOnDetail(),
-
-            MorphOne::make(__('Location'), 'location')->onlyOnDetail(),
+            BelongsTo::make('Enquire', 'enquire')
         ];
     }
 
