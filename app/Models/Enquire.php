@@ -24,6 +24,7 @@ class Enquire extends Model
         'date_of_birth',
         'phone_number',
         'email',
+        'doctor_id',
     ];
 
     protected $casts = [
