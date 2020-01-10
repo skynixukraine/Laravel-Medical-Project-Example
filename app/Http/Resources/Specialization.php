@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Specialization resource",
+ *     schema="SpecializationResource",
  *     description="Resource for a specialization representation",
  * )
  * @OA\Property(

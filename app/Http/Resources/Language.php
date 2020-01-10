@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @OA\Schema(
  *     title="Language resource",
+ *     schema="LanguageResource",
  *     description="Resource for a language representation",
  * )
  * @OA\Property(

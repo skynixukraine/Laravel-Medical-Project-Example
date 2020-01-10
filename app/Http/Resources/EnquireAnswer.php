@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Location resource",
+ *     schema="EnquireAnswerResource",
  *     description="Resource for a location representation",
  * )
  * @OA\Property(

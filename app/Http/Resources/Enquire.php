@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Enquire resource",
+ *     schema="EnquireResource",
  *     description="Resource for an enquire representation",
  * )
  * @OA\Property(
@@ -135,7 +136,7 @@ class Enquire extends JsonResource
             'status' => $this->status,
             'is_paid' => $this->is_paid,
             'location' => new Location($this->location),
-            'answers' => EnquireAnswer::collection($this->answers),
+            'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
         ];
     }
 }

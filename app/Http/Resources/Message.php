@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Message resource",
+ *     schema="MessageResource",
  *     description="Resource for a message representation",
  * )
  * @OA\Property(

@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Region resource",
+ *     schema="RegionResource",
  *     description="Resource for a region representation",
  * )
  * @OA\Property(

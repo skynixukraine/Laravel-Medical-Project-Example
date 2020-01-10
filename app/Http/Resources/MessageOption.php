@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Schema(
  *     title="Message option resource",
+ *     schema="MessageOptionResource",
  *     description="Resource for a message option representation",
  * )
  * @OA\Property(

@@ -33,6 +33,7 @@ use OpenApi\Annotations as OA;
  * ),
  * @OA\Schema(
  *     title="Doctor resource",
+ *     schema="DoctorResource",
  *     description="Resource for a doctor representation",
  *     properties={
  *          @OA\Property(
