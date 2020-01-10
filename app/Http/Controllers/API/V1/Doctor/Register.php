@@ -10,6 +10,7 @@ use App\Services\StorageService;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
+use App\Http\Requests\Doctor\Register as RegisterRequest;
 
 /**
  * @OA\Post(
@@ -173,7 +174,7 @@ use OpenApi\Annotations as OA;
  */
 class Register extends ApiController
 {
-    public function __invoke(Register $request, StorageService $storage)
+    public function __invoke(RegisterRequest $request, StorageService $storage)
     {
         $doctor = new Doctor($request->only(['email', 'phone_number']));
 
