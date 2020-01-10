@@ -19,8 +19,8 @@ class Setting extends Model
         return parent::__get($key) ?? self::fetchValue($key);
     }
 
-    public static function fetchValue($key)
+    public static function fetchValue($key, $default = null)
     {
-        return self::$cached[$key] ?? (self::$cached[$key] = self::where('key', $key)->first()->value ?? null);
+        return self::$cached[$key] ?? (self::$cached[$key] = self::where('key', $key)->first()->value ?? $default);
     }
 }
