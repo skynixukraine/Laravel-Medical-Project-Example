@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     Route::post('register', 'API\V1\Doctor\Register')->name('doctors.register');
-    Route::post('login', 'API\V1\Doctor\Register\Login')->name('doctors.login');
+    Route::post('login', 'API\V1\Doctor\Login')->name('doctors.login');
     Route::post('send-reset-link', 'API\V1\Doctor\SendResetLinkEmail');
     Route::patch('update-password', 'API\V1\Doctor\UpdatePassword');
     Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
