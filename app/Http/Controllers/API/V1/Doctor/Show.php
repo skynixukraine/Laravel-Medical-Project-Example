@@ -98,7 +98,7 @@ use OpenApi\Annotations as OA;
  */
 class Show extends ApiController
 {
-    public function show(Doctor $doctor): DoctorResource
+    public function __invoke(Doctor $doctor): DoctorResource
     {
         return DoctorResource::make($doctor);
     }
