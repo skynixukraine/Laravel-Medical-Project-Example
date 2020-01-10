@@ -38,7 +38,8 @@ class Create extends FormRequest
             'date_of_birth' => 'required|date',
             'doctor_id' => 'required',
             Rule::exists('doctors', 'id')->where(static function (Builder $query) {
-                $query->where('status', Doctor::STATUS_ACTIVATED);
+                $query->where('status', Doctor::STATUS_ACTIVATED)
+                    ->whereNotNull('stripe_account_id');
             }),
             'address' => 'string|max:255',
             'city' => 'string|max:255',
