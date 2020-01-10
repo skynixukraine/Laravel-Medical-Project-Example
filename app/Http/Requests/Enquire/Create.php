@@ -38,9 +38,7 @@ class Create extends FormRequest
             'date_of_birth' => 'required|date',
             'doctor_id' => 'required',
             Rule::exists('doctors', 'id')->where(static function (Builder $query) {
-                $query->whereIn('status',
-                    [Doctor::STATUS_CREATED, Doctor::STATUS_ACTIVATION_REQUESTED, Doctor::STATUS_ACTIVATED])
-                    ->whereNotNull('email_verified_at');
+                $query->where('status', Doctor::STATUS_ACTIVATED);
             }),
             'address' => 'string|max:255',
             'city' => 'string|max:255',
@@ -49,7 +47,8 @@ class Create extends FormRequest
             'postal_code' => 'string|max:255',
             'latitude' => 'numeric',
             'longitude' => 'numeric',
-            'answers' => 'required|array|min:1|max:1000'
+            'answers' => 'required|array|min:1|max:1000',
+            'code' => 'required|string'
         ];
     }
 }
