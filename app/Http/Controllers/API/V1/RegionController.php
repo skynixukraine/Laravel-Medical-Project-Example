@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Resources\RegionResource;
+use App\Http\Resources\Region as RegionResource;
 use App\Models\Region;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use OpenApi\Annotations as OA;
 
 class RegionController extends ApiController
@@ -53,7 +54,7 @@ class RegionController extends ApiController
      *      )
      * )
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         return RegionResource::collection(Region::all());
     }

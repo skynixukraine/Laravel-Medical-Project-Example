@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Resources\MessageResource;
+use App\Http\Resources\Message as MessageResource;
 use App\Models\Message;
 
 class MessageController extends ApiController
@@ -66,7 +66,7 @@ class MessageController extends ApiController
      */
     public function first(): MessageResource
     {
-        return new MessageResource(Message::whereIsFirst(true)->firstOrFail());
+        return MessageResource::make(Message::whereIsFirst(true)->firstOrFail());
     }
 
     /**
@@ -131,8 +131,8 @@ class MessageController extends ApiController
      *      )
      * )
      */
-    public function show(Message $message)
+    public function show(Message $message): MessageResource
     {
-        return new MessageResource($message);
+        return MessageResource::make($message);
     }
 }

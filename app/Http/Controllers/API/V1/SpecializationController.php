@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Resources\SpecializationResource;
+use App\Http\Resources\Specialization as SpecializationResource;
 use App\Models\Specialization;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
