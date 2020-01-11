@@ -24,7 +24,7 @@ use App\Http\Requests\Doctor\Register as RegisterRequest;
  *              mediaType="application/x-www-form-urlencoded",
  *              @OA\Schema(
  *                  type="object",
- *                  required={"email", "phone_number", "password", "recaptcha", "accepted"},
+ *                  required={"email", "phone_number", "password", "recaptcha", "accepted", "password_confirmation"},
  *                  @OA\Property(
  *                      format="string",
  *                      description="A doctor's e-mail",
@@ -44,28 +44,28 @@ use App\Http\Requests\Doctor\Register as RegisterRequest;
  *                  ),
  *                  @OA\Property(
  *                      format="string",
- *                      description="A doctor's password confirmation",
+ *                      description="Password confirmation. Must be the same as the password",
  *                      property="password_confirmation",
  *                  ),
  *                  @OA\Property(
  *                      format="string",
- *                      description="Recaptcha value. Action must be 'register_doctor",
+ *                      description="A recaptcha token. The action must be 'register_doctor",
  *                      property="recaptcha",
  *                  ),
  *                  @OA\Property(
  *                      format="boolean",
- *                      description="Accept terms and conditions",
+ *                      description="Is terms and conditions accepted",
  *                      property="accepted",
  *                      example="1"
  *                  ),
  *                  @OA\Property(
  *                      format="binary",
- *                      description="Doctor's board certification",
+ *                      description="A doctor's board certification",
  *                      property="board_certification",
  *                  ),
  *                  @OA\Property(
  *                      format="binary",
- *                      description="Doctor's medical degree",
+ *                      description="A doctor's medical degree",
  *                      property="medical_degree",
  *                  ),
  *              )
@@ -73,7 +73,7 @@ use App\Http\Requests\Doctor\Register as RegisterRequest;
  *     ),
  *     @OA\Response(
  *         response=201,
- *         description="A doctor has been succesfully registered",
+ *         description="A new doctor has been succesfully registered",
  *         @OA\MediaType(
  *             mediaType="application/json",
  *             @OA\Schema(
@@ -176,29 +176,26 @@ class Register extends ApiController
 {
     public function __invoke(RegisterRequest $request, StorageService $storage)
     {
-        $doctor = new Doctor($request->only(['email', 'phone_number']));
-
-        $doctor->password = Hash::make($request->password);
-        $doctor->status = Doctor::STATUS_CREATED;
-        $doctor->board_certification = $request->board_certification
-            ? $storage->saveDoctorsBoardCertification($request->board_certification)
-            : null;
-        $doctor->medical_degree = $request->medical_degree
-            ? $storage->saveDoctorsMedicalDegree($request->medical_degree)
-            : null;
-
-        $doctor->saveOrFail();
+        /**
+         * @var Doctor $doctor
+         */
+        $doctor = Doctor::create([
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'password' => Hash::make($request->password),
+            'status' => Doctor::STATUS_CREATED,
+            'board_certification' => $request->board_certification ? $storage->saveDoctorsBoardCertification($request->board_certification) : null,
+            'medical_degree' => $request->medical_degree ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
+        ]);
 
         $token = $doctor->createToken('Personal Access Token');
         $token->token->expires_at = Passport::$tokensExpireAt;
         $token->token->save();
 
-        return response()->json(
-            [
-                'doctor_id' => $doctor->id,
-                'access_token' => $token->accessToken,
-                'expires_at' => $token->token->expires_at,
-            ]
-        );
+        return [
+            'doctor_id' => $doctor->id,
+            'access_token' => $token->accessToken,
+            'expires_at' => $token->token->expires_at,
+        ];
     }
 }
