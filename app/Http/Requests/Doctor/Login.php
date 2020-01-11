@@ -31,19 +31,14 @@ class Login extends FormRequest
     {
         return [
             'email' => [
-                'required',
-                'string',
-                'email',
-                Rule::exists('doctors')->where(
-                    static function (Builder $query) {
-                        $query->whereNotNull('email_verified_at')
-                            ->whereIn('status', [
-                                Doctor::STATUS_CREATED,
-                                Doctor::STATUS_ACTIVATION_REQUESTED,
-                                Doctor::STATUS_ACTIVATED,
-                            ]);
-                    }
-                ),
+                'required', 'string', 'email',
+                Rule::exists('doctors')->where(static function (Builder $query) {
+                    $query->whereNotNull('email_verified_at')->whereIn('status', [
+                        Doctor::STATUS_CREATED,
+                        Doctor::STATUS_ACTIVATION_REQUESTED,
+                        Doctor::STATUS_ACTIVATED,
+                    ]);
+                }),
             ],
             'password' => 'required|string',
             'recaptcha' => ['required', 'string', new Recaptcha('login_doctor')],
