@@ -12,9 +12,9 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Post(
  *     tags={"Doctors"},
- *     path="/api/v1/send-reset-link",
+ *     path="/api/v1/doctors/send-reset-password-link",
  *     summary="Send reset password link",
- *     description="Send email message for a doctor with a link for password reseting",
+ *     description="Send an email message for a doctor with a link for password reseting",
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\MediaType(
@@ -32,7 +32,7 @@ use OpenApi\Annotations as OA;
  *                  @OA\Property(
  *                      format="string",
  *                      title="Recaptcha",
- *                      description="Recaptcha value. Action must be 'send_reset_link'",
+ *                      description="A recaptcha token. An action must be 'send_reset_link'",
  *                      property="recaptcha",
  *                  )
  *              )
@@ -93,7 +93,7 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class SendResetLinkEmail extends ApiController
+class SendResetPasswordLink extends ApiController
 {
     public function __invoke(SendResetLink $request): void
     {
