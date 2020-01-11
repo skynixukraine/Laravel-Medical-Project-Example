@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
+use App\Http\Requests\Doctor\Login as LoginRequest;
+use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
@@ -13,9 +16,9 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Post(
  *     tags={"Doctors"},
- *     path="/api/v1/login",
- *     summary="Create a token for a doctor",
- *     description="Create a token for a doctor",
+ *     path="/api/v1/doctors/login",
+ *     summary="Create a new token for a doctor",
+ *     description="Create a new token for a doctor",
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\MediaType(
@@ -40,7 +43,7 @@ use OpenApi\Annotations as OA;
  *                  @OA\Property(
  *                      format="string",
  *                      title="Recaptcha",
- *                      description="Recaptcha value. Action must be 'login_doctor'",
+ *                      description="A recaptcha token. The action must be 'login_doctor'",
  *                      property="recaptcha"
  *                  )
  *              )
@@ -48,26 +51,16 @@ use OpenApi\Annotations as OA;
  *     ),
  *     @OA\Response(
  *          response=200,
- *          description="Token has been created",
+ *          description="An authorization token has been created",
  *          @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  properties={
  *                      @OA\Property(
- *                          format="integer",
- *                          property="doctor_id",
- *                          example="1"
- *                      ),
- *                      @OA\Property(
- *                          format="string",
- *                          property="access_token",
- *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
- *                      ),
- *                      @OA\Property(
- *                          ref="#/components/schemas/CarbonResource",
+ *                          ref="#/components/schemas/AuthTokenResource",
  *                          format="object",
- *                          property="expires_at",
- *                      ),
+ *                          property="data"
+ *                      )
  *                  }
  *              )
  *          )
@@ -116,7 +109,7 @@ use OpenApi\Annotations as OA;
  *     ),
  *     @OA\Response(
  *         response=401,
- *         description="Authorization failed",
+ *         description="An authorization attempt has been failed",
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
@@ -150,24 +143,16 @@ use OpenApi\Annotations as OA;
  */
 class Login extends ApiController
 {
-    public function __invoke(Login $request)
+    public function __invoke(LoginRequest $request)
     {
-        $doctor = Doctor::whereEmail($request->input('email'))->first();
+        $doctor = Doctor::whereEmail($request->email)->firstOrFail();
 
-        if (!$doctor || !Hash::check($request->input('password'), $doctor->password)) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
-        }
+        abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
         $token = $doctor->createToken('Personal Access Token');
         $token->token->expires_at = Passport::$tokensExpireAt;
-        $token->token->save();
+        $token->token->saveOrFail();
 
-        return response()->json(
-            [
-                'doctor_id' => $doctor->id,
-                'access_token' => $token->accessToken,
-                'expires_at' => $token->token->expires_at,
-            ]
-        );
+        return AuthToken::make($token);
     }
 }

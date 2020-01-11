@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
+use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
 use App\Services\StorageService;
 use Illuminate\Support\Facades\Hash;
@@ -79,20 +80,10 @@ use App\Http\Requests\Doctor\Register as RegisterRequest;
  *             @OA\Schema(
  *                 properties={
  *                     @OA\Property(
- *                         format="integer",
- *                         property="doctor_id",
- *                         example="1"
- *                     ),
- *                     @OA\Property(
- *                         format="string",
- *                         property="access_token",
- *                         example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
- *                     ),
- *                     @OA\Property(
- *                         ref="#/components/schemas/CarbonResource",
+ *                         ref="#/components/schemas/AuthTokenResource",
  *                         format="object",
- *                         property="expires_at",
- *                     ),
+ *                         property="data"
+ *                     )
  *                 }
  *             )
  *         )
@@ -176,9 +167,6 @@ class Register extends ApiController
 {
     public function __invoke(RegisterRequest $request, StorageService $storage)
     {
-        /**
-         * @var Doctor $doctor
-         */
         $doctor = Doctor::create([
             'email' => $request->email,
             'phone_number' => $request->phone_number,
@@ -190,12 +178,8 @@ class Register extends ApiController
 
         $token = $doctor->createToken('Personal Access Token');
         $token->token->expires_at = Passport::$tokensExpireAt;
-        $token->token->save();
+        $token->token->saveOrFail();
 
-        return [
-            'doctor_id' => $doctor->id,
-            'access_token' => $token->accessToken,
-            'expires_at' => $token->token->expires_at,
-        ];
+        return AuthToken::make($token);
     }
 }
