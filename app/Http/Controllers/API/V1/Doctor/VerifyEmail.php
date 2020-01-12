@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Doctor;
 
+use App\Events\DoctorVerifiedEmail;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
-use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
  * @OA\Get(
  *     tags={"Doctors"},
- *     path="/api/v1/verify/{id}",
+ *     path="/api/v1/doctors/verify-email",
  *     summary="Verify doctor's email",
  *     description="Verify doctor's email",
  *     @OA\Response(response=200, description="An e-mail has been verified"),
@@ -74,14 +74,12 @@ class VerifyEmail extends ApiController
     {
         abort_if(!$request->hasValidSignature(), 401);
 
-        $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
+        $doctor = Doctor::findOrFail($request->query('id'));
 
-        if ($doctor->hasVerifiedEmail()) {
-            return response('', 304);
-        }
+        abort_if($doctor->hasVerifiedEmail(), 304);
 
         $doctor->markEmailAsVerified();
 
-        event(new Verified($doctor));
+        event(new DoctorVerifiedEmail($doctor));
     }
 }
