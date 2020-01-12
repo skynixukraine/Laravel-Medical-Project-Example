@@ -49,8 +49,19 @@ use Stripe\Stripe;
  *                  properties={
  *                      @OA\Property(
  *                          format="string",
- *                          property="code",
+ *                          property="message",
  *                          example="The given data was invalid."
+ *                      ),
+ *                      @OA\Property(
+ *                          property="errors",
+ *                          format="object",
+ *                          @OA\Property(
+ *                              property="code",
+ *                              @OA\Items(
+ *                                  type="string",
+ *                                  example="This authorization code has already been used. All tokens issued with this code have been revoked."
+ *                              ),
+ *                          ),
  *                      ),
  *                  }
  *              ),
