@@ -180,6 +180,6 @@ class Register extends ApiController
         $token->token->expires_at = Passport::$tokensExpireAt;
         $token->token->saveOrFail();
 
-        return response()->make(AuthToken::make($token), 201);
+        return AuthToken::make($token)->response()->setStatusCode(201);
     }
 }
