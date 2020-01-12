@@ -6,15 +6,14 @@ namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
-use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
  * @OA\Get(
  *     tags={"Doctors"},
- *     path="/api/v1/resend/{id}",
- *     summary="Resend verification email",
- *     description="Verify doctor's email",
+ *     path="/api/v1/doctors/{id}/send-email-verification-link",
+ *     summary="Send verification email link",
+ *     description="Send verification email link",
  *     @OA\Response(response=200, description="An e-mail has been sent"),
  *     @OA\Response(response=304, description="An e-mail already verified"),
  *     @OA\Response(
@@ -51,15 +50,11 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class ResendVerificationEmail extends ApiController
+class SendEmailVerificationLink extends ApiController
 {
-    public function __invoke(Request $request)
+    public function __invoke(Doctor $doctor)
     {
-        $doctor = Doctor::whereId($request->route('id'))->firstOrFail();
-
-        if ($doctor->hasVerifiedEmail()) {
-            return response('', 304);
-        }
+        abort_if($doctor->hasVerifiedEmail(), 304);
 
         $doctor->sendEmailVerificationNotification();
     }
