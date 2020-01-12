@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Annotations as OA;
@@ -166,7 +167,7 @@ class Doctor extends JsonResource
             'specialization' => new Specialization($this->specialization),
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
-            'enquire_price' => app('settings')->display_enquire_price,
+            'enquire_price' => Setting::fetchValue('display_enquire_price'),
         ];
     }
 }
