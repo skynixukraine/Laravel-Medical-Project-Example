@@ -14,7 +14,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\DoctorSaving::class => [
+        \App\Events\DoctorSaved::class => [
             \App\Listeners\SendVerifyEmailNotification::class,
         ],
 
@@ -36,6 +36,10 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\MessageSaved::class => [
             \App\Listeners\SetSingleFirstMessage::class
+        ],
+
+        \App\Events\DoctorResettedPassword::class => [
+            \App\Listeners\SendDoctorResettedPasswordNotification::class
         ]
     ];
 
