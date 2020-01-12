@@ -19,7 +19,6 @@ class Location extends Model
         'state',
         'postal_code',
         'country',
-        'doctor_id'
     ];
 
     public function doctor(): BelongsTo

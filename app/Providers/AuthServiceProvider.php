@@ -6,8 +6,6 @@ use App\Models\Doctor;
 use App\Models\Enquire;
 use App\Policies\DoctorPolicy;
 use App\Policies\EnquirePolicy;
-use App\Policies\UserPolicy;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -20,7 +18,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        User::class => UserPolicy::class,
         Doctor::class => DoctorPolicy::class,
         Enquire::class => EnquirePolicy::class,
     ];

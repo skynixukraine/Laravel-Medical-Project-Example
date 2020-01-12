@@ -28,7 +28,7 @@ class SendResetLink extends FormRequest
     {
         return [
             'email' => 'required|email|exists:doctors',
-            'recaptcha' => ['required', 'string', new Recaptcha('send_reset_link')],
+            'recaptcha' => ['required', 'string', new Recaptcha('send_reset_password_link')],
         ];
     }
 }

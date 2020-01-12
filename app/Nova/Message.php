@@ -67,11 +67,11 @@ class Message extends Resource
             Text::make(__('Questioner'), 'questioner')->sortable()->rules('required', 'max:255'),
 
             Select::make(__('Type'), 'type')->sortable()->rules('required', 'max:255')->options([
-                MessageModel::TYPE_SELECT => __('SELECT'),
-                MessageModel::TYPE_RADIO => __('RADIO'),
-                MessageModel::TYPE_TEXT => __('TEXT'),
-                MessageModel::TYPE_BODY_SELECT => __('BODY SELECT'),
-                MessageModel::TYPE_IMAGE => __('IMAGE'),
+                MessageModel::TYPE_SELECT => __('Select multiple options'),
+                MessageModel::TYPE_RADIO => __('Select one option'),
+                MessageModel::TYPE_TEXT => __('Enter text'),
+                MessageModel::TYPE_BODY_SELECT => __('Select body parts'),
+                MessageModel::TYPE_IMAGE => __('Upload image'),
             ])->displayUsingLabels(),
 
             Text::make(__('Button'), 'button')->sortable()->rules('required', 'max:255'),

@@ -7,8 +7,10 @@ namespace App\Nova;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Select;
 
@@ -52,7 +54,7 @@ class Enquire extends Resource
      */
     public function title()
     {
-        return 'Enquire ' . $this->id;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**
@@ -75,8 +77,8 @@ class Enquire extends Resource
             Text::make(__('Phone number'), 'phone_number')->sortable(),
 
             Select::make(__('Gender'), 'gender')->sortable()->options([
-                \App\Models\Enquire::GENDER_MALE => 'MALE',
-                \App\Models\Enquire::GENDER_FEMALE => 'FEMALE',
+                \App\Models\Enquire::GENDER_MALE => __('Male'),
+                \App\Models\Enquire::GENDER_FEMALE => __('Female'),
             ]),
 
             BelongsTo::make(__('Doctor'), 'doctor', Doctor::class),
@@ -86,6 +88,10 @@ class Enquire extends Resource
             DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
 
             DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
+
+            HasOne::make(__('Billing'), 'billing')->onlyOnDetail(),
+
+            MorphOne::make(__('Location'), 'location')->onlyOnDetail(),
         ];
     }
 

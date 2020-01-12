@@ -7,6 +7,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 
 class Language extends Resource
@@ -57,13 +58,15 @@ class Language extends Resource
 
             Text::make(__('Code'), 'code')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'max:255')
+                ->creationRules('unique:languages,code')
+                ->updateRules('unique:languages,code,{{resourceId}}'),
 
             Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            BelongsToMany::make(__('Doctors'), 'doctors', Doctor::class)
+            MorphMany::make(__('Doctors'), 'doctors', Doctor::class)
         ];
     }
 

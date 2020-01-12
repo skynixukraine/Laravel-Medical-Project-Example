@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Events\DoctorRequestedActivation;
-use App\Notifications\DoctorRequestedActivationNotification;
+use App\Notifications\DoctorRequestedActivation as DoctorRequestedActivationNotification;
 
 class SendDoctorRequestedActivationNotification
 {
