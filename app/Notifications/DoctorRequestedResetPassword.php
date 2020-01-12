@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ResetPassword extends Notification
+class DoctorRequestedResetPassword extends Notification
 {
     private const RESET_PASSWORD_URL = '/reset-password';
 
@@ -60,7 +60,7 @@ class ResetPassword extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject(Lang::getFromJson('Reset Password Notification'))
             ->line(Lang::getFromJson('You are receiving this email because we received a password reset request for your account.'))
             ->action(Lang::getFromJson('Reset Password'), url(config('app.url') . self::RESET_PASSWORD_URL . '?' . $this->token))

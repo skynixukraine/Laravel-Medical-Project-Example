@@ -5,23 +5,14 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\Doctor;
+use App\Traits\DoctorInfo;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class DoctorRequestedActivation extends Notification
 {
-    use Queueable;
-
-    /**
-     * @var Doctor
-     */
-    private $doctor;
-
-    public function __construct(Doctor $doctor)
-    {
-        $this->doctor = $doctor;
-    }
+    use Queueable, DoctorInfo;
 
     /**
      * Doctors will always be notified by Email
