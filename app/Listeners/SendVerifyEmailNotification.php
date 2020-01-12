@@ -10,7 +10,7 @@ class SendVerifyEmailNotification
     {
         $doctor = $event->getDoctor();
 
-        if ($doctor->isDirty('email')) {
+        if ($doctor->wasRecentlyCreated || $doctor->isDirty('email')) {
             $doctor->email_verified_at = null;
             $doctor->sendEmailVerificationNotification();
         }
