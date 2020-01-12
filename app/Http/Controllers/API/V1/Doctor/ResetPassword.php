@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Doctor;
 
+use App\Events\DoctorResettedPassword;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Doctor\UpdatePassword as UpdatePasswordRequest;
-use Illuminate\Auth\Events\PasswordReset;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use OpenApi\Annotations as OA;
@@ -14,7 +15,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Patch(
  *     tags={"Doctors"},
- *     path="/api/v1/update-password",
+ *     path="/api/v1/doctors/reset-password",
  *     summary="Set a new password for a doctor",
  *     description="Set a new password for a doctor",
  *     @OA\RequestBody(
@@ -46,13 +47,13 @@ use OpenApi\Annotations as OA;
  *                  @OA\Property(
  *                      format="string",
  *                      title="Token",
- *                      description="Token value taken from reset password link",
+ *                      description="A token value taken from reset password link",
  *                      property="token",
  *                  ),
  *                  @OA\Property(
  *                      format="string",
  *                      title="Recaptcha",
- *                      description="Recaptcha value. Action must be 'update_password'",
+ *                      description="A recaptcha value. The action must be 'update_password'",
  *                      property="recaptcha",
  *                  )
  *              )
@@ -134,20 +135,14 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class UpdatePassword extends ApiController
+class ResetPassword extends ApiController
 {
     public function __invoke(UpdatePasswordRequest $request): void
     {
-        $response = Password::broker('doctors')->reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->password = Hash::make($password);
-                $user->save();
-
-                event(new PasswordReset($user));
-            }
-        );
-
-        abort_if($response !== Password::PASSWORD_RESET, 500, __('Something went wrong, please try again later'));
+        Password::broker('doctors')->reset($request->only('email', 'password', 'password_confirmation', 'token'),
+            function (Doctor $doctor, string $password) {
+                $doctor->fill(['password' => Hash::make($password)])->saveOrFail();
+                event(new DoctorResettedPassword($doctor));
+            });
     }
 }
