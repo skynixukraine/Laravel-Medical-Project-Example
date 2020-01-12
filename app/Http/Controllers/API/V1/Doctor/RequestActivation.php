@@ -12,7 +12,7 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Patch(
  *     tags={"Doctors"},
- *     path="/api/v1/doctors/{id}/activate",
+ *     path="/api/v1/doctors/{id}/request-activation",
  *     summary="Create a request for activation a doctor",
  *     description="Create a request for activation a doctor",
  *     @OA\Parameter(
@@ -90,14 +90,11 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class Activate extends ApiController
+class RequestActivation extends ApiController
 {
     public function __invoke(Doctor $doctor): void
     {
-        abort_if(
-            $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED || $doctor->status === Doctor::STATUS_ACTIVATED,
-            304
-        );
+        abort_if($doctor->status !== Doctor::STATUS_CREATED, 304);
 
         $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
 
