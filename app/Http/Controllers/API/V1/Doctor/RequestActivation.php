@@ -19,11 +19,11 @@ use OpenApi\Annotations as OA;
  *          name="id",
  *          required=true,
  *          description="A doctor's identificator",
- *          in="query",
+ *          in="path",
  *          example="1"
  *     ),
  *     @OA\Response(response=200, description="A request has been succesfully created"),
- *     @OA\Response(response=304, description="A request already created or a doctor activated"),
+ *     @OA\Response(response=304, description="Only new doctors can create a request"),
  *     @OA\Response(
  *         response=401,
  *         description="Authorization failed",
