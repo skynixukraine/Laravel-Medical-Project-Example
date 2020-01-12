@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Post(
+ * @OA\Patch(
  *     tags={"Doctors"},
- *     path="/api/v1/logout",
- *     summary="Revoke current token",
- *     description="Revoke current token",
- *     @OA\Response(response=200, description="Token has been revoked"),
+ *     path="/api/v1/doctors/logout",
+ *     summary="Revoke current doctor's token",
+ *     description="Revoke current doctor's token",
+ *     @OA\Response(response=200, description="A token has been revoked"),
  *     @OA\Response(
  *         response=401,
  *         description="Authorization failed",
