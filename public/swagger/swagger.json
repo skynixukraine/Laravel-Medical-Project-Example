@@ -5,6 +5,587 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/doctors/{id}/close": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Close a doctor's account",
+                "description": "Close a doctor's account",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An account has been succesfully closed"
+                    },
+                    "304": {
+                        "description": "An account already closed"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/{id}/enquires": {
+            "get": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Get enquires page",
+                "description": "Get enquires page",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's id",
+                        "required": true,
+                        "example": "1"
+                    },
+                    {
+                        "name": "with_archived",
+                        "in": "query",
+                        "description": "Include archived enquires or not. Default not",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter enquires by status. Possible values: UNREAD, READ, ARCHIVED",
+                        "required": false,
+                        "example": "UNREAD"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items amount on page",
+                        "required": false,
+                        "example": "15"
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search string",
+                        "required": false,
+                        "example": "John"
+                    },
+                    {
+                        "name": "search_field",
+                        "in": "query",
+                        "description": "Search field. Possible values: id, first_name, last_name, phone_number, email",
+                        "required": false,
+                        "example": "first_name"
+                    },
+                    {
+                        "name": "order_field",
+                        "in": "query",
+                        "description": "Order field. Possible values: id, first_name, last_name, phone_number, email, status, conclusion, created_at",
+                        "required": false,
+                        "example": "first_name"
+                    },
+                    {
+                        "name": "order_direction",
+                        "in": "query",
+                        "description": "Order direction. Possible values: asc, desc",
+                        "required": false,
+                        "example": "asc"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Enquires has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "Enquires",
+                                            "description": "Enquires list",
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/EnquireResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "items": {
+                                                "properties": {
+                                                    "first": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=1"
+                                                    },
+                                                    "last": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=10"
+                                                    },
+                                                    "prev": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=4"
+                                                    },
+                                                    "next": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=6"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "items": {
+                                                "properties": {
+                                                    "current_page": {
+                                                        "example": "5"
+                                                    },
+                                                    "from": {
+                                                        "example": "9"
+                                                    },
+                                                    "last_page": {
+                                                        "example": "10"
+                                                    },
+                                                    "path": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires"
+                                                    },
+                                                    "per_page": {
+                                                        "example": "2"
+                                                    },
+                                                    "to": {
+                                                        "example": "10"
+                                                    },
+                                                    "total": {
+                                                        "example": "19"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors": {
+            "get": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Get doctors page",
+                "description": "Get doctors page",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "description": "Filter doctors by first name",
+                        "required": false,
+                        "example": "David"
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "description": "Filter doctors by last name",
+                        "required": false,
+                        "example": "Johnson"
+                    },
+                    {
+                        "name": "region_id",
+                        "in": "query",
+                        "description": "Filter doctors by region id",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "specialization_id",
+                        "in": "query",
+                        "description": "Filter doctors by specialization id",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items amount on page",
+                        "required": false,
+                        "example": "15"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Order list by a field",
+                        "required": false,
+                        "example": "first_name"
+                    },
+                    {
+                        "name": "direction",
+                        "in": "query",
+                        "description": "Order direction",
+                        "required": false,
+                        "example": "asc"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Doctors has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "Doctors",
+                                            "description": "Doctors list",
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/DoctorResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "items": {
+                                                "properties": {
+                                                    "first": {
+                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=1"
+                                                    },
+                                                    "last": {
+                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=10"
+                                                    },
+                                                    "prev": {
+                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=4"
+                                                    },
+                                                    "next": {
+                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=6"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "items": {
+                                                "properties": {
+                                                    "current_page": {
+                                                        "example": "5"
+                                                    },
+                                                    "from": {
+                                                        "example": "9"
+                                                    },
+                                                    "last_page": {
+                                                        "example": "10"
+                                                    },
+                                                    "path": {
+                                                        "example": "http://online-hautarzt.com/api/v1/doctors"
+                                                    },
+                                                    "per_page": {
+                                                        "example": "2"
+                                                    },
+                                                    "to": {
+                                                        "example": "10"
+                                                    },
+                                                    "total": {
+                                                        "example": "19"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/login": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Create a new token for a doctor",
+                "description": "Create a new token for a doctor",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "password": {
+                                        "title": "Password",
+                                        "description": "A doctor's password",
+                                        "format": "string",
+                                        "example": "12345678"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "A recaptcha token. The action must be 'login_doctor'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An authorization token has been created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "format": "object",
+                                            "$ref": "#/components/schemas/AuthTokenResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "password": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The password field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "An authorization attempt has been failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/logout": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Revoke current doctor's token",
+                "description": "Revoke current doctor's token",
+                "responses": {
+                    "200": {
+                        "description": "A token has been revoked"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/register": {
             "post": {
                 "tags": [
@@ -12,7 +593,6 @@
                 ],
                 "summary": "Register a new doctor",
                 "description": "Register a new doctor",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::register",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -23,7 +603,8 @@
                                     "phone_number",
                                     "password",
                                     "recaptcha",
-                                    "accepted"
+                                    "accepted",
+                                    "password_confirmation"
                                 ],
                                 "properties": {
                                     "email": {
@@ -41,24 +622,24 @@
                                         "format": "string"
                                     },
                                     "password_confirmation": {
-                                        "description": "A doctor's password confirmation",
+                                        "description": "Password confirmation. Must be the same as the password",
                                         "format": "string"
                                     },
                                     "recaptcha": {
-                                        "description": "Recaptcha value. Action must be 'register_doctor",
+                                        "description": "A recaptcha token. The action must be 'register_doctor",
                                         "format": "string"
                                     },
                                     "accepted": {
-                                        "description": "Accept terms and conditions",
+                                        "description": "Is terms and conditions accepted",
                                         "format": "boolean",
                                         "example": "1"
                                     },
                                     "board_certification": {
-                                        "description": "Doctor's board certification",
+                                        "description": "A doctor's board certification",
                                         "format": "binary"
                                     },
                                     "medical_degree": {
-                                        "description": "Doctor's medical degree",
+                                        "description": "A doctor's medical degree",
                                         "format": "binary"
                                     }
                                 },
@@ -69,22 +650,14 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "A doctor has been succesfully registered",
+                        "description": "A new doctor has been succesfully registered",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "doctor_id": {
-                                            "format": "integer",
-                                            "example": "1"
-                                        },
-                                        "access_token": {
-                                            "format": "string",
-                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
-                                        },
-                                        "expires_at": {
+                                        "data": {
                                             "format": "object",
-                                            "$ref": "#/components/schemas/CarbonResource"
+                                            "$ref": "#/components/schemas/AuthTokenResource"
                                         }
                                     },
                                     "type": "object"
@@ -165,23 +738,31 @@
                 }
             }
         },
-        "/api/v1/verify/{id}": {
-            "get": {
+        "/api/v1/doctors/{id}/request-activation": {
+            "patch": {
                 "tags": [
                     "Doctors"
                 ],
-                "summary": "Verify doctor's email",
-                "description": "Verify doctor's email",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::verify",
+                "summary": "Create a request for activation a doctor",
+                "description": "Create a request for activation a doctor",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "An e-mail has been verified"
+                        "description": "A request has been succesfully created"
                     },
                     "304": {
-                        "description": "An e-mail already verified"
+                        "description": "Only new doctors can create a request"
                     },
                     "401": {
-                        "description": "Invalid signature",
+                        "description": "Authorization failed",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -189,6 +770,22 @@
                                         "message": {
                                             "format": "string",
                                             "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
                                         }
                                     },
                                     "type": "object"
@@ -231,348 +828,13 @@
                 }
             }
         },
-        "/api/v1/resend/{id}": {
-            "get": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Resend verification email",
-                "description": "Verify doctor's email",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::resend",
-                "responses": {
-                    "200": {
-                        "description": "An e-mail has been sent"
-                    },
-                    "304": {
-                        "description": "An e-mail already verified"
-                    },
-                    "404": {
-                        "description": "Resource not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "No query results for model [App\\Models\\Doctor]."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/login": {
-            "post": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Create a token for a doctor",
-                "description": "Create a token for a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::login",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password",
-                                    "recaptcha"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "title": "E-mail",
-                                        "description": "A doctor's e-mail",
-                                        "format": "string",
-                                        "example": "doctor@gmail.com"
-                                    },
-                                    "password": {
-                                        "title": "Password",
-                                        "description": "A doctor's password",
-                                        "format": "string",
-                                        "example": "12345678"
-                                    },
-                                    "recaptcha": {
-                                        "title": "Recaptcha",
-                                        "description": "Recaptcha value. Action must be 'login_doctor'",
-                                        "format": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Token has been created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "doctor_id": {
-                                            "format": "integer",
-                                            "example": "1"
-                                        },
-                                        "access_token": {
-                                            "format": "string",
-                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
-                                        },
-                                        "expires_at": {
-                                            "format": "object",
-                                            "$ref": "#/components/schemas/CarbonResource"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "There are some validation errors",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "title": "Validation error",
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "The given data was invalid."
-                                        },
-                                        "errors": {
-                                            "properties": {
-                                                "email": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The email field is required."
-                                                    }
-                                                },
-                                                "password": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The password field is required."
-                                                    }
-                                                },
-                                                "recaptcha": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The recaptcha field is required."
-                                                    }
-                                                }
-                                            },
-                                            "type": "object",
-                                            "format": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Authorization failed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/logout": {
-            "post": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Revoke current token",
-                "description": "Revoke current token",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::logout",
-                "responses": {
-                    "200": {
-                        "description": "Token has been revoked"
-                    },
-                    "401": {
-                        "description": "Authorization failed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/send-reset-link": {
-            "post": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Send reset password link",
-                "description": "Send email message for a doctor with a link for password reseting",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::sendResetLinkEmail",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "recaptcha"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "title": "E-mail",
-                                        "description": "A doctor's e-mail",
-                                        "format": "string",
-                                        "example": "doctor@gmail.com"
-                                    },
-                                    "recaptcha": {
-                                        "title": "Recaptcha",
-                                        "description": "Recaptcha value. Action must be 'send_reset_link'",
-                                        "format": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "An e-mail has been sent"
-                    },
-                    "422": {
-                        "description": "There are some validation errors",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "schema": "ValidationError",
-                                    "title": "Validation error",
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "The given data was invalid."
-                                        },
-                                        "errors": {
-                                            "properties": {
-                                                "email": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The email field is required."
-                                                    }
-                                                },
-                                                "recaptcha": {
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The recaptcha field is required."
-                                                    }
-                                                }
-                                            },
-                                            "type": "object",
-                                            "format": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/update-password": {
+        "/api/v1/doctors/reset-password": {
             "patch": {
                 "tags": [
                     "Doctors"
                 ],
                 "summary": "Set a new password for a doctor",
                 "description": "Set a new password for a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::updatePassword",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -604,12 +866,12 @@
                                     },
                                     "token": {
                                         "title": "Token",
-                                        "description": "Token value taken from reset password link",
+                                        "description": "A token value taken from reset password link",
                                         "format": "string"
                                     },
                                     "recaptcha": {
                                         "title": "Recaptcha",
-                                        "description": "Recaptcha value. Action must be 'update_password'",
+                                        "description": "A recaptcha value. The action must be 'update_password'",
                                         "format": "string"
                                     }
                                 },
@@ -695,6 +957,210 @@
                 }
             }
         },
+        "/api/v1/doctors/send-email-verification-link": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Send verification email link",
+                "description": "Send verification email link",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "A recaptcha token. An action must be 'send_email_verification_link'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "304": {
+                        "description": "An e-mail already verified"
+                    },
+                    "404": {
+                        "description": "The doctor with provided email not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "An email is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/send-reset-password-link": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Send reset password link",
+                "description": "Send an email message for a doctor with a link for password reseting",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A doctor's e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "A recaptcha token. An action must be 'send_reset_password_link'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "schema": "ValidationError",
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                },
+                                                "recaptcha": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The recaptcha field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/{id}": {
             "get": {
                 "tags": [
@@ -702,7 +1168,15 @@
                 ],
                 "summary": "Get a doctor resource by id",
                 "description": "Get a doctor resource by id",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A doctor has been succesfully received",
@@ -791,11 +1265,10 @@
                 ],
                 "summary": "Update a doctor resource by id",
                 "description": "Update a doctor resource by id",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::update",
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "description": "A doctor's identificator",
                         "required": true,
                         "example": "1"
@@ -986,341 +1459,6 @@
                 }
             }
         },
-        "/api/v1/doctors": {
-            "get": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Get doctors page",
-                "description": "Get doctors page",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::index",
-                "parameters": [
-                    {
-                        "name": "first_name",
-                        "in": "query",
-                        "description": "Filter doctors by first name",
-                        "required": false,
-                        "example": "David"
-                    },
-                    {
-                        "name": "last_name",
-                        "in": "query",
-                        "description": "Filter doctors by last name",
-                        "required": false,
-                        "example": "Johnson"
-                    },
-                    {
-                        "name": "region_id",
-                        "in": "query",
-                        "description": "Filter doctors by region id",
-                        "required": false,
-                        "example": "1"
-                    },
-                    {
-                        "name": "specialization_id",
-                        "in": "query",
-                        "description": "Filter doctors by specialization id",
-                        "required": false,
-                        "example": "1"
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "example": "1"
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Items amount on page",
-                        "required": false,
-                        "example": "15"
-                    },
-                    {
-                        "name": "order_by",
-                        "in": "query",
-                        "description": "Order list by a field",
-                        "required": false,
-                        "example": "first_name"
-                    },
-                    {
-                        "name": "direction",
-                        "in": "query",
-                        "description": "Order direction",
-                        "required": false,
-                        "example": "asc"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Doctors has been succesfully received",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "title": "Doctors",
-                                            "description": "Doctors list",
-                                            "items": {
-                                                "type": "object",
-                                                "$ref": "#/components/schemas/DoctorResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "items": {
-                                                "properties": {
-                                                    "first": {
-                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=1"
-                                                    },
-                                                    "last": {
-                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=10"
-                                                    },
-                                                    "prev": {
-                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=4"
-                                                    },
-                                                    "next": {
-                                                        "example": "http://online-hautarzt.com/api/v1/doctors?page=6"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "meta": {
-                                            "items": {
-                                                "properties": {
-                                                    "current_page": {
-                                                        "example": "5"
-                                                    },
-                                                    "from": {
-                                                        "example": "9"
-                                                    },
-                                                    "last_page": {
-                                                        "example": "10"
-                                                    },
-                                                    "path": {
-                                                        "example": "http://online-hautarzt.com/api/v1/doctors"
-                                                    },
-                                                    "per_page": {
-                                                        "example": "2"
-                                                    },
-                                                    "to": {
-                                                        "example": "10"
-                                                    },
-                                                    "total": {
-                                                        "example": "19"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/doctors/{id}/activate": {
-            "patch": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Create a request for activation a doctor",
-                "description": "Create a request for activation a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::activate",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "A doctor's identificator",
-                        "required": true,
-                        "example": "1"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "A request has been succesfully created"
-                    },
-                    "304": {
-                        "description": "A request already created or a doctor activated"
-                    },
-                    "401": {
-                        "description": "Authorization failed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Current user has not permissions to do this action",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "No query results for model [App\\Models\\Doctor]."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/doctors/{id}/close": {
-            "patch": {
-                "tags": [
-                    "Doctors"
-                ],
-                "summary": "Close a doctor's account",
-                "description": "Close a doctor's account",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::close",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "description": "A doctor's identificator",
-                        "required": true,
-                        "example": "1"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "An account has been succesfully closed"
-                    },
-                    "304": {
-                        "description": "An account already closed"
-                    },
-                    "401": {
-                        "description": "Authorization failed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Unauthenticated."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Current user has not permissions to do this action",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "This action is unauthorized."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Resource not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "No query results for model [App\\Models\\Doctor]."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal technical error was happened",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "format": "string",
-                                            "example": "Something went wrong, please try again later."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/doctors/{id}/stripe-connect": {
             "get": {
                 "tags": [
@@ -1328,7 +1466,6 @@
                 ],
                 "summary": "Get a doctors url to connect to stripe",
                 "description": "Get a doctors url to connect to stripe and current stripe account id",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::stripeConnect",
                 "responses": {
                     "200": {
                         "description": "Data has been succesfully received",
@@ -1424,7 +1561,6 @@
                 ],
                 "summary": "Set stripe account id for a doctor",
                 "description": "Set stripe account id for a doctor",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorController::stripeToken",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1457,9 +1593,21 @@
                                 "schema": {
                                     "title": "Validation error",
                                     "properties": {
-                                        "code": {
+                                        "message": {
                                             "format": "string",
                                             "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "code": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "This authorization code has already been used. All tokens issued with this code have been revoked."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
                                         }
                                     },
                                     "type": "object"
@@ -1534,133 +1682,45 @@
                 }
             }
         },
-        "/api/v1/enquires": {
+        "/api/v1/doctors/verify-email": {
             "get": {
                 "tags": [
-                    "Enquires"
+                    "Doctors"
                 ],
-                "summary": "Get enquires page",
-                "description": "Get enquires page",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::index",
-                "parameters": [
-                    {
-                        "name": "with_archived",
-                        "in": "query",
-                        "description": "Include archived enquires or not. Default not",
-                        "required": false,
-                        "example": "1"
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "Filter enquires by status. Possible values: UNREAD, READ, ARCHIVED",
-                        "required": false,
-                        "example": "UNREAD"
-                    },
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number",
-                        "required": false,
-                        "example": "1"
-                    },
-                    {
-                        "name": "per_page",
-                        "in": "query",
-                        "description": "Items amount on page",
-                        "required": false,
-                        "example": "15"
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "description": "Search string",
-                        "required": false,
-                        "example": "John"
-                    },
-                    {
-                        "name": "search_field",
-                        "in": "query",
-                        "description": "Search field. Possible values: id, first_name, last_name, phone_number, email",
-                        "required": false,
-                        "example": "first_name"
-                    },
-                    {
-                        "name": "order_field",
-                        "in": "query",
-                        "description": "Order field. Possible values: id, first_name, last_name, phone_number, email, status, conclusion, created_at",
-                        "required": false,
-                        "example": "first_name"
-                    },
-                    {
-                        "name": "order_direction",
-                        "in": "query",
-                        "description": "Order direction. Possible values: asc, desc",
-                        "required": false,
-                        "example": "asc"
-                    }
-                ],
+                "summary": "Verify doctor's email",
+                "description": "Verify doctor's email",
                 "responses": {
                     "200": {
-                        "description": "Enquires has been succesfully received",
+                        "description": "An e-mail has been verified"
+                    },
+                    "304": {
+                        "description": "An e-mail already verified"
+                    },
+                    "401": {
+                        "description": "Invalid signature",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
-                                            "title": "Enquires",
-                                            "description": "Enquires list",
-                                            "items": {
-                                                "type": "object",
-                                                "$ref": "#/components/schemas/EnquireResource"
-                                            }
-                                        },
-                                        "links": {
-                                            "items": {
-                                                "properties": {
-                                                    "first": {
-                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=1"
-                                                    },
-                                                    "last": {
-                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=10"
-                                                    },
-                                                    "prev": {
-                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=4"
-                                                    },
-                                                    "next": {
-                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=6"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "meta": {
-                                            "items": {
-                                                "properties": {
-                                                    "current_page": {
-                                                        "example": "5"
-                                                    },
-                                                    "from": {
-                                                        "example": "9"
-                                                    },
-                                                    "last_page": {
-                                                        "example": "10"
-                                                    },
-                                                    "path": {
-                                                        "example": "http://online-hautarzt.com/api/v1/enquires"
-                                                    },
-                                                    "per_page": {
-                                                        "example": "2"
-                                                    },
-                                                    "to": {
-                                                        "example": "10"
-                                                    },
-                                                    "total": {
-                                                        "example": "19"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
                                         }
                                     },
                                     "type": "object"
@@ -1685,14 +1745,15 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/v1/enquires": {
             "post": {
                 "tags": [
                     "Enquires"
                 ],
                 "summary": "Create a new enquire",
                 "description": "Create a new enquire",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::create",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1705,7 +1766,8 @@
                                     "date_of_birth",
                                     "phone_number",
                                     "email",
-                                    "doctor_id"
+                                    "doctor_id",
+                                    "answers"
                                 ],
                                 "properties": {
                                     "first_name": {
@@ -1724,7 +1786,7 @@
                                         "example": "test@gmail.com"
                                     },
                                     "gender": {
-                                        "description": "An enquire customer's gender",
+                                        "description": "An enquire customer's gender. Possible values: MALE, FEMALE",
                                         "format": "string",
                                         "example": "MALE"
                                     },
@@ -1742,6 +1804,10 @@
                                         "description": "An enquire's doctor ID",
                                         "format": "string",
                                         "example": "5"
+                                    },
+                                    "answers": {
+                                        "description": "An enquire's answers",
+                                        "format": "array"
                                     },
                                     "country": {
                                         "title": "A location's country",
@@ -1871,7 +1937,15 @@
                 ],
                 "summary": "Get an enquires resource by id",
                 "description": "Get a enquires resource by id",
-                "operationId": "App\\Http\\Controllers\\API\\V1\\EnquireController::show",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "An enquire has been succesfully received",
@@ -2223,6 +2297,25 @@
     },
     "components": {
         "schemas": {
+            "AuthTokenResource": {
+                "title": "AuthToken resource",
+                "description": "Resource for an authorization token representation",
+                "properties": {
+                    "doctor_id": {
+                        "format": "integer",
+                        "example": "1"
+                    },
+                    "access_token": {
+                        "format": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                    },
+                    "expires_at": {
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    }
+                },
+                "type": "object"
+            },
             "CarbonResource": {
                 "title": "Carbon resource",
                 "description": "Resource for datetime representation",
@@ -2332,131 +2425,100 @@
                 },
                 "type": "object"
             },
-            "EnquireAnswerResource": {
-                "title": "Location resource",
-                "description": "Resource for a location representation",
-                "properties": {
-                    "id": {
-                        "schema": "EnquireAnswerResource",
-                        "title": "ID",
-                        "description": "An enquire answers's identificator",
-                        "format": "int64",
-                        "example": "5"
-                    },
-                    "message": {
-                        "schema": "EnquireAnswerResource",
-                        "description": "An enquire answers's message",
-                        "$ref": "#/components/schemas/MessageResource"
-                    },
-                    "message_option": {
-                        "schema": "EnquireAnswerResource",
-                        "description": "An enquire answers's selected message option",
-                        "$ref": "#/components/schemas/MessageOptionResource"
-                    },
-                    "value": {
-                        "schema": "EnquireAnswerResource",
-                        "title": "Value",
-                        "description": "An enquire answers's value",
-                        "format": "string",
-                        "example": "Test"
-                    }
-                },
-                "type": "object"
-            },
             "EnquireResource": {
                 "title": "Enquire resource",
                 "description": "Resource for an enquire representation",
                 "properties": {
                     "id": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "ID",
                         "description": "An enquire's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "first_name": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "First name",
                         "description": "An enquire customer's first name",
                         "format": "string",
                         "example": "Davide"
                     },
                     "last_name": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Last name",
                         "description": "An enquire customers's last name",
                         "format": "string",
                         "example": "Donghi"
                     },
                     "gender": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Gender",
                         "description": "An enquire customer's gender",
                         "format": "string",
                         "example": "MALE"
                     },
                     "date_of_birth": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Date of birth",
                         "description": "Date of birth representation",
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     },
                     "created_at": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Created at",
                         "description": "Created datetime representation",
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     },
                     "updated_at": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Updated at",
                         "description": "Last updated datetime representation",
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     },
                     "phone_number": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Phone number",
                         "description": "An enquire customer's phone number",
                         "format": "string",
                         "example": "+38 024-548-58-55"
                     },
                     "email": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "E-mail",
                         "description": "An enquire customer's e-mail",
                         "format": "string",
                         "example": "test@gmail.com"
                     },
                     "conclusion": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Conclusion",
                         "description": "A doctors's conclusion",
                         "format": "string",
                         "example": "Everythink will be fine"
                     },
                     "status": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Status",
                         "description": "An enquire's status",
                         "format": "string",
                         "example": "UNREAD"
                     },
                     "is_paid": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Is paid",
                         "description": "Is an enquire paid",
                         "format": "boolean",
                         "example": "true"
                     },
                     "location": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "$ref": "#/components/schemas/LocationResource"
                     },
                     "answers": {
-                        "schema": "EnquireResource",
+                        "schema": "Enquire",
                         "title": "Answers",
                         "description": "An enquire's answers",
                         "items": {
@@ -2467,26 +2529,57 @@
                 },
                 "type": "object"
             },
+            "EnquireAnswerResource": {
+                "title": "Location resource",
+                "description": "Resource for a location representation",
+                "properties": {
+                    "id": {
+                        "schema": "EnquireAnswer",
+                        "title": "ID",
+                        "description": "An enquire answers's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "message": {
+                        "schema": "EnquireAnswer",
+                        "description": "An enquire answers's message",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "message_option": {
+                        "schema": "EnquireAnswer",
+                        "description": "An enquire answers's selected message option",
+                        "$ref": "#/components/schemas/MessageOptionResource"
+                    },
+                    "value": {
+                        "schema": "EnquireAnswer",
+                        "title": "Value",
+                        "description": "An enquire answers's value",
+                        "format": "string",
+                        "example": "Test"
+                    }
+                },
+                "type": "object"
+            },
             "LanguageResource": {
                 "title": "Language resource",
                 "description": "Resource for a language representation",
                 "properties": {
                     "id": {
-                        "schema": "LanguageResource",
+                        "schema": "Language",
                         "title": "ID",
                         "description": "A language's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "code": {
-                        "schema": "LanguageResource",
+                        "schema": "Language",
                         "title": "A language's code",
                         "description": "A language's code",
                         "format": "string",
                         "example": "en"
                     },
                     "name": {
-                        "schema": "LanguageResource",
+                        "schema": "Language",
                         "title": "A language's name",
                         "description": "A language's name",
                         "format": "string",
@@ -2500,49 +2593,49 @@
                 "description": "Resource for a location representation",
                 "properties": {
                     "id": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "ID",
                         "description": "A locations's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "country": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's country",
                         "description": "A location's country",
                         "format": "string",
                         "example": "USA"
                     },
                     "city": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's city",
                         "description": "A location's city",
                         "format": "string",
                         "example": "New York"
                     },
                     "state": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's state",
                         "description": "A location's state",
                         "format": "string",
                         "example": "New York"
                     },
                     "postal_code": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's postal code",
                         "description": "A location's postal code",
                         "format": "string",
                         "example": "12345"
                     },
                     "address": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's address",
                         "description": "A location's address",
                         "format": "string",
                         "example": "address"
                     },
                     "latitude": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's latitude",
                         "description": "A location's latitude",
                         "format": "double",
@@ -2550,7 +2643,7 @@
                         "nullable": true
                     },
                     "longitude": {
-                        "schema": "LocationResource",
+                        "schema": "Location",
                         "title": "A location's longitude",
                         "description": "A location's longitude",
                         "format": "double",
@@ -2560,93 +2653,61 @@
                 },
                 "type": "object"
             },
-            "MessageOptionResource": {
-                "title": "Message option resource",
-                "description": "Resource for a message option representation",
-                "properties": {
-                    "id": {
-                        "schema": "MessageOptionResource",
-                        "title": "ID",
-                        "description": "A message option's identificator",
-                        "format": "int64",
-                        "example": "5"
-                    },
-                    "value": {
-                        "schema": "MessageOptionResource",
-                        "title": "A message option's value",
-                        "description": "A message option's value",
-                        "format": "string",
-                        "example": "value"
-                    },
-                    "message": {
-                        "schema": "MessageOptionResource",
-                        "$ref": "#/components/schemas/MessageResource"
-                    },
-                    "next_message_id": {
-                        "schema": "MessageOptionResource",
-                        "title": "ID",
-                        "description": "Next message identificator",
-                        "format": "int64",
-                        "example": "5"
-                    }
-                },
-                "type": "object"
-            },
             "MessageResource": {
                 "title": "Message resource",
                 "description": "Resource for a message representation",
                 "properties": {
                     "id": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "ID",
                         "description": "A message's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "title": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "A message's title",
                         "description": "A message's title",
                         "format": "string",
                         "example": "How are you?"
                     },
                     "content": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "A message's content",
                         "description": "A message's content",
                         "format": "string",
                         "example": "How are you?"
                     },
                     "questioner": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "A message's questioner",
                         "description": "A message's questioner",
                         "format": "string",
                         "example": "Doctor"
                     },
                     "type": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "A message's type",
                         "description": "A message's type",
                         "format": "string",
                         "example": "simple"
                     },
                     "button": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "A message's button",
                         "description": "A message's button",
                         "format": "string",
                         "example": "Click here!"
                     },
                     "next_message_id": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "ID",
                         "description": "Next message identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "options": {
-                        "schema": "MessageResource",
+                        "schema": "Message",
                         "title": "Options",
                         "description": "Message's options",
                         "items": {
@@ -2657,19 +2718,51 @@
                 },
                 "type": "object"
             },
+            "MessageOptionResource": {
+                "title": "Message option resource",
+                "description": "Resource for a message option representation",
+                "properties": {
+                    "id": {
+                        "schema": "MessageOption",
+                        "title": "ID",
+                        "description": "A message option's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "value": {
+                        "schema": "MessageOption",
+                        "title": "A message option's value",
+                        "description": "A message option's value",
+                        "format": "string",
+                        "example": "value"
+                    },
+                    "message": {
+                        "schema": "MessageOption",
+                        "$ref": "#/components/schemas/MessageResource"
+                    },
+                    "next_message_id": {
+                        "schema": "MessageOption",
+                        "title": "ID",
+                        "description": "Next message identificator",
+                        "format": "int64",
+                        "example": "5"
+                    }
+                },
+                "type": "object"
+            },
             "RegionResource": {
                 "title": "Region resource",
                 "description": "Resource for a region representation",
                 "properties": {
                     "id": {
-                        "schema": "RegionResource",
+                        "schema": "Region",
                         "title": "ID",
                         "description": "A region's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "name": {
-                        "schema": "RegionResource",
+                        "schema": "Region",
                         "title": "A region's name",
                         "description": "A region's name",
                         "format": "string",
@@ -2683,14 +2776,14 @@
                 "description": "Resource for a specialization representation",
                 "properties": {
                     "id": {
-                        "schema": "SpecializationResource",
+                        "schema": "Specialization",
                         "title": "ID",
                         "description": "A specialization's identificator",
                         "format": "int64",
                         "example": "5"
                     },
                     "name": {
-                        "schema": "SpecializationResource",
+                        "schema": "Specialization",
                         "title": "A specialization's name",
                         "description": "A specialization's name",
                         "format": "string",
