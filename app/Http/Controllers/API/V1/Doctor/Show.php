@@ -15,6 +15,13 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}",
  *     summary="Get a doctor resource by id",
  *     description="Get a doctor resource by id",
+ *     @OA\Parameter(
+ *          name="id",
+ *          required=true,
+ *          description="A doctor's identificator",
+ *          in="path",
+ *          example="1"
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="A doctor has been succesfully received",
