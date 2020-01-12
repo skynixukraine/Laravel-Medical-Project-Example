@@ -13,7 +13,7 @@ class DoctorPolicy
 
     public function view(Doctor $user, Doctor $doctor): bool
     {
-        return $user->is($doctor);
+        return $doctor->status === Doctor::STATUS_ACTIVATED || $user->is($doctor);
     }
 
     public function update(Doctor $user, Doctor $doctor): bool
