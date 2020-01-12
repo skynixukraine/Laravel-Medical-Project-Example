@@ -40,6 +40,10 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\DoctorResettedPassword::class => [
             \App\Listeners\SendDoctorResettedPasswordNotification::class
+        ],
+
+        \App\Events\DoctorVerifiedEmail::class => [
+            \App\Listeners\SendDoctorVerifiedEmailNotification::class
         ]
     ];
 
