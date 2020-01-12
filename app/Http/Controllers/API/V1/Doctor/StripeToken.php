@@ -6,12 +6,14 @@ namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Stripe\Exception\OAuth\InvalidGrantException;
 use Stripe\OAuth;
 use OpenApi\Annotations as OA;
+use Stripe\Stripe;
 
 /**
  * @OA\Patch(
@@ -124,6 +126,9 @@ class StripeToken extends ApiController
 {
     public function __invoke(Request $request, Doctor $doctor)
     {
+        Stripe::setApiKey(Setting::fetchValue('stripe_secret_key'));
+        Stripe::setClientId(Setting::fetchValue('stripe_client_id'));
+
         $validator = Validator::make($request->all(), ['code' => 'required|string|max:255']);
         $validator->validate();
 
@@ -138,7 +143,5 @@ class StripeToken extends ApiController
         }
 
         $doctor->update(['stripe_account_id' => $response->stripe_user_id]);
-
-        return $response;
     }
 }

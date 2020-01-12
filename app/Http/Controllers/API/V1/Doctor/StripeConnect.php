@@ -6,8 +6,10 @@ namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
+use App\Models\Setting;
 use Stripe\OAuth;
 use OpenApi\Annotations as OA;
+use Stripe\Stripe;
 
 /**
  * @OA\Get(
@@ -106,6 +108,9 @@ class StripeConnect extends ApiController
 {
     public function __invoke(Doctor $doctor)
     {
+        Stripe::setApiKey(Setting::fetchValue('stripe_secret_key'));
+        Stripe::setClientId(Setting::fetchValue('stripe_client_id'));
+
         return [
             'url' => OAuth::authorizeUrl(['scope' => 'read_write']),
             'stripe_account_id' => $doctor->stripe_account_id
