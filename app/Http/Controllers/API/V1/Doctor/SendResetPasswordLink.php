@@ -32,7 +32,7 @@ use OpenApi\Annotations as OA;
  *                  @OA\Property(
  *                      format="string",
  *                      title="Recaptcha",
- *                      description="A recaptcha token. An action must be 'send_reset_link'",
+ *                      description="A recaptcha token. An action must be 'send_reset_password_link'",
  *                      property="recaptcha",
  *                  )
  *              )
