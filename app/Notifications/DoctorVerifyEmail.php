@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class VerifyEmail extends Notification
+class DoctorVerifyEmail extends Notification
 {
     /**
      * Get the notification's channels.
@@ -29,9 +29,9 @@ class VerifyEmail extends Notification
      * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject(Lang::getFromJson('Verify Email Address'))
             ->line(Lang::getFromJson('Please click the button below to verify your email address.'))
             ->action(
@@ -47,13 +47,14 @@ class VerifyEmail extends Notification
      * @param  mixed  $notifiable
      * @return string
      */
-    protected function verificationUrl($notifiable)
+    protected function verificationUrl($notifiable): string
     {
-        $url = URL::to('verify', [$notifiable->getKey()]);
-        $route = route('verification.verify', [$notifiable->getKey()]);
+        $query = parse_url(URL::temporarySignedRoute(
+            'doctors.verify-email', Carbon::now()->addHours(3), [
+            'doctor' => $notifiable->getKey(),
+            'id' => $notifiable->getKey()
+        ]))['query'] ?? '';
 
-        return str_replace($route, $url, URL::temporarySignedRoute(
-            'verification.verify', Carbon::now()->addHours(3), ['id' => $notifiable->getKey()]
-        ));
+        return config('app.url') . '/verify?' . $query;
     }
 }
