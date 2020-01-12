@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Doctor;
 
+use App\Events\DoctorRegistered;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
@@ -180,6 +181,6 @@ class Register extends ApiController
         $token->token->expires_at = Passport::$tokensExpireAt;
         $token->token->saveOrFail();
 
-        return AuthToken::make($token);
+        return response()->make(AuthToken::make($token), 201);
     }
 }
