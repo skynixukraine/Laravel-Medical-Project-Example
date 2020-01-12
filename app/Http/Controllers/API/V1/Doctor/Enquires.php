@@ -13,10 +13,17 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Get(
- *     tags={"Enquires"},
- *     path="/api/v1/enquires",
+ *     tags={"Doctors"},
+ *     path="/api/v1/doctors/{id}/enquires",
  *     summary="Get enquires page",
  *     description="Get enquires page",
+ *     @OA\Parameter(
+ *          name="id",
+ *          required=true,
+ *          description="A doctor's id",
+ *          in="path",
+ *          example="1"
+ *     ),
  *     @OA\Parameter(
  *          name="with_archived",
  *          required=false,
@@ -173,9 +180,8 @@ class Enquires extends ApiController
 {
     public function __invoke(Request $request, Doctor $doctor)
     {
-        $enquires = $doctor->enquires()->where(['is_paid' => true]);
-
-        $enquires->where($request->only(['gender', 'first_name', 'last_name']));
+        $enquires = $doctor->enquires()
+            ->where($request->only(['gender', 'first_name', 'last_name']));
 
         if ($request->has('status')) {
             $enquires->where('status', $request->query('status'));
