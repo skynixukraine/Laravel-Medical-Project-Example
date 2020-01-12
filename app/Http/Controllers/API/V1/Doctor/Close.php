@@ -15,6 +15,13 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/close",
  *     summary="Close a doctor's account",
  *     description="Close a doctor's account",
+ *     @OA\Parameter(
+ *          name="id",
+ *          required=true,
+ *          description="A doctor's identificator",
+ *          in="path",
+ *          example="1"
+ *     ),
  *     @OA\Response(response=200, description="An account has been succesfully closed"),
  *     @OA\Response(response=304, description="An account already closed"),
  *     @OA\Response(
