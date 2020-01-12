@@ -134,8 +134,8 @@ class Enquire extends JsonResource
             'email' => $this->email,
             'conclusion' => $this->conclusion,
             'status' => $this->status,
-            'is_paid' => $this->is_paid,
-            'location' => new Location($this->location),
+            'is_paid' => $this->billing()->exists(),
+            'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
         ];
     }
