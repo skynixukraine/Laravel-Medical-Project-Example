@@ -51,7 +51,6 @@ class DoctorVerifyEmail extends Notification
     {
         $query = parse_url(URL::temporarySignedRoute(
             'doctors.verify-email', Carbon::now()->addHours(3), [
-            'doctor' => $notifiable->getKey(),
             'id' => $notifiable->getKey()
         ]))['query'] ?? '';
 
