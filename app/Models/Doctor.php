@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Events\DoctorSaving;
-use App\Notifications\VerifyEmail;
+use App\Events\DoctorSaved;
+use App\Notifications\DoctorVerifyEmail;
 use Illuminate\Auth\Authenticatable;
-use App\Notifications\ResetPassword as ResetPasswordNotification;
+use App\Notifications\DoctorRequestedResetPassword;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Throwable;
 
 /**
  * Class Doctor
@@ -35,8 +37,8 @@ use Laravel\Passport\HasApiTokens;
  * @property string email
  * @property string status
  * @property string password
- * @property int region_id
- * @property int stripe_account_id
+ * @property int|null region_id
+ * @property int|null stripe_account_id
  * @property Region|null region
  * @property Specialization|null specialization
  * @property Language[] languages
@@ -44,7 +46,7 @@ use Laravel\Passport\HasApiTokens;
  */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
-    use Notifiable, HasApiTokens, Authenticatable, \Illuminate\Auth\MustVerifyEmail;
+    use Notifiable, HasApiTokens, Authenticatable, MustVerifyEmailTrait;
 
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
@@ -52,31 +54,35 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'photo',
-        'title',
-        'phone_number',
-        'board_certification',
-        'medical_degree',
-        'first_name',
-        'last_name',
-        'description',
-        'email',
-        'status',
-        'password',
-        'region_id',
-        'specialization_id',
-        'stripe_account_id',
+        'photo', 'title', 'phone_number', 'board_certification', 'medical_degree',
+        'first_name', 'last_name', 'description', 'email', 'status', 'password',
+        'region_id', 'specialization_id', 'stripe_account_id',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
 
-    protected $hidden = ['password'];
-
+    /**
+     * The event map for the model.
+     *
+     * Allows for object-based events for native Eloquent events.
+     *
+     * @var array
+     */
     protected $dispatchesEvents = [
-        'saving' => DoctorSaving::class,
+        'saved' => DoctorSaved::class,
     ];
 
     public function region(): BelongsTo
@@ -109,11 +115,6 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         return $this->hasManyThrough(Billing::class, Enquire::class);
     }
 
-    public function findForPassport($username)
-    {
-        return $this->whereEmail($username)->whereIsActive(true)->first();
-    }
-
     /**
      * @inheritDoc
      */
@@ -127,16 +128,16 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
      */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPasswordNotification($token));
+        $this->notify(new DoctorRequestedResetPassword($token));
     }
 
     /**
      * Mark the given user's email as verified.
      *
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function markEmailAsVerified()
+    public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
     }
@@ -146,8 +147,8 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
      *
      * @return void
      */
-    public function sendEmailVerificationNotification()
+    public function sendEmailVerificationNotification(): void
     {
-        $this->notify(new VerifyEmail());
+        $this->notify(new DoctorVerifyEmail());
     }
 }
