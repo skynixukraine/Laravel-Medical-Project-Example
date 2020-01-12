@@ -2,42 +2,37 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 Route::prefix('v1')->group(function () {
-    Route::post('register', 'API\V1\Doctor\Register')->name('doctors.register');
-    Route::post('login', 'API\V1\Doctor\Login')->name('doctors.login');
-    Route::post('send-reset-link', 'API\V1\Doctor\SendResetLinkEmail');
-    Route::patch('update-password', 'API\V1\Doctor\UpdatePassword');
-    Route::get('regions', 'API\V1\RegionController@index')->name('regions.index');
-    Route::get('specializations', 'API\V1\SpecializationController@index')->name('specializations.index');
-    Route::get('languages', 'API\V1\LanguageController@index')->name('languages.index');
-    Route::get('doctors', 'API\V1\Doctor\Doctors')->name('doctors.index');
-    Route::get('verify/{id}', 'API\V1\Doctor\VerifyEmail')->name('verification.verify');
-    Route::get('resend/{id}', 'API\V1\Doctor\ResendVerificationEmail')->name('verification.resend');
-    Route::get('messages/first', 'API\V1\MessageController@first')->name('messages.first');
-    Route::get('messages/{message}', 'API\V1\MessageController@show')->name('messages.show');
-    Route::post('enquires', 'API\V1\EnquireController@create')->name('enquire.create');
-});
+    Route::prefix('doctors')->group(function () {
+        Route::post('register', 'Doctor\Register')->name('doctors.register');
+        Route::post('login', 'Doctor\Login')->name('doctors.login');
+        Route::post('send-reset-password-link', 'Doctor\SendResetPasswordLink')->name('doctors.send-reset-password-link');
+        Route::patch('reset-password', 'Doctor\ResetPassword')->name('doctors.reset-password');
+        Route::get('', 'Doctor\Index')->name('doctors.index');
+        Route::get('verify-email', 'Doctor\VerifyEmail')->name('doctors.verify-email');
+        Route::post('send-email-verification-link', 'Doctor\SendEmailVerificationLink')->name('doctors.send-email-verification-link');
+    });
 
-Route::prefix('v1')->middleware(['auth:api'])->group(function () {
-    Route::patch('logout', 'API\V1\Doctor\Logout')->name('doctors.logout');
-    Route::get('doctors/{doctor}', 'API\V1\Doctor\Show')->middleware('can:view,doctor');
-    Route::patch('doctors/{doctor}', 'API\V1\Doctor\Update')->middleware('can:update,doctor');
-    Route::patch('doctors/{doctor}/activate', 'API\V1\Doctor\Activate')->middleware('can:activate,doctor');
-    Route::patch('doctors/{doctor}/close', 'API\V1\Doctor\Close')->middleware('can:close,doctor');
-    Route::get('doctors/{doctor}/stripe-connect', 'API\V1\Doctor\StripeConnect')->middleware('can:stripe-connect,doctor');
-    Route::patch('doctors/{doctor}/stripe-token', 'API\V1\Doctor\StripeToken')->middleware('can:stripe-token,doctor');
-    Route::get('doctors/{doctor}/billings', 'API\V1\Doctor\Billings');
-    Route::get('enquires', 'API\V1\EnquireController@index')->name('enquires.index');
-    Route::get('enquires/{enquire}', 'API\V1\EnquireController@show')->middleware('can:view,enquire');
+    Route::middleware(['auth:api'])->group(function () {
+        Route::prefix('doctors')->group(function () {
+            Route::patch('logout', 'Doctor\Logout')->name('doctors.logout');
+            Route::get('{doctor}', 'Doctor\Show')->middleware('can:view,doctor');
+            Route::patch('{doctor}', 'Doctor\Update')->middleware('can:update,doctor');
+            Route::patch('{doctor}/request-activation', 'Doctor\RequestActivation')->middleware('can:activate,doctor');
+            Route::patch('{doctor}/close', 'Doctor\Close')->middleware('can:close,doctor');
+            Route::get('{doctor}/stripe-connect', 'Doctor\StripeConnect')->middleware('can:stripe-connect,doctor');
+            Route::patch('{doctor}/stripe-token', 'Doctor\StripeToken')->middleware('can:stripe-token,doctor');
+            Route::get('{doctor}/billings', 'Doctor\Billings')->name('doctors.billings');
+            Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
+        });
+
+        Route::get('enquires/{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+    });
+
+    Route::get('regions', 'RegionController@index')->name('regions.index');
+    Route::get('specializations', 'SpecializationController@index')->name('specializations.index');
+    Route::get('languages', 'LanguageController@index')->name('languages.index');
+    Route::get('messages/first', 'MessageController@first')->name('messages.first');
+    Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
+    Route::post('enquires', 'Enquire\Create')->name('enquire.create');
 });
