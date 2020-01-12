@@ -169,7 +169,7 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class Doctors extends ApiController
+class Index extends ApiController
 {
     public function __invoke(Request $request): ResourceCollection
     {
