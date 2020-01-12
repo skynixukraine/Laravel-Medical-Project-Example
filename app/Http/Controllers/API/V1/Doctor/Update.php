@@ -8,7 +8,6 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Doctor\Update as UpdateRequest;
 use App\Http\Resources\Doctor as DoctorResource;
 use App\Models\Doctor;
-use App\Models\Location;
 use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +23,7 @@ use OpenApi\Annotations as OA;
  *          name="id",
  *          required=true,
  *          description="A doctor's identificator",
- *          in="query",
+ *          in="path",
  *          example="1"
  *     ),
  *     @OA\RequestBody(
@@ -232,17 +231,17 @@ class Update extends ApiController
 {
     public function __invoke(UpdateRequest $request, Doctor $doctor, StorageService $storage): DoctorResource
     {
-        if ($request->has('photo')) {
+        if ($request->hasFile('photo')) {
             $storage->removeFile($doctor->photo);
             $doctor->photo = $storage->saveDoctorsPhoto($request->photo);
         }
 
-        if ($request->has('medical_degree')) {
+        if ($request->hasFile('medical_degree')) {
             $storage->removeFile($doctor->medical_degree);
             $doctor->medical_degree = $storage->saveDoctorsMedicalDegree($request->medical_degree);
         }
 
-        if ($request->has('board_certification')) {
+        if ($request->hasFile('board_certification')) {
             $storage->removeFile($doctor->board_certification);
             $doctor->board_certification = $storage->saveDoctorsBoardCertification($request->board_certification);
         }
@@ -257,11 +256,11 @@ class Update extends ApiController
                 $doctor->languages()->attach($request->language_ids);
             }
 
-            $doctor->fill(
-                $request->only('prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email')
-            )->save();
+            $doctor->fill($request->only([
+                'prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email'
+            ]))->save();
 
-            Location::updateOrCreate(
+            $doctor->location()->updateOrCreate(
                 ['model_id' => $doctor->id, 'model_type' => Doctor::class],
                 $request->only(['city', 'address', 'postal_code', 'country', 'latitude', 'longitude', 'state'])
             );
