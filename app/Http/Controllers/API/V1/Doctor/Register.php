@@ -172,8 +172,8 @@ class Register extends ApiController
             'phone_number' => $request->phone_number,
             'password' => Hash::make($request->password),
             'status' => Doctor::STATUS_CREATED,
-            'board_certification' => $request->board_certification ? $storage->saveDoctorsBoardCertification($request->board_certification) : null,
-            'medical_degree' => $request->medical_degree ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
+            'board_certification' => $request->hasFile('board_certification') ? $storage->saveDoctorsBoardCertification($request->board_certification) : null,
+            'medical_degree' => $request->hasFile('medical_degree') ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
         ]);
 
         $token = $doctor->createToken('Personal Access Token');
