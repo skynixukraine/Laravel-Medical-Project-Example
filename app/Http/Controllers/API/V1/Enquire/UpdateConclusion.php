@@ -13,8 +13,8 @@ use App\Models\Enquire;
  * @OA\Patch(
  *     tags={"Enquires"},
  *     path="/api/v1/enquires/{id}/update-conclusion",
- *     summary="Get an enquires resource by id",
- *     description="Get a enquires resource by id",
+ *     summary="Update an enquire's conclusion by id",
+ *     description="Update an enquire's conclusion by id",
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
