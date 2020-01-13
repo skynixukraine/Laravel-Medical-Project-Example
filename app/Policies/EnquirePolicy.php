@@ -34,4 +34,9 @@ class EnquirePolicy
     {
         return $user instanceof Doctor && $user->id === $enquire->doctor_id && !blank($enquire->conclusion);
     }
+
+    public function addMessage($user, Enquire $enquire): bool
+    {
+        return $user instanceof Doctor && $user->id === $enquire->doctor_id;
+    }
 }

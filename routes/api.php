@@ -29,6 +29,8 @@ Route::prefix('v1')->group(function () {
         Route::prefix('enquires')->group(function () {
             Route::get('{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
             Route::patch('{enquire}/update-conclusion', 'Enquire\UpdateConclusion')->middleware('can:update-conclusion,enquire');
+            Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
+            Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
         });
     });
 

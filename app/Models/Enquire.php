@@ -57,4 +57,9 @@ class Enquire extends Model
     {
         return $this->hasOne(Billing::class);
     }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(EnquireMessage::class);
+    }
 }
