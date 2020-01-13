@@ -26,7 +26,10 @@ Route::prefix('v1')->group(function () {
             Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
         });
 
-        Route::get('enquires/{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+        Route::prefix('enquires')->group(function () {
+            Route::get('{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+            Route::patch('{enquire}/update-conclusion', 'Enquire\UpdateConclusion')->middleware('can:update-conclusion,enquire');
+        });
     });
 
     Route::get('regions', 'RegionController@index')->name('regions.index');

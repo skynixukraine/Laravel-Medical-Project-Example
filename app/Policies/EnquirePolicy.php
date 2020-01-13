@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Doctor;
 use App\Models\Enquire;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -22,5 +23,10 @@ class EnquirePolicy
         }
 
         return $enquire->doctor_id === $user->id;
+    }
+
+    public function updateConclusion($user, Enquire $enquire): bool
+    {
+        return $user instanceof Doctor && $user->id === $enquire->doctor_id;
     }
 }

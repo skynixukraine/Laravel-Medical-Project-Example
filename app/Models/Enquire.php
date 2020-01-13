@@ -27,7 +27,8 @@ class Enquire extends Model
         'phone_number',
         'email',
         'doctor_id',
-        'status'
+        'status',
+        'conclusion'
     ];
 
     protected $casts = [
