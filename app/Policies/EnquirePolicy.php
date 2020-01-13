@@ -29,4 +29,9 @@ class EnquirePolicy
     {
         return $user instanceof Doctor && $user->id === $enquire->doctor_id;
     }
+
+    public function close($user, Enquire $enquire): bool
+    {
+        return $user instanceof Doctor && $user->id === $enquire->doctor_id && !blank($enquire->conclusion);
+    }
 }
