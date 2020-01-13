@@ -5,6 +5,123 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/doctors/{id}/billings": {
+            "get": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Get billings page",
+                "description": "Get billings page",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's id",
+                        "required": true,
+                        "example": "1"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items amount on page",
+                        "required": false,
+                        "example": "15"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Billings has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "Enquires",
+                                            "description": "Enquires list",
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/EnquireResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "items": {
+                                                "properties": {
+                                                    "first": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=1"
+                                                    },
+                                                    "last": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=10"
+                                                    },
+                                                    "prev": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=4"
+                                                    },
+                                                    "next": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires?page=6"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "items": {
+                                                "properties": {
+                                                    "current_page": {
+                                                        "example": "5"
+                                                    },
+                                                    "from": {
+                                                        "example": "9"
+                                                    },
+                                                    "last_page": {
+                                                        "example": "10"
+                                                    },
+                                                    "path": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquires"
+                                                    },
+                                                    "per_page": {
+                                                        "example": "2"
+                                                    },
+                                                    "to": {
+                                                        "example": "10"
+                                                    },
+                                                    "total": {
+                                                        "example": "19"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/{id}/close": {
             "patch": {
                 "tags": [
@@ -2312,6 +2429,38 @@
                     "expires_at": {
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
+                    }
+                },
+                "type": "object"
+            },
+            "BillingResource": {
+                "title": "Billing resource",
+                "description": "Resource for an billing representation",
+                "properties": {
+                    "id": {
+                        "schema": "Billing",
+                        "title": "ID",
+                        "description": "An enquire's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "amount": {
+                        "schema": "Billing",
+                        "title": "Anount",
+                        "description": "A billing amount",
+                        "format": "string",
+                        "example": "20.15"
+                    },
+                    "currency": {
+                        "schema": "Billing",
+                        "title": "Currency",
+                        "description": "A billing's currency",
+                        "format": "string",
+                        "example": "usd"
+                    },
+                    "enquire": {
+                        "schema": "Billing",
+                        "$ref": "#/components/schemas/EnquireResource"
                     }
                 },
                 "type": "object"
