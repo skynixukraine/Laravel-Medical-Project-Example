@@ -6,10 +6,11 @@ namespace App\Notifications;
 
 use App\Traits\DoctorInfo;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorDeactivated extends Notification
+class DoctorDeactivated extends Notification implements ShouldQueue
 {
     use Queueable, DoctorInfo;
 

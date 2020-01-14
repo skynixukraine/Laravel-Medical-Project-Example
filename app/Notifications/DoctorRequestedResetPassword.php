@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorRequestedResetPassword extends Notification
+class DoctorRequestedResetPassword extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     private const RESET_PASSWORD_URL = '/reset-password';
 
     /**

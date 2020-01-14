@@ -7,10 +7,11 @@ namespace App\Notifications;
 use App\Models\Doctor;
 use App\Traits\DoctorInfo;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorRequestedActivation extends Notification
+class DoctorRequestedActivation extends Notification implements ShouldQueue
 {
     use Queueable, DoctorInfo;
 

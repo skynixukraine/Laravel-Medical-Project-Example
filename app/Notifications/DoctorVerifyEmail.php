@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorVerifyEmail extends Notification
+class DoctorVerifyEmail extends Notification implements ShouldQueue
 {
+    use Queueable;
     /**
      * Get the notification's channels.
      *

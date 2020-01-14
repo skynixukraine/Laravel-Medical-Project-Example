@@ -6,11 +6,12 @@ namespace App\Notifications;
 
 use App\Traits\DoctorInfo;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorResettedPassword extends Notification
+class DoctorResettedPassword extends Notification implements ShouldQueue
 {
     use Queueable, DoctorInfo;
 
