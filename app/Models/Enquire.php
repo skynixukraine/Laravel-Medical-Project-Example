@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Notifications\Notifiable;
 
 class Enquire extends Model
 {
+    use Notifiable;
+
     public const STATUS_UNREAD = 'UNREAD';
     public const STATUS_READ = 'READ';
     public const STATUS_ARCHIVED = 'ARCHIVED';
