@@ -123,4 +123,12 @@ return [
         ],
     ],
 
+    'doctor' => [
+        'host' => env('DOCTORS_MAIL_HOST'),
+        'port' => env('DOCTORS_MAIL_PORT'),
+        'encryption' => env('DOCTORS_MAIL_ENCRYPTION'),
+        'username' => env('DOCTORS_MAIL_USERNAME'),
+        'password' => env('DOCTORS_MAIL_PASSWORD'),
+        'flags' => env('DOCTORS_MAIL_IMAP_FLAGS'),
+    ]
 ];
