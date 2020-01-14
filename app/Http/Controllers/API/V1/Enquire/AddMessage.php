@@ -133,7 +133,6 @@ class AddMessage extends ApiController
         return EnquireMessageResource::make($enquire->messages()->create([
             'content' => $request->input('content'),
             'sender' => EnquireMessage::SENDER_DOCTOR,
-            'enquire_message_id' => $request->enquire_message_id,
         ]));
     }
 }
