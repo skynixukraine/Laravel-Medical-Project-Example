@@ -38,7 +38,6 @@ class Enquire extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'date_of_birth' => 'date',
-        'is_paid' => 'boolean',
     ];
 
     public function location(): MorphOne
