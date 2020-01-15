@@ -5,21 +5,18 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\EnquireMessage;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 
-class EnquireMessageCreated extends Notification implements ShouldQueue
+class EnquireMessageCreated extends QueueableNotification
 {
-    use Queueable;
-
     /**
      * @var EnquireMessage
      */
     private $message;
+
+    protected $mailConfig = 'doctor';
 
     /**
      * DoctorCreatedEnquireMessage constructor.
@@ -29,7 +26,6 @@ class EnquireMessageCreated extends Notification implements ShouldQueue
     {
         $this->message = $message;
     }
-
 
     /**
      * Doctors will always be notified by Email

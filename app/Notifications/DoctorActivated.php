@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Traits\DoctorInfo;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorActivated extends Notification implements ShouldQueue
+class DoctorActivated extends QueueableNotification
 {
-    use Queueable, DoctorInfo;
+    use DoctorInfo;
 
     /**
      * Doctors will always be notified by Email
