@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('SYSTEM_MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('SYSTEM_MAIL_HOST', 'smtp.mailgun.org'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('SYSTEM_MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -75,7 +75,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('SYSTEM_MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -88,8 +88,8 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
+    'username' => env('SYSTEM_MAIL_USERNAME'),
+    'password' => env('SYSTEM_MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,12 +123,33 @@ return [
         ],
     ],
 
-    'doctor' => [
-        'host' => env('DOCTORS_MAIL_HOST'),
-        'port' => env('DOCTORS_MAIL_PORT'),
-        'encryption' => env('DOCTORS_MAIL_ENCRYPTION'),
-        'username' => env('DOCTORS_MAIL_USERNAME'),
-        'password' => env('DOCTORS_MAIL_PASSWORD'),
-        'flags' => env('DOCTORS_MAIL_IMAP_FLAGS'),
+    'current' => env('CURRENT_MAIL', 'system'),
+
+    'extra' => [
+        'doctor' => [
+            'driver' => env('DOCTOR_MAIL_DRIVER', 'smtp'),
+            'host' => env('DOCTOR_MAIL_HOST'),
+            'port' => env('DOCTOR_MAIL_PORT'),
+            'encryption' => env('DOCTOR_MAIL_ENCRYPTION'),
+            'username' => env('DOCTOR_MAIL_USERNAME'),
+            'password' => env('DOCTOR_MAIL_PASSWORD'),
+            'flags' => env('DOCTOR_MAIL_IMAP_FLAGS'),
+        ],
+        'support' => [
+            'driver' => env('SUPPORT_MAIL_DRIVER', 'smtp'),
+            'host' => env('SUPPORT_MAIL_HOST'),
+            'port' => env('SUPPORT_MAIL_PORT'),
+            'encryption' => env('SUPPORT_MAIL_ENCRYPTION'),
+            'username' => env('SUPPORT_MAIL_USERNAME'),
+            'password' => env('SUPPORT_MAIL_PASSWORD'),
+        ],
+        'admin' => [
+            'driver' => env('ADMIN_MAIL_DRIVER', 'smtp'),
+            'host' => env('ADMIN_MAIL_HOST'),
+            'port' => env('ADMIN_MAIL_PORT'),
+            'encryption' => env('ADMIN_MAIL_ENCRYPTION'),
+            'username' => env('ADMIN_MAIL_USERNAME'),
+            'password' => env('ADMIN_MAIL_PASSWORD'),
+        ]
     ]
 ];
