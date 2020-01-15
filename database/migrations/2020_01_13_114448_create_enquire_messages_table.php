@@ -19,17 +19,11 @@ class CreateEnquireMessagesTable extends Migration
             $table->text('content');
             $table->enum('sender', [EnquireMessage::SENDER_DOCTOR, EnquireMessage::SENDER_PATIENT]);
             $table->unsignedInteger('enquire_id')->nullable();
-            $table->unsignedInteger('enquire_message_id')->nullable();
             $table->timestamps();
 
             $table->foreign('enquire_id')
                 ->references('id')
                 ->on('enquires')
-                ->onDelete('SET NULL');
-
-            $table->foreign('enquire_message_id')
-                ->references('id')
-                ->on('enquire_messages')
                 ->onDelete('SET NULL');
         });
     }

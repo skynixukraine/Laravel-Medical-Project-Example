@@ -29,18 +29,12 @@ use App\Models\EnquireMessage;
  *              mediaType="application/x-www-form-urlencoded",
  *              @OA\Schema(
  *                  type="object",
- *                  required={"content", "enquire_message_id"},
+ *                  required={"content"},
  *                  @OA\Property(
  *                      format="string",
  *                      description="An enquire message's content",
  *                      property="content",
  *                      example="test content"
- *                  ),
- *                  @OA\Property(
- *                      format="string",
- *                      description="An enquire message's id to reply",
- *                      property="enquire_message_id",
- *                      example="1"
  *                  ),
  *              )
  *          )

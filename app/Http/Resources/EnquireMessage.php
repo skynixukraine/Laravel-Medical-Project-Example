@@ -43,13 +43,6 @@ use OpenApi\Annotations as OA;
  *     property="enquire_id"
  * )
  * @OA\Property(
- *     format="int64",
- *     title="An enquire message's ID",
- *     description="An enquire message's ID that current message replied",
- *     example="1",
- *     property="enquire_message_id"
- * )
- * @OA\Property(
  *     ref="#/components/schemas/CarbonResource",
  *     format="object",
  *     title="Created at",
@@ -79,7 +72,6 @@ class EnquireMessage extends JsonResource
             'content' => $this->content,
             'sender' => $this->sender,
             'enquire_id' => $this->enquire_id,
-            'enquire_message_id' => $this->enquire_message_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

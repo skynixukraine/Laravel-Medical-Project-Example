@@ -27,7 +27,6 @@ class AddMessage extends FormRequest
     {
         return [
             'content' => 'required|string|max:10000',
-            'enquire_message_id' => 'nullable|exists:enquire_messages,id'
         ];
     }
 }
