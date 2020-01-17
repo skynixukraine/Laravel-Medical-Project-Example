@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Models\Enquire;
+use App\Services\ImapService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,63 +20,20 @@ class ProcessPatientsMessages implements ShouldQueue
 
     public function handle(): void
     {
-        $config = config('mail.extra.doctor.imap');
+        $imap = new ImapService();
 
-        $connection = imap_open('{' . $config['host'] . ':' . $config['port'] . $config['flags'] . '}INBOX',
-            $config['username'], $config['password'], OP_READONLY);
-
-        $unseenMessages = imap_search($connection, 'UNSEEN');
-
-
-        foreach ($unseenMessages as $message) {
-            $header = imap_headerinfo($connection, $message);
-            $sender = $header->from[0]->mailbox . '@' . $header->from[0]->host;
-
+        foreach ($imap->getUnseenMessages() as $message) {
             $enquire = Enquire::query()
-                ->where('email', $sender)
+                ->where('email', $imap->getMessageSender($message))
                 ->where('status', '<>', Enquire::STATUS_ARCHIVED)
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->first();
 
             if (!$enquire) {
                 continue;
             }
 
-            $attachments = $this->extractAttachments($connection, $message);
+            $imapMessage = $imap->fetchImapMessage($message);
         }
-
-        imap_close($connection);
-    }
-
-    private function extractAttachments($connection, $messageNumber): array
-    {
-        $attachments = [];
-        $structure = imap_fetchstructure($connection, $messageNumber);
-
-        if (isset($structure->parts) && count($structure->parts)) {
-            for ($i = 0, $count = count($structure->parts); $i < $count; $i++) {
-                if ($structure->parts[$i]->type !== 5) {
-                    continue;
-                }
-
-                if ($structure->parts[$i]->ifdparameters) {
-                    foreach ($structure->parts[$i]->dparameters as $object) {
-                        if (strtolower($object->attribute) === 'filename') {
-                            $attachments[$i]['filename'] = $object->value;
-                        }
-                    }
-                }
-
-                $attachments[$i]['value'] = imap_fetchbody($connection, $messageNumber, $i + 1);
-
-                if ($structure->parts[$i]->encoding === 3) {
-                    $attachments[$i]['value'] = base64_decode($attachments[$i]['value']);
-                } elseif ($structure->parts[$i]->encoding === 4) {
-                    $attachments[$i]['value'] = quoted_printable_decode($attachments[$i]['value']);
-                }
-            }
-        }
-
-        return $attachments;
     }
 }
