@@ -133,13 +133,6 @@ return [
             'encryption' => env('DOCTOR_MAIL_ENCRYPTION'),
             'username' => env('DOCTOR_MAIL_USERNAME'),
             'password' => env('DOCTOR_MAIL_PASSWORD'),
-            'imap' => [
-                'host' => env('DOCTOR_MAIL_IMAP_HOST'),
-                'port' => env('DOCTOR_MAIL_IMAP_PORT'),
-                'username' => env('DOCTOR_MAIL_IMAP_USERNAME'),
-                'password' => env('DOCTOR_MAIL_IMAP_PASSWORD'),
-                'flags' => env('DOCTOR_MAIL_IMAP_FLAGS')
-            ],
         ],
         'support' => [
             'driver' => env('SUPPORT_MAIL_DRIVER', 'smtp'),
