@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Events\EnquireMessageCreated;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EnquireMessage extends Model
 {
@@ -22,5 +23,10 @@ class EnquireMessage extends Model
     public function enquire(): BelongsTo
     {
         return $this->belongsTo(Enquire::class);
+    }
+
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(EnquireMessageAttachment::class);
     }
 }
