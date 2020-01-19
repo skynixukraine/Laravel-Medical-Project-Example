@@ -15,6 +15,7 @@ class StorageService
     private const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
 
     private const ENQUIRE_IMAGES_DIR = 'enquires/images';
+    private const ENQUIRE_MESSAGE_ATTACHMENTS_DIR = 'enquires_messages/attachments';
 
     /**
      * @param UploadedFile $photo
@@ -64,6 +65,26 @@ class StorageService
         );
     }
 
+    public function saveMessageEnquiryAttachment(string $name, string $extension, string $attachment): string
+    {
+        return $this->saveBinaryFile(
+            $attachment,
+            self::ENQUIRE_MESSAGE_ATTACHMENTS_DIR . date('/Y/m/d'),
+            $name,
+            $extension
+        );
+    }
+
+    public function saveBinaryFile(string $file, string $path, string $name, string $extension)
+    {
+        $path = Str::lower(trim($path));
+        $name = $this->getUniqueFileName($path, Str::slug($name), $extension);
+
+        $path .= '/' . $name . '.' . $extension;
+
+        return Storage::put($path, $file) ? $path : false;
+    }
+
     /**
      * @param UploadedFile $file
      * @param string $path
@@ -73,7 +94,7 @@ class StorageService
     public function saveFile(UploadedFile $file, string $path, string $name): string
     {
         $path = Str::lower(trim($path));
-        $name = $this->getUniqueFileName($path, Str::slug(trim($name)), $file->extension());
+        $name = $this->getUniqueFileName($path, Str::slug($name), $file->extension());
 
         return Storage::putFileAs($path, $file, $name . '.' . $file->extension());
     }
