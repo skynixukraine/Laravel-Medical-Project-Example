@@ -7,6 +7,7 @@ namespace App\Notifications;
 use App\Models\EnquireMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class EnquireMessageCreated extends QueueableNotification
@@ -51,7 +52,7 @@ class EnquireMessageCreated extends QueueableNotification
         $doctor = $this->message->enquire->doctor;
         return (new MailMessage())
             ->subject(Lang::getFromJson('Your doctor ' . $doctor->title . ' ' . $doctor->first_name . ' ' . $doctor->last_name . ' sent you a message'))
-            ->line(Lang::getFromJson($this->message->content));
+            ->line(new HtmlString($this->message->content));
     }
 
     private function makeMailFromPatient()
@@ -60,7 +61,7 @@ class EnquireMessageCreated extends QueueableNotification
 
         return (new MailMessage())
             ->subject(Lang::getFromJson('Your patient ' . $enquire->first_name . ' ' . $enquire->last_name . ' sent you a message'))
-            ->line(Lang::getFromJson($this->message->content));
+            ->line(new HtmlString($this->message->content));
     }
 
     /**
