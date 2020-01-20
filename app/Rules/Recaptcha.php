@@ -20,7 +20,7 @@ class Recaptcha implements Rule
      */
     public function passes($attribute, $value)
     {
-        $response = (new \ReCaptcha\ReCaptcha(config('app.RECAPTCHA_SECRET_KEY')))
+        $response = (new \ReCaptcha\ReCaptcha(config('app.recaptcha_secret_key')))
             ->setExpectedAction($this->action)
             ->verify($value, request()->ip());
 
