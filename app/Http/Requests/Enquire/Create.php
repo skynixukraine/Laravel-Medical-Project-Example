@@ -31,6 +31,7 @@ class Create extends FormRequest
     {
         return [
             'phone_number' => 'required|string|max:255',
+            'country_code' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',

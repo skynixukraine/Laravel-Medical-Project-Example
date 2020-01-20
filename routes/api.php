@@ -32,6 +32,7 @@ Route::prefix('v1')->group(function () {
             Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
             Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
             Route::get('{enquire}/messages', 'Enquire\Messages')->middleware('can:messages,enquire');
+
         });
     });
 
@@ -41,4 +42,6 @@ Route::prefix('v1')->group(function () {
     Route::get('messages/first', 'MessageController@first')->name('messages.first');
     Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
     Route::post('enquires', 'Enquire\Create')->name('enquire.create');
+    Route::get('enquires/{enquire}/send-sms', 'Enquire\SendSMS');
+    Route::post('enquires/{enquire}/verify-sms', 'Enquire\VerifySMS');
 });

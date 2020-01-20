@@ -14,6 +14,7 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Stripe\Charge;
 use Stripe\Stripe;
 
@@ -204,10 +205,11 @@ class Create extends ApiController
 {
     public function __invoke(CreateRequest $request)
     {
-        $enquire = Enquire::create($request->only(
+        $enquire = Enquire::make($request->only(
             'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'email', 'doctor_id'));
 
         DB::transaction(function () use ($request, $enquire) {
+            $enquire->authy_id = $this->getAuthyId($request->email, $request->phone_number, $request->country_code);
             $enquire->saveOrFail();
             $enquire->location()->create($request->only(
                 'address', 'latitude', 'longitude', 'city', 'state', 'postal_code', 'country'));
@@ -220,6 +222,15 @@ class Create extends ApiController
         $enquire->wasRecentlyCreated = true;
 
         return EnquireResource::make($enquire);
+    }
+
+    private function getAuthyId(string $email, string $phoneNumber, string $countryCode): string
+    {
+        $id = app('authy')->registerUser($email, preg_replace('/[^0-9]/', '', $phoneNumber), $countryCode)->id();
+
+        throw_if(!$id, ValidationException::withMessages(['phone_number' => __('Phone number is invalid')]));
+
+        return $id;
     }
 
     private function payForEnquire(Enquire $enquire, string $code): void
