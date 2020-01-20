@@ -15,6 +15,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Webklex\IMAP\Attachment;
 use Webklex\IMAP\Facades\Client;
 use Webklex\IMAP\Message;
+use Webklex\IMAP\Support\Masks\MessageMask;
 
 class ProcessPatientsMessages implements ShouldQueue
 {
@@ -69,10 +70,17 @@ class ProcessPatientsMessages implements ShouldQueue
             if (!$enquire) { continue; }
 
             /**  @var $message Message */
+            $message->setMask(MessageMask::class);
             $enquireMessage = $enquire->messages()->create([
                 'sender' => EnquireMessage::SENDER_PATIENT,
                 'content' => $message->hasHTMLBody()
-                    ? $message->mask()->getHTMLBodyWithUrlImages()
+                    ? $message->mask()->getCustomHTMLBody(function ($body, Attachment $attachment) {
+                        if ($attachment->type === 'image' && $attachment->id && $attachment->getImgSrc() !== null) {
+                            $imageUrl = asset(StorageService::ENQUIRE_MESSAGE_ATTACHMENTS_DIR . date('/Y/m/d/') . $attachment->getName());
+                            $body = str_replace('cid:'.$attachment->id, $imageUrl, $body);
+                        }
+                        return $body;
+                    })
                     : $message->getTextBody(),
             ]);
 
