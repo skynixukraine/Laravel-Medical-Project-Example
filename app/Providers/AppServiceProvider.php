@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Setting;
+use Authy\AuthyApi;
 use Illuminate\Support\ServiceProvider;
-use Stripe\Stripe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->singleton('authy', function ($app) {
+            return new AuthyApi(config('app.authy_secret'));
+        });
     }
 }

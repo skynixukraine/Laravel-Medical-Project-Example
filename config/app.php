@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'asset_url' => env('ASSET_URL', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -255,6 +257,8 @@ return [
         'MIX_WEB_URL' => env('MIX_WEB_URL_SNA'),
     ],
 
-    'RECAPTCHA_SITE_KEY' => env('RECAPTCHA_SITE_KEY'),
-    'RECAPTCHA_SECRET_KEY' => env('RECAPTCHA_SECRET_KEY')
+    'recaptcha_site_key' => env('RECAPTCHA_SITE_KEY'),
+    'recaptcha_secret_key' => env('RECAPTCHA_SECRET_KEY'),
+
+    'authy_secret' => env('AUTHY_SECRET')
 ];
