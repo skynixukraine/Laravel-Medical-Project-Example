@@ -42,12 +42,12 @@ class EnquireMessageCreated extends QueueableNotification
      * @param  mixed  $notifiable
      * @return MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable): MailMessage
     {
         return $this->{'makeMailFrom' . Str::studly($this->message->sender)}();
     }
 
-    private function makeMailFromDoctor()
+    private function makeMailFromDoctor(): MailMessage
     {
         $doctor = $this->message->enquire->doctor;
         return (new MailMessage())
@@ -55,7 +55,7 @@ class EnquireMessageCreated extends QueueableNotification
             ->line(new HtmlString($this->message->content));
     }
 
-    private function makeMailFromPatient()
+    private function makeMailFromPatient(): MailMessage
     {
         $enquire = $this->message->enquire;
 
