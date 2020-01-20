@@ -16,7 +16,7 @@ use OpenApi\Annotations as OA;
  *     properties={
  *         @OA\Property(
  *             format="integer",
- *             property="doctor_id",
+ *             property="id",
  *             example="1"
  *         ),
  *         @OA\Property(
@@ -43,7 +43,7 @@ class AuthToken extends JsonResource
     public function toArray($request): array
     {
         return [
-            'doctor_id' => $this->token->user_id,
+            'id' => $this->token->user_id,
             'access_token' => $this->accessToken,
             'expires_at' => $this->token->expires_at,
         ];
