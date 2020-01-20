@@ -149,10 +149,6 @@ class Login extends ApiController
 
         abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
-        $token = $doctor->createToken('Personal Access Token');
-        $token->token->expires_at = Passport::$tokensExpireAt;
-        $token->token->saveOrFail();
-
-        return AuthToken::make($token);
+        return AuthToken::make($doctor->saveAccessToken());
     }
 }
