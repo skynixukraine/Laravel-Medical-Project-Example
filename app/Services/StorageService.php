@@ -10,12 +10,12 @@ use Illuminate\Support\Str;
 
 class StorageService
 {
-    private const DOCTORS_PHOTO_DIR = 'doctors/photos';
-    private const DOCTORS_MEDICAL_DEGREES_DIR = 'doctors/medical_degrees';
-    private const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
+    public const DOCTORS_PHOTO_DIR = 'doctors/photos';
+    public const DOCTORS_MEDICAL_DEGREES_DIR = 'doctors/medical_degrees';
+    public const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
 
-    private const ENQUIRE_IMAGES_DIR = 'enquires/images';
-    private const ENQUIRE_MESSAGE_ATTACHMENTS_DIR = 'enquires_messages/attachments';
+    public const ENQUIRE_IMAGES_DIR = 'enquires/images';
+    public const ENQUIRE_MESSAGE_ATTACHMENTS_DIR = 'enquires_messages/attachments';
 
     /**
      * @param UploadedFile $photo
