@@ -39,4 +39,9 @@ class EnquirePolicy
     {
         return $user instanceof Doctor && $user->id === $enquire->doctor_id;
     }
+
+    public function messages($user, Enquire $enquire): bool
+    {
+        return $user instanceof Doctor && $user->id === $enquire->doctor_id;
+    }
 }
