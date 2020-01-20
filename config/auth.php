@@ -45,6 +45,11 @@ return [
             'driver' => 'passport',
             'provider' => 'doctors',
         ],
+
+        'api_enquires' => [
+            'driver' => 'passport',
+            'provider' => 'enquires',
+        ],
     ],
 
     /*
@@ -73,6 +78,11 @@ return [
         'doctors' => [
             'driver' => 'eloquent',
             'model' => App\Models\Doctor::class,
+        ],
+
+        'enquires' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Enquire::class,
         ],
 
         // 'users' => [

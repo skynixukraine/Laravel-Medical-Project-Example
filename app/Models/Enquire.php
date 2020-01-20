@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\HasApiTokensWithName;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Enquire extends Model
 {
-    use Notifiable;
+    use Notifiable, HasApiTokensWithName, Authenticatable;
 
     public const STATUS_UNREAD = 'UNREAD';
     public const STATUS_READ = 'READ';
@@ -21,6 +23,8 @@ class Enquire extends Model
 
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
+
+    private $tokenName = 'Enquire Access Token';
 
     protected $fillable = [
         'first_name',
@@ -31,7 +35,8 @@ class Enquire extends Model
         'email',
         'doctor_id',
         'status',
-        'conclusion'
+        'conclusion',
+        'authy_id',
     ];
 
     protected $casts = [
