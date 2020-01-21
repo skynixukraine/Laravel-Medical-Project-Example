@@ -41,7 +41,11 @@ Route::prefix('v1')->group(function () {
     Route::get('languages', 'LanguageController@index')->name('languages.index');
     Route::get('messages/first', 'MessageController@first')->name('messages.first');
     Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
-    Route::post('enquires', 'Enquire\Create')->name('enquire.create');
-    Route::get('enquires/{enquire}/send-sms', 'Enquire\SendSMS');
-    Route::post('enquires/{enquire}/verify-sms', 'Enquire\VerifySMS');
+
+    Route::prefix('enquires')->group(function () {
+        Route::post('', 'Enquire\Create')->name('enquire.create');
+        Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
+        Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
+        Route::get('{enquire}/check-conclusion', 'Enquire\CheckConclusion');
+    });
 });
