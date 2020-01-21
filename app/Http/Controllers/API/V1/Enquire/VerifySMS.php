@@ -11,7 +11,7 @@ use App\Models\Enquire;
 use Illuminate\Validation\ValidationException;
 
 /**
- * @OA\Get(
+ * @OA\Post(
  *     tags={"Enquires"},
  *     path="/api/v1/enquires/{id}/verify-sms",
  *     summary="Verify SMS verification code",
@@ -41,20 +41,32 @@ use Illuminate\Validation\ValidationException;
  *      ),
  *     @OA\Response(
  *         response=422,
- *         description="Failed to send verification code",
+ *         description="There are some validation errors",
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
+ *                  title="Validation error",
  *                  properties={
  *                      @OA\Property(
  *                          format="string",
  *                          property="message",
- *                          example="User not found."
+ *                          example="The given data was invalid."
+ *                      ),
+ *                      @OA\Property(
+ *                          property="errors",
+ *                          format="object",
+ *                          @OA\Property(
+ *                              property="validation_code",
+ *                              @OA\Items(
+ *                                  type="string",
+ *                                  example="Verification code is invalid."
+ *                              ),
+ *                          ),
  *                      ),
  *                  }
- *              )
+ *              ),
  *          )
- *      ),
+ *     ),
  *     @OA\Response(
  *         response=404,
  *         description="Resource not found",

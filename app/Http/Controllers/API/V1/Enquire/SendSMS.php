@@ -39,20 +39,32 @@ use Illuminate\Validation\ValidationException;
  *     ),
  *     @OA\Response(
  *         response=422,
- *         description="Failed to send verification code",
+ *         description="There are some validation errors",
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
+ *                  title="Validation error",
  *                  properties={
  *                      @OA\Property(
  *                          format="string",
  *                          property="message",
- *                          example="User not found."
+ *                          example="The given data was invalid."
+ *                      ),
+ *                      @OA\Property(
+ *                          property="errors",
+ *                          format="object",
+ *                          @OA\Property(
+ *                              property="authy",
+ *                              @OA\Items(
+ *                                  type="string",
+ *                                  example="Failed to send verification code."
+ *                              ),
+ *                          ),
  *                      ),
  *                  }
- *              )
+ *              ),
  *          )
- *      ),
+ *     ),
  *     @OA\Response(
  *         response=404,
  *         description="Resource not found",
@@ -97,6 +109,6 @@ class SendSMS extends ApiController
             'authy' => __('Failed to send verification code'),
         ]));
 
-        return response()->json(['message' => $response->message()], 200);
+        return ['message' => $response->message()];
     }
 }
