@@ -147,6 +147,6 @@ class Login extends ApiController
 
         abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
-        return AuthToken::make($doctor->saveAccessToken());
+        return AuthToken::make($doctor->saveToken());
     }
 }
