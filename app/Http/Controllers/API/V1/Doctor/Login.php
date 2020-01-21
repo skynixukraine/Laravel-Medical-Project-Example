@@ -8,9 +8,7 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Doctor\Login as LoginRequest;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
 
 /**

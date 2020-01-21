@@ -23,6 +23,29 @@ use Illuminate\Validation\ValidationException;
  *          in="path",
  *          example="1"
  *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *              mediaType="application/x-www-form-urlencoded",
+ *              @OA\Schema(
+ *                  type="object",
+ *                  required={"verification_code", "recaptcha"},
+ *                  @OA\Property(
+ *                      format="string",
+ *                      title="Verification code",
+ *                      description="Verification code",
+ *                      property="verification_code",
+ *                      example="95843565"
+ *                  ),
+ *                  @OA\Property(
+ *                      format="string",
+ *                      title="Recaptcha",
+ *                      description="A recaptcha token. The action must be 'verify_sms'",
+ *                      property="recaptcha"
+ *                  )
+ *              )
+ *          )
+ *     ),
  *     @OA\Response(
  *          response=200,
  *          description="Verification code has been verified",

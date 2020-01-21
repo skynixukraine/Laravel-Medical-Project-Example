@@ -224,7 +224,7 @@ class Create extends ApiController
         return EnquireResource::make($enquire);
     }
 
-    private function getAuthyId(string $email, string $phoneNumber, string $countryCode): string
+    private function getAuthyId(string $email, string $phoneNumber, string $countryCode)
     {
         $id = app('authy')->registerUser($email, preg_replace('/[^0-9]/', '', $phoneNumber), $countryCode)->id();
 
