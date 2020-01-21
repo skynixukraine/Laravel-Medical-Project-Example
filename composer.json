@@ -6,8 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=7.1.3",
+        "ext-imap": "*",
+        "authy/php": "^3.0",
         "aws/aws-sdk-php-laravel": "~3.0",
         "barryvdh/laravel-cors": "^0.11.0",
+        "barryvdh/laravel-dompdf": "^0.8.5",
         "doctrine/annotations": "^1.8",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "~4.0",
@@ -20,6 +23,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/laravel-nova-excel": "^1.1",
         "stripe/stripe-php": "^7.17",
+        "webklex/laravel-imap": "^1.4",
         "zircote/swagger-php": "^3.0"
     },
     "require-dev": {
