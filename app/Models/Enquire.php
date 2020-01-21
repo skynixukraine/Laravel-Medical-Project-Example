@@ -37,11 +37,13 @@ class Enquire extends Model
         'status',
         'conclusion',
         'authy_id',
+        'conclusion_created_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'conclusion_created_at' => 'datetime',
         'date_of_birth' => 'date',
     ];
 
