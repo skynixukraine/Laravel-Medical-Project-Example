@@ -5,14 +5,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     Route::prefix('enquires')->group(function () {
-        Route::middleware(['auth:api_enquires'])->group(function () {
-            Route::get('download-conclusion', 'Enquire\DownloadConclusion');
-        });
-
         Route::post('', 'Enquire\Create')->name('enquire.create');
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
         Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
-        Route::get('{enquire}/check-conclusion', 'Enquire\CheckConclusion');
+        Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
+        Route::get('download-conclusion', 'Enquire\DownloadConclusion');
     });
 
     Route::prefix('doctors')->group(function () {
