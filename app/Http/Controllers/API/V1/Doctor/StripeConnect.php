@@ -108,9 +108,6 @@ class StripeConnect extends ApiController
 {
     public function __invoke(Doctor $doctor)
     {
-        Stripe::setApiKey(Setting::fetchValue('stripe_secret_key'));
-        Stripe::setClientId(Setting::fetchValue('stripe_client_id'));
-
         return [
             'url' => OAuth::authorizeUrl(['scope' => 'read_write']),
             'stripe_account_id' => $doctor->stripe_account_id
