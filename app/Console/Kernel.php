@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,19 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $hostnameMasterServer = config('app.HOSTNAME_MASTER_SERVER');
 
-         $schedule->command('submissions:release')
-                  ->everyThirtyMinutes()
-                  ->when(function() use ($hostnameMasterServer) { return (gethostname() == $hostnameMasterServer); });
-
-         $schedule->command('reminder:send')
-                  ->hourly()
-                  ->when(function() use ($hostnameMasterServer) { return (gethostname() == $hostnameMasterServer); });
-
-         $schedule->command('cancelEmails:send')
-                  ->everyFiveMinutes()
-                  ->when(function() use ($hostnameMasterServer) { return (gethostname() == $hostnameMasterServer); });
     }
 
     /**
