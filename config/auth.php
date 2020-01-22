@@ -45,11 +45,6 @@ return [
             'driver' => 'passport',
             'provider' => 'doctors',
         ],
-
-        'api_enquires' => [
-            'driver' => 'passport',
-            'provider' => 'enquires',
-        ],
     ],
 
     /*
@@ -79,16 +74,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Doctor::class,
         ],
-
-        'enquires' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Enquire::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -113,5 +98,4 @@ return [
             'expire' => 60,
         ],
     ],
-
 ];
