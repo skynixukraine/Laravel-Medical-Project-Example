@@ -10,9 +10,9 @@ use App\Models\Enquire;
 /**
  * @OA\Get(
  *     tags={"Enquires"},
- *     path="/api/v1/enquires/{id}/check-conclusion",
+ *     path="/api/v1/enquires/{id}/conclusion-status",
  *     summary="Check if enquire's conclusion is abailable",
- *     description="Check if enquire's conclusion is abailable. The reason property can has two values. 1 - if conclusion has not been provided yet, 2 - if conclusion already expired and not available",
+ *     description="Check if enquire's conclusion is abailable. Possible statuses. 0 - if conclusion was expired, 1 - if conclusion available, 2 - if conclusion has not been provided",
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
@@ -22,19 +22,14 @@ use App\Models\Enquire;
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="Conclusion availability has been succesfully checked",
+ *         description="Conclusion status has been succesfully checked",
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  properties={
  *                      @OA\Property(
- *                          type="boolean",
- *                          property="available",
- *                          example=false
- *                      ),
- *                      @OA\Property(
  *                          type="int64",
- *                          property="reason",
+ *                          property="status",
  *                          example=1,
  *                      ),
  *                  }
@@ -75,16 +70,10 @@ use App\Models\Enquire;
  *      )
  * )
  */
-class CheckConclusion extends ApiController
+class ConclusionStatus extends ApiController
 {
     public function __invoke(Enquire $enquire)
     {
-        $response['available'] = $enquire->conclusion_created_at && $enquire->conclusion_created_at->addWeek(6)->greaterThanOrEqualTo(now());
-
-        if (!$response['available']) {
-            $response['reason'] = !$enquire->conclusion_created_at ? 1 : 2;
-        }
-
-        return $response;
+        return ['status' => !$enquire->conclusion_created_at ? 2 : (int) $enquire->isConclusionExpired()];
     }
 }
