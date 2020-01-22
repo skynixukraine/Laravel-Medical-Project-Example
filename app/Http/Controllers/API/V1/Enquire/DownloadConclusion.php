@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Enquire;
 
+use App\Http\Controllers\API\V1\ApiController;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,7 +48,7 @@ use Illuminate\Support\Facades\Auth;
  *      )
  * )
  */
-class DownloadConclusion
+class DownloadConclusion extends ApiController
 {
     public function __invoke()
     {
