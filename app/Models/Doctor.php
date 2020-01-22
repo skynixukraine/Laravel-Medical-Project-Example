@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Events\DoctorSaved;
 use App\Notifications\DoctorVerifyEmail;
-use App\Traits\HasApiTokensWithName;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
@@ -19,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Passport;
+use Laravel\Passport\PersonalAccessTokenResult;
 use Throwable;
 
 /**
@@ -46,7 +48,7 @@ use Throwable;
  */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
-    use Notifiable, HasApiTokensWithName, Authenticatable, MustVerifyEmailTrait;
+    use Notifiable, HasApiTokens, Authenticatable, MustVerifyEmailTrait;
 
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
@@ -152,5 +154,14 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new DoctorVerifyEmail());
+    }
+
+    public function saveToken(): PersonalAccessTokenResult
+    {
+        $token = $this->createToken('Personal Access Token');
+        $token->token->expires_at = Passport::$tokensExpireAt;
+        $token->token->saveOrFail();
+
+        return $token;
     }
 }
