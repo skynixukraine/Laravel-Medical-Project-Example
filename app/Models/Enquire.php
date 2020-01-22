@@ -40,7 +40,7 @@ use Illuminate\Support\Carbon;
  */
 class Enquire extends Model
 {
-    use Notifiable, HasApiTokensWithName, Authenticatable;
+    use Notifiable, Authenticatable;
 
     public const STATUS_UNREAD = 'UNREAD';
     public const STATUS_READ = 'READ';
@@ -99,6 +99,6 @@ class Enquire extends Model
 
     public function isConclusionExpired(): bool
     {
-        return $this->conclusion_created_at->addWeek(6)->greaterThanOrEqualTo(now());
+        return $this->conclusion_created_at->addWeek(6)->lessThanOrEqualTo(now());
     }
 }
