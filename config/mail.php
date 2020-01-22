@@ -56,12 +56,12 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@online-hautarzt.net'),
-        'name' => env('MAIL_FROM_NAME', 'Online Hautarzt - Appdoc'),
+        'address' => env('SYSTEM_MAIL_FROM_ADDRESS', 'info@online-hautarzt.net'),
+        'name' => env('SYSTEM_MAIL_FROM_NAME', 'Online Hautarzt - Systemnachricht'),
     ],
 
     'cc' => [
-        'address' => env('MAIL_CC_ADDRESS', 'info@online-hautarzt.net'),
+        'address' => env('SYSTEM_MAIL_CC_ADDRESS', 'info@online-hautarzt.net'),
     ],
 
     /*
@@ -133,6 +133,10 @@ return [
             'encryption' => env('DOCTOR_MAIL_ENCRYPTION'),
             'username' => env('DOCTOR_MAIL_USERNAME'),
             'password' => env('DOCTOR_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('DOCTOR_MAIL_FROM_ADDRESS'),
+                'name' => env('DOCTOR_MAIL_FROM_NAME'),
+            ]
         ],
         'support' => [
             'driver' => env('SUPPORT_MAIL_DRIVER', 'smtp'),
@@ -141,6 +145,10 @@ return [
             'encryption' => env('SUPPORT_MAIL_ENCRYPTION'),
             'username' => env('SUPPORT_MAIL_USERNAME'),
             'password' => env('SUPPORT_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('SUPPORT_MAIL_FROM_ADDRESS'),
+                'name' => env('SUPPORT_MAIL_FROM_NAME'),
+            ]
         ],
         'admin' => [
             'driver' => env('ADMIN_MAIL_DRIVER', 'smtp'),
@@ -149,6 +157,10 @@ return [
             'encryption' => env('ADMIN_MAIL_ENCRYPTION'),
             'username' => env('ADMIN_MAIL_USERNAME'),
             'password' => env('ADMIN_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('ADMIN_MAIL_FROM_ADDRESS'),
+                'name' => env('ADMIN_MAIL_FROM_NAME'),
+            ]
         ]
     ]
 ];
