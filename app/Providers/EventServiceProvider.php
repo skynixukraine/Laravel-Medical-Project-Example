@@ -48,6 +48,10 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\EnquireMessageCreated::class => [
             \App\Listeners\SendEnquireMessageCreatedNotification::class
+        ],
+
+        \App\Events\EnquireCreated::class => [
+            \App\Listeners\SendEnquireCreatedNotification::class
         ]
     ];
 

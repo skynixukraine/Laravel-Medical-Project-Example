@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Enquire;
 
+use App\Events\EnquireCreated;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\Create as CreateRequest;
 use App\Http\Resources\Enquire as EnquireResource;
@@ -16,7 +17,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Stripe\Charge;
-use Stripe\Stripe;
 
 /**
  * @OA\Post(
@@ -205,28 +205,37 @@ class Create extends ApiController
 {
     public function __invoke(CreateRequest $request)
     {
-        $enquire = Enquire::make($request->only(
-            'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'email', 'doctor_id'));
+        $enquire = new Enquire($request->only(
+            'first_name', 'last_name', 'gender', 'date_of_birth',
+            'phone_number', 'email', 'doctor_id'
+        ));
 
         DB::transaction(function () use ($request, $enquire) {
             $enquire->authy_id = $this->getAuthyId($request->email, $request->phone_number, $request->country_code);
             $enquire->saveOrFail();
+
             $enquire->location()->create($request->only(
-                'address', 'latitude', 'longitude', 'city', 'state', 'postal_code', 'country'));
+                'address', 'latitude', 'longitude',
+                'city', 'state', 'postal_code', 'country'
+            ));
 
             $this->processAnswers($enquire, $request->answers);
             $this->payForEnquire($enquire, $request->code);
+
         }, 2);
 
         $enquire = $enquire->fresh();
         $enquire->wasRecentlyCreated = true;
+
+        event(new EnquireCreated($enquire));
 
         return EnquireResource::make($enquire);
     }
 
     private function getAuthyId(string $email, string $phoneNumber, string $countryCode)
     {
-        $id = app('authy')->registerUser($email, preg_replace('/[^0-9]/', '', $phoneNumber), $countryCode)->id();
+        $phoneNumber = preg_replace('/[^0-9]/', '', $phoneNumber);
+        $id = app('authy')->registerUser($email, $phoneNumber, $countryCode)->id();
 
         throw_if(!$id, ValidationException::withMessages(['phone_number' => __('Phone number is invalid')]));
 
@@ -239,10 +248,7 @@ class Create extends ApiController
         $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
         $currency = Setting::fetchValue('enquire_price_currency', 'usd');
 
-        Stripe::setApiKey(Setting::fetchValue('stripe_secret_key'));
-        Stripe::setClientId(Setting::fetchValue('stripe_client_id'));
-
-        $charge = Charge::create([
+        Charge::create([
             'amount' => $price,
             'currency' => $currency,
             'application_fee_amount' => $fee,
@@ -310,10 +316,9 @@ class Create extends ApiController
     {
         $image = is_array($answers) ? ($answers[0] ?? null) : $answers;
 
-        Validator::make(['image' => $image], [
-            'image' => 'mimes:jpg,png,jpeg|max:50000'
-        ])->validate();
+        Validator::make(['image' => $image], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
 
+//        FIXME: storage variable not exists here
         $enquireAnswer->value = $this->storage->saveEnquireImage($image);
         $enquireAnswer->saveOrFail();
     }
