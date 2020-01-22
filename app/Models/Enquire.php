@@ -12,7 +12,32 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
+/**
+ * Class Enquire
+ * @package App\Models
+ *
+ * @property int id
+ * @property string first_name
+ * @property string last_name
+ * @property string gender
+ * @property Carbon date_of_birth
+ * @property Carbon created_at
+ * @property Carbon|null conclusion_created_at
+ * @property Carbon updated_at
+ * @property string phone_number
+ * @property string email
+ * @property string|null conclusion
+ * @property string status
+ * @property int doctor_id
+ * @property string authy_id
+ * @property Location location
+ * @property EnquireAnswer[] answers
+ * @property Doctor doctor
+ * @property Billing billing
+ * @property Message[] messages
+ */
 class Enquire extends Model
 {
     use Notifiable, HasApiTokensWithName, Authenticatable;
@@ -70,5 +95,10 @@ class Enquire extends Model
     public function messages(): HasMany
     {
         return $this->hasMany(EnquireMessage::class);
+    }
+
+    public function isConclusionExpired(): bool
+    {
+        return $this->conclusion_created_at->addWeek(6)->greaterThanOrEqualTo(now());
     }
 }
