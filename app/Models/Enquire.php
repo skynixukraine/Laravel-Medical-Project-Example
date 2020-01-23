@@ -101,4 +101,9 @@ class Enquire extends Model
     {
         return $this->conclusion_created_at->addWeek(6)->lessThanOrEqualTo(now());
     }
+
+    public function token()
+    {
+        return $this->hasOne(EnquireToken::class)->orderByDesc('expires_at');
+    }
 }

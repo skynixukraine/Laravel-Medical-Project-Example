@@ -48,6 +48,6 @@ class EnquirePolicy
     public function downloadConclusion($user, Enquire $enquire): bool
     {
         return $enquire->token && $enquire->token->expires_at->gte(now())
-            && $enquire->conclusion_created_at && $enquire->conclusion_created_at->addWeek(6)->gte(now());
+            && $enquire->conclusion_created_at && !$enquire->isConclusionExpired();
     }
 }

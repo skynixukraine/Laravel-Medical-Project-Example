@@ -9,7 +9,7 @@ Route::prefix('v1')->group(function () {
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
         Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
         Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
-        Route::get('download-conclusion', 'Enquire\DownloadConclusion');
+        Route::get('{enquire}/download-conclusion', 'Enquire\DownloadConclusion');
     });
 
     Route::prefix('doctors')->group(function () {

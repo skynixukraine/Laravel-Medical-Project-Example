@@ -5,15 +5,25 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Http\Controllers\API\V1\ApiController;
+use App\Http\Requests\Enquire\DownloadConclusion as DownloadConclusionRequest;
+use App\Models\Enquire;
 use Barryvdh\DomPDF\Facade as PDF;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @OA\Post(
  *     tags={"Enquires"},
- *     path="/api/v1/enquires/download-conclusion",
+ *     path="/api/v1/enquires/{id}/download-conclusion",
  *     summary="Download enquire's conclusion",
  *     description="Download enquire's conclusion",
+ *     @OA\Parameter(
+ *          name="id",
+ *          required=true,
+ *          description="An enquire's identificator",
+ *          in="path",
+ *          example="1"
+ *     ),
  *     @OA\Response(
  *          response=200,
  *          description="Verification code has been verified",
@@ -26,6 +36,38 @@ use Illuminate\Support\Facades\Auth;
  *                          property="conclusion",
  *                          example="Ri0xLjMKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZwovT3V0bGluZXMgMiAwIFIKL1BhZ2VzIDMgMC"
  *                      )
+ *                  }
+ *              )
+ *          )
+ *      ),
+ *     @OA\Response(
+ *         response=403,
+ *         description="Current user has not permissions to do this action",
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  properties={
+ *                      @OA\Property(
+ *                          format="string",
+ *                          property="message",
+ *                          example="This action is unauthorized."
+ *                      ),
+ *                  }
+ *              )
+ *          )
+ *      ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="Resource not found",
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  properties={
+ *                      @OA\Property(
+ *                          format="string",
+ *                          property="message",
+ *                          example="No query results for model [App\Models\Enquire]."
+ *                      ),
  *                  }
  *              )
  *          )
@@ -50,9 +92,11 @@ use Illuminate\Support\Facades\Auth;
  */
 class DownloadConclusion extends ApiController
 {
-    public function __invoke()
+    public function __invoke(DownloadConclusionRequest $request, Enquire $enquire)
     {
-        $pdf = PDF::loadView('pdf.conclusion', ['enquire' => Auth::user()]);
+        throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
+
+        $pdf = PDF::loadView('pdf.conclusion', ['enquire' => $enquire]);
         return ['conclusion' => base64_encode($pdf->output())];
     }
 }
