@@ -94,7 +94,7 @@ use OpenApi\Annotations as OA;
  *              example="I am a good doctor"
  *          ),
  *          @OA\Property(
- *              format="boolean",
+ *              format="string",
  *              title="Status",
  *              description="A doctor's status",
  *              property="status",
@@ -135,6 +135,13 @@ use OpenApi\Annotations as OA;
  *              description="Doctor's languages",
  *              property="languages",
  *          ),
+ *          @OA\Property(
+ *              format="boolean",
+ *              title="Can be approved",
+ *              description="Determine if a doctor can be approved. The property available only if status property equals 'CREATED'",
+ *              property="can_be_approved",
+ *              example=true
+ *          ),
  *     }
  * )
  */
@@ -168,6 +175,7 @@ class Doctor extends JsonResource
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
             'enquire_price' => Setting::fetchValue('display_enquire_price'),
+            'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
     }
 }

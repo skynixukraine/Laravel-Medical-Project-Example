@@ -27,24 +27,7 @@ class DoctorPolicy
             return false;
         }
 
-        $requiredAttributes = [
-            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
-            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
-        ];
-
-        foreach ($requiredAttributes as $attribute) {
-            if (blank($doctor->{$attribute})) {
-                return false;
-            }
-        }
-
-        foreach ($doctor->location->getFillable() as $attribute) {
-            if (blank($doctor->location->{$attribute})) {
-                return false;
-            }
-        }
-
-        return true;
+        return $doctor->canBeApproved();
     }
 
     public function close(Doctor $user, Doctor $doctor): bool

@@ -166,4 +166,26 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 
         return $token;
     }
+
+    public function canBeApproved()
+    {
+        $requiredAttributes = [
+            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
+            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
+        ];
+
+        foreach ($requiredAttributes as $attribute) {
+            if (blank($this->{$attribute})) {
+                return false;
+            }
+        }
+
+        foreach ($this->location->getFillable() as $attribute) {
+            if (blank($this->location->{$attribute})) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
