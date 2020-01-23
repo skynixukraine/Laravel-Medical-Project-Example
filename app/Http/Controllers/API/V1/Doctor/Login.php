@@ -9,6 +9,7 @@ use App\Http\Requests\Doctor\Login as LoginRequest;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -144,6 +145,10 @@ class Login extends ApiController
     public function __invoke(LoginRequest $request)
     {
         $doctor = Doctor::whereEmail($request->email)->firstOrFail();
+
+        throw_if(!$doctor->email_verified_at, ValidationException::withMessages([
+            'email' => __('Please verify your e-mail address to login'),
+        ]));
 
         abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
