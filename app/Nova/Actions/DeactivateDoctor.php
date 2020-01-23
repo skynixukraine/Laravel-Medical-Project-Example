@@ -32,10 +32,15 @@ class DeactivateDoctor extends Action
     public function handle(ActionFields $fields, Collection $doctors)
     {
         foreach ($doctors as $doctor) {
-            if ($doctor->getOriginal('status') !== Doctor::STATUS_DEACTIVATED) {
-                $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
-                event(new DoctorDeactivated($doctor));
+            $status = $doctor->getOriginal('status');
+
+            if ($status === Doctor::STATUS_DEACTIVATED || $status === Doctor::STATUS_CREATED) {
+                continue;
             }
+
+            $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
+
+            event(new DoctorDeactivated($doctor));
         }
     }
 

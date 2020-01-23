@@ -7,7 +7,7 @@ namespace App\Events;
 use App\Traits\DoctorInfo;
 use Illuminate\Queue\SerializesModels;
 
-class DoctorActivated
+class DoctorApproved
 {
     use DoctorInfo, SerializesModels;
 }

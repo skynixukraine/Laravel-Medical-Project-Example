@@ -3,6 +3,7 @@
 namespace App\Nova\Actions;
 
 use App\Events\DoctorActivated;
+use App\Events\DoctorApproved;
 use App\Models\Doctor;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
@@ -32,10 +33,15 @@ class ActivateDoctor extends Action
     public function handle(ActionFields $fields, Collection $doctors)
     {
         foreach ($doctors as $doctor) {
-            if ($doctor->getOriginal('status') !== Doctor::STATUS_ACTIVATED) {
-                $doctor->update(['status' => Doctor::STATUS_ACTIVATED]);
-                event(new DoctorActivated($doctor));
+            $status = $doctor->getOriginal('status');
+
+            if ($status === Doctor::STATUS_ACTIVATED || $status !== Doctor::STATUS_CREATED) {
+                continue;
             }
+
+            $doctor->update(['status' => Doctor::STATUS_ACTIVATED]);
+
+            event($status === Doctor::STATUS_ACTIVATION_REQUESTED ? new DoctorApproved($doctor) : new DoctorActivated($doctor));
         }
     }
 

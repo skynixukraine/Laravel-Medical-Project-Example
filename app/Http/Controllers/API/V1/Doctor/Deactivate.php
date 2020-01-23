@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Events\DoctorClosed;
+use App\Events\DoctorDeactivated;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
 use OpenApi\Annotations as OA;
@@ -12,9 +13,9 @@ use OpenApi\Annotations as OA;
 /**
  * @OA\Patch(
  *     tags={"Doctors"},
- *     path="/api/v1/doctors/{id}/close",
- *     summary="Close a doctor's account",
- *     description="Close a doctor's account",
+ *     path="/api/v1/doctors/{id}/deactivate",
+ *     summary="Deactivated a doctor's account",
+ *     description="Deactivated a doctor's account",
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
@@ -22,8 +23,8 @@ use OpenApi\Annotations as OA;
  *          in="path",
  *          example="1"
  *     ),
- *     @OA\Response(response=200, description="An account has been succesfully closed"),
- *     @OA\Response(response=304, description="An account already closed"),
+ *     @OA\Response(response=200, description="An account has been succesfully deactivated"),
+ *     @OA\Response(response=304, description="An account already deactivated"),
  *     @OA\Response(
  *         response=401,
  *         description="Authorization failed",
@@ -90,14 +91,14 @@ use OpenApi\Annotations as OA;
  *      )
  * )
  */
-class Close extends ApiController
+class Deactivate extends ApiController
 {
     public function __invoke(Doctor $doctor): void
     {
-        abort_if($doctor->status === Doctor::STATUS_CLOSED, 304);
+        abort_if($doctor->status === Doctor::STATUS_DEACTIVATED, 304);
 
-        $doctor->update(['status' => Doctor::STATUS_CLOSED]);
+        $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
 
-        event(new DoctorClosed($doctor));
+        event(new DoctorDeactivated($doctor));
     }
 }
