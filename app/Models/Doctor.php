@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Passport;
 use Laravel\Passport\PersonalAccessTokenResult;
@@ -45,6 +46,7 @@ use Throwable;
  * @property Specialization|null specialization
  * @property Language[] languages
  * @property Location|null location
+ * @property Carbon email_verified_at
  */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {

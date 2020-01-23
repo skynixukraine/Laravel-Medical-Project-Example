@@ -61,5 +61,6 @@
   "Male": "Male",
   "New enquiry": "Neuer Fall verfügbar",
   ":gender, :age just submitted a case.": ":gender, :age hat soeben einen Fall eingereicht.",
-  "Login to the doctors portal to answer it :link": "Zum Ärzteportal: :link"
+  "Login to the doctors portal to answer it :link": "Zum Ärzteportal: :link",
+  "Please verify your e-mail address to login": "Please verify your e-mail address to login"
 }
