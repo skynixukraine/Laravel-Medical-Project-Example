@@ -35,7 +35,7 @@ class ActivateDoctor extends Action
         foreach ($doctors as $doctor) {
             $status = $doctor->getOriginal('status');
 
-            if ($status === Doctor::STATUS_ACTIVATED || $status !== Doctor::STATUS_CREATED) {
+            if ($status === Doctor::STATUS_ACTIVATED || $status === Doctor::STATUS_CREATED) {
                 continue;
             }
 

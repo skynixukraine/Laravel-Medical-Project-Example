@@ -18,7 +18,7 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendVerifyEmailNotification::class,
         ],
 
-        \App\Events\DoctorClosedAccount::class => [
+        \App\Events\DoctorClosed::class => [
             \App\Listeners\SendDoctorAccountClosedNotification::class,
         ],
 
@@ -26,8 +26,8 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendDoctorRequestedActivationNotification::class,
         ],
 
-        \App\Events\DoctorActivated::class => [
-            \App\Listeners\SendDoctorActivatedNotification::class,
+        \App\Events\DoctorApproved::class => [
+            \App\Listeners\SendDoctorApprovedNotification::class,
         ],
 
         \App\Events\DoctorDeactivated::class => [
@@ -52,7 +52,7 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\EnquireCreated::class => [
             \App\Listeners\SendEnquireCreatedNotification::class
-        ]
+        ],
     ];
 
     /**
