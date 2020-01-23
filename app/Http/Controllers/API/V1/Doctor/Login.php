@@ -8,9 +8,7 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Doctor\Login as LoginRequest;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
 
 /**
@@ -149,10 +147,6 @@ class Login extends ApiController
 
         abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
-        $token = $doctor->createToken('Personal Access Token');
-        $token->token->expires_at = Passport::$tokensExpireAt;
-        $token->token->saveOrFail();
-
-        return AuthToken::make($token);
+        return AuthToken::make($doctor->saveToken());
     }
 }

@@ -137,20 +137,13 @@ class StripeToken extends ApiController
 {
     public function __invoke(Request $request, Doctor $doctor)
     {
-        Stripe::setApiKey(Setting::fetchValue('stripe_secret_key'));
-        Stripe::setClientId(Setting::fetchValue('stripe_client_id'));
-
-        $validator = Validator::make($request->all(), ['code' => 'required|string|max:255']);
-        $validator->validate();
-
         try {
             $response = OAuth::token([
                 'code' => $request->code,
                 'grant_type' => 'authorization_code',
             ]);
         } catch (InvalidGrantException $exception) {
-            $validator->errors()->add('code', $exception->getMessage());
-            throw new ValidationException($validator);
+            ValidationException::withMessages(['code' => __('Failed to create stripe token')]);
         }
 
         $doctor->update(['stripe_account_id' => $response->stripe_user_id]);

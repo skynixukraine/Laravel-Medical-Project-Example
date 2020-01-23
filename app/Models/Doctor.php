@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Passport;
+use Laravel\Passport\PersonalAccessTokenResult;
 use Throwable;
 
 /**
@@ -53,6 +55,8 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_ACTIVATED = 'ACTIVATED';
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
+
+    private $tokenName = 'Doctor Access Token';
 
     /**
      * The attributes that are mass assignable.
@@ -150,5 +154,14 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new DoctorVerifyEmail());
+    }
+
+    public function saveToken(): PersonalAccessTokenResult
+    {
+        $token = $this->createToken('Personal Access Token');
+        $token->token->expires_at = Passport::$tokensExpireAt;
+        $token->token->saveOrFail();
+
+        return $token;
     }
 }

@@ -69,28 +69,35 @@ use OpenApi\Annotations as OA;
  *     description="An enquire customer's phone number",
  *     property="phone_number",
  *     example="+38 024-548-58-55"
- * ),
+ * )
  * @OA\Property(
  *     format="string",
  *     title="E-mail",
  *     description="An enquire customer's e-mail",
  *     property="email",
  *     example="test@gmail.com"
- * ),
+ * )
  * @OA\Property(
  *     format="string",
  *     title="Conclusion",
  *     description="A doctors's conclusion",
  *     property="conclusion",
  *     example="Everythink will be fine"
- * ),
+ * )
+ * @OA\Property(
+ *     format="object",
+ *     title="Conclusion created at",
+ *     description="Conclusion created datetime representation",
+ *     property="conclusion_created_at",
+ *     ref="#/components/schemas/CarbonResource",
+ * )
  * @OA\Property(
  *     format="string",
  *     title="Status",
  *     description="An enquire's status",
  *     property="status",
  *     example="UNREAD"
- * ),
+ * )
  * @OA\Property(
  *     format="boolean",
  *     title="Is paid",
@@ -133,6 +140,7 @@ class Enquire extends JsonResource
             'phone_number' => $this->phone_number,
             'email' => $this->email,
             'conclusion' => $this->conclusion,
+            'conclusion_created_at' => $this->conclusion_created_at,
             'status' => $this->status,
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),

@@ -32,8 +32,8 @@ class CreateSubmissionsTable extends Migration
             $table->enum('status', ['setup', 'open', 'assigned', 'permanently_assigned', 'answered']);
             $table->string('closeup_image_id')->nullable();
             $table->string('overview_image_id')->nullable();
-            $table->unsignedInteger('assigned_to_user_id')->nullable(); // todo: this needs to be set, when the doctor clicks on "I want to answer this case"
-            $table->timestamp('assigned_at')->nullable(); // todo: this needs to be set, when the doctor clicks on "I want to answer this case"
+            $table->unsignedInteger('assigned_to_user_id')->nullable();
+            $table->timestamp('assigned_at')->nullable();
             $table->string('medium');
 
             $table->text('answer')->nullable();

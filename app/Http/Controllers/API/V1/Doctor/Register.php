@@ -176,10 +176,6 @@ class Register extends ApiController
             'medical_degree' => $request->hasFile('medical_degree') ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
         ]);
 
-        $token = $doctor->createToken('Personal Access Token');
-        $token->token->expires_at = Passport::$tokensExpireAt;
-        $token->token->saveOrFail();
-
-        return AuthToken::make($token)->response()->setStatusCode(201);
+        return AuthToken::make($doctor->saveAccessToken())->response()->setStatusCode(201);
     }
 }

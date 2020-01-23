@@ -1864,6 +1864,295 @@
                 }
             }
         },
+        "/api/v1/enquires/{id}/add-message": {
+            "patch": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Add a new enquire message to enquire",
+                "description": "Add a new enquire message to enquire",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "content"
+                                ],
+                                "properties": {
+                                    "content": {
+                                        "description": "An enquire message's content",
+                                        "format": "string",
+                                        "example": "test content"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Conclusion has been succesfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireMessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Enquiere not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/close": {
+            "patch": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Close an enquire",
+                "description": "Close an enquire",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An enquire has been succesfully closed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "304": {
+                        "description": "An enquire already closed"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Enquiere not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/conclusion-status": {
+            "get": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Check if enquire's conclusion is abailable",
+                "description": "Check if enquire's conclusion is abailable. Possible statuses. 0 - if conclusion was expired, 1 - if conclusion available, 2 - if conclusion has not been provided",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Conclusion status has been succesfully checked",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "int64",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Enquiere not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/enquires": {
             "post": {
                 "tags": [
@@ -2047,6 +2336,277 @@
                 }
             }
         },
+        "/api/v1/enquires/download-conclusion": {
+            "post": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Download enquire's conclusion",
+                "description": "Download enquire's conclusion",
+                "responses": {
+                    "200": {
+                        "description": "Verification code has been verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "conclusion": {
+                                            "type": "string",
+                                            "example": "Ri0xLjMKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZwovT3V0bGluZXMgMiAwIFIKL1BhZ2VzIDMgMC"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/messages": {
+            "get": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Get enquire messages page",
+                "description": "Get enquire messages page",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Enquire's ID",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "example": "1"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items amount on page",
+                        "required": false,
+                        "example": "15"
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "description": "Order list by a field. Default: created_at",
+                        "required": false,
+                        "example": "created_at"
+                    },
+                    {
+                        "name": "direction",
+                        "in": "query",
+                        "description": "Order direction. Default: desc. Possible values: asc, desc",
+                        "required": false,
+                        "example": "asc"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Enquire messages has been succesfully received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "title": "Enquire messages",
+                                            "description": "Enquire messages list",
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/EnquireMessageResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "items": {
+                                                "properties": {
+                                                    "first": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=1"
+                                                    },
+                                                    "last": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=10"
+                                                    },
+                                                    "prev": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=4"
+                                                    },
+                                                    "next": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=6"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "meta": {
+                                            "items": {
+                                                "properties": {
+                                                    "current_page": {
+                                                        "example": "5"
+                                                    },
+                                                    "from": {
+                                                        "example": "9"
+                                                    },
+                                                    "last_page": {
+                                                        "example": "10"
+                                                    },
+                                                    "path": {
+                                                        "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages"
+                                                    },
+                                                    "per_page": {
+                                                        "example": "2"
+                                                    },
+                                                    "to": {
+                                                        "example": "10"
+                                                    },
+                                                    "total": {
+                                                        "example": "19"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/send-sms": {
+            "get": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Send SMS verification code",
+                "description": "Send SMS verification code",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verification code has been sent",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "SMS token was sent."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "authy": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Failed to send verification code."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/enquires/{id}": {
             "get": {
                 "tags": [
@@ -2104,6 +2664,249 @@
                                         "message": {
                                             "format": "string",
                                             "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/update-conclusion": {
+            "patch": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Update an enquire's conclusion by id",
+                "description": "Update an enquire's conclusion by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "conclusion"
+                                ],
+                                "properties": {
+                                    "conclusion": {
+                                        "description": "An enquire's conclusion",
+                                        "format": "string",
+                                        "example": "test conclusion"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Conclusion has been succesfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/EnquireResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Enquiere not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/enquires/{id}/verify-sms": {
+            "post": {
+                "tags": [
+                    "Enquires"
+                ],
+                "summary": "Verify SMS verification code",
+                "description": "Verify SMS verification code",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "verification_code",
+                                    "recaptcha"
+                                ],
+                                "properties": {
+                                    "verification_code": {
+                                        "title": "Verification code",
+                                        "description": "Verification code",
+                                        "format": "string",
+                                        "example": "95843565"
+                                    },
+                                    "recaptcha": {
+                                        "title": "Recaptcha",
+                                        "description": "A recaptcha token. The action must be 'verify_sms'",
+                                        "format": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Verification code has been verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "format": "object",
+                                            "$ref": "#/components/schemas/AuthTokenResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "validation_code": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Verification code is invalid."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
                                         }
                                     },
                                     "type": "object"
@@ -2418,7 +3221,7 @@
                 "title": "AuthToken resource",
                 "description": "Resource for an authorization token representation",
                 "properties": {
-                    "doctor_id": {
+                    "id": {
                         "format": "integer",
                         "example": "1"
                     },
@@ -2648,6 +3451,13 @@
                         "format": "string",
                         "example": "Everythink will be fine"
                     },
+                    "conclusion_created_at": {
+                        "schema": "Enquire",
+                        "title": "Conclusion created at",
+                        "description": "Conclusion created datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
                     "status": {
                         "schema": "Enquire",
                         "title": "Status",
@@ -2705,6 +3515,55 @@
                         "description": "An enquire answers's value",
                         "format": "string",
                         "example": "Test"
+                    }
+                },
+                "type": "object"
+            },
+            "EnquireMessageResource": {
+                "title": "EnquireMessage resource",
+                "description": "Resource for an enquire message",
+                "properties": {
+                    "id": {
+                        "schema": "EnquireMessage",
+                        "title": "ID",
+                        "description": "An enquire message's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "content": {
+                        "schema": "EnquireMessage",
+                        "title": "Content",
+                        "description": "An enquire message's content",
+                        "format": "string",
+                        "example": "Hallo!"
+                    },
+                    "sender": {
+                        "schema": "EnquireMessage",
+                        "title": "Sender",
+                        "description": "An enquire message's sender. Can be DOCTOR of PATIENT",
+                        "format": "string",
+                        "example": "DOCTOR"
+                    },
+                    "enquire_id": {
+                        "schema": "EnquireMessage",
+                        "title": "An enquire's ID",
+                        "description": "An enquire's ID related to current message",
+                        "format": "int64",
+                        "example": "1"
+                    },
+                    "created_at": {
+                        "schema": "EnquireMessage",
+                        "title": "Created at",
+                        "description": "Created datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "updated_at": {
+                        "schema": "EnquireMessage",
+                        "title": "Updated at",
+                        "description": "Last updated datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
                     }
                 },
                 "type": "object"

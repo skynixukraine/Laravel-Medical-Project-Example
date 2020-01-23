@@ -3,6 +3,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
+
+    Route::prefix('enquires')->group(function () {
+        Route::post('', 'Enquire\Create')->name('enquire.create');
+        Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
+        Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
+        Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
+        Route::get('download-conclusion', 'Enquire\DownloadConclusion');
+    });
+
     Route::prefix('doctors')->group(function () {
         Route::post('register', 'Doctor\Register')->name('doctors.register');
         Route::post('login', 'Doctor\Login')->name('doctors.login');
@@ -26,7 +35,14 @@ Route::prefix('v1')->group(function () {
             Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
         });
 
-        Route::get('enquires/{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+        Route::prefix('enquires')->group(function () {
+            Route::get('{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+            Route::patch('{enquire}/update-conclusion', 'Enquire\UpdateConclusion')->middleware('can:update-conclusion,enquire');
+            Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
+            Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
+            Route::get('{enquire}/messages', 'Enquire\Messages')->middleware('can:messages,enquire');
+
+        });
     });
 
     Route::get('regions', 'RegionController@index')->name('regions.index');
@@ -34,5 +50,4 @@ Route::prefix('v1')->group(function () {
     Route::get('languages', 'LanguageController@index')->name('languages.index');
     Route::get('messages/first', 'MessageController@first')->name('messages.first');
     Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
-    Route::post('enquires', 'Enquire\Create')->name('enquire.create');
 });

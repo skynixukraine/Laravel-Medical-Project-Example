@@ -74,11 +74,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Doctor::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -103,5 +98,4 @@ return [
             'expire' => 60,
         ],
     ],
-
 ];

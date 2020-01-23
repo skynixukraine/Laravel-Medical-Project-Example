@@ -33,7 +33,7 @@ class Login extends FormRequest
             'email' => [
                 'required', 'string', 'email',
                 Rule::exists('doctors')->where(static function (Builder $query) {
-                    $query->whereNotNull('email_verified_at')->whereIn('status', [
+                    $query->whereIn('status', [
                         Doctor::STATUS_CREATED,
                         Doctor::STATUS_ACTIVATION_REQUESTED,
                         Doctor::STATUS_ACTIVATED,

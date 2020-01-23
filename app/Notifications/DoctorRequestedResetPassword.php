@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use Illuminate\Support\Facades\Lang;
-use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorRequestedResetPassword extends Notification
+class DoctorRequestedResetPassword extends QueueableNotification
 {
     private const RESET_PASSWORD_URL = '/reset-password';
 
