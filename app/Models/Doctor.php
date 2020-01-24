@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Events\DoctorSaved;
 use App\Notifications\DoctorVerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
@@ -76,17 +75,6 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime'
-    ];
-
-    /**
-     * The event map for the model.
-     *
-     * Allows for object-based events for native Eloquent events.
-     *
-     * @var array
-     */
-    protected $dispatchesEvents = [
-        'saved' => DoctorSaved::class,
     ];
 
     public function region(): BelongsTo
