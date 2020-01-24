@@ -14,10 +14,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\DoctorSaved::class => [
-            \App\Listeners\SendVerifyEmailNotification::class,
-        ],
-
         \App\Events\DoctorClosed::class => [
             \App\Listeners\SendDoctorAccountClosedNotification::class,
         ],
