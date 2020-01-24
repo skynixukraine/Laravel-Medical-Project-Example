@@ -34,12 +34,6 @@ use OpenApi\Annotations as OA;
  *                  type="object",
  *                  @OA\Property(
  *                      format="string",
- *                      description="A doctor's e-mail",
- *                      property="email",
- *                      example="doctor@gmail.com"
- *                  ),
- *                  @OA\Property(
- *                      format="string",
  *                      description="A doctor's title",
  *                      property="title",
  *                      example="Dr."
@@ -257,7 +251,7 @@ class Update extends ApiController
             }
 
             $doctor->fill($request->only([
-                'prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email'
+                'prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id'
             ]))->save();
 
             $doctor->location()->updateOrCreate(
