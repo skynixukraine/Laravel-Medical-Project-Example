@@ -176,6 +176,6 @@ class Register extends ApiController
             'medical_degree' => $request->hasFile('medical_degree') ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
         ]);
 
-        return AuthToken::make($doctor->saveAccessToken())->response()->setStatusCode(201);
+        return AuthToken::make($doctor->saveToken())->response()->setStatusCode(201);
     }
 }
