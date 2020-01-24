@@ -27,9 +27,10 @@ class DoctorDeactivated extends QueueableNotification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->markdown('mail.doctor.doctor-deactivated', ['doctor' => $this->doctor])
-            ->subject('Account deactivated');
+        return $this->createMailMessage()
+            ->subject(__('Account paused'))
+            ->greeting(__('Hello,'))
+            ->line(__('Your account was paused successfully.'));
     }
 
     /**
