@@ -225,25 +225,6 @@ class Update extends ApiController
 {
     public function __invoke(UpdateRequest $request, Doctor $doctor, StorageService $storage): DoctorResource
     {
-        if ($request->hasFile('photo')) {
-            $storage->removeFile($doctor->photo);
-            $doctor->photo = $storage->saveDoctorsPhoto($request->photo);
-        }
-
-        if ($request->hasFile('medical_degree')) {
-            $storage->removeFile($doctor->medical_degree);
-            $doctor->medical_degree = $storage->saveDoctorsMedicalDegree($request->medical_degree);
-        }
-
-        if ($request->hasFile('board_certification')) {
-            $storage->removeFile($doctor->board_certification);
-            $doctor->board_certification = $storage->saveDoctorsBoardCertification($request->board_certification);
-        }
-
-        if ($request->has('password')) {
-            $doctor->password = Hash::make($request->password);
-        }
-
         DB::transaction(function () use ($request, $doctor) {
             if ($request->has('language_ids')) {
                 $doctor->languages()->detach();
@@ -251,7 +232,8 @@ class Update extends ApiController
             }
 
             $doctor->fill($request->only([
-                'prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id'
+                'prefix', 'first_name', 'last_name', 'description', 'region_id',
+                'specialization_id', 'password', 'photo', 'medical_degree', 'board_certification'
             ]))->save();
 
             $doctor->location()->updateOrCreate(
@@ -260,6 +242,6 @@ class Update extends ApiController
             );
         }, 2);
 
-        return DoctorResource::make($doctor);
+        return DoctorResource::make($doctor->fresh());
     }
 }

@@ -16,12 +16,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Passport;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Throwable;
+use App\Facades\Storage;
 
 /**
  * Class Doctor
@@ -173,5 +176,43 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         }
 
         return true;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] =  Hash::make($value);
+    }
+
+    public function setPhotoAttribute($value)
+    {
+        if ($this->photo) {
+            Storage::removeFile($this->photo);
+        }
+
+        $this->attributes['photo'] = $value instanceof UploadedFile
+            ? Storage::saveDoctorsPhoto($value)
+            : $value;
+    }
+
+    public function setMedicalDegreeAttribute($value)
+    {
+        if ($this->photo) {
+            Storage::removeFile($this->medical_degree);
+        }
+
+        $this->attributes['medical_degree'] = $value instanceof UploadedFile
+            ? Storage::saveMedicalDegreePhoto($value)
+            : $value;
+    }
+
+    public function setBoardCertificationAttribute($value)
+    {
+        if ($this->board_certification) {
+            Storage::removeFile($this->board_certification);
+        }
+
+        $this->attributes['board_certification'] = $value instanceof UploadedFile
+            ? Storage::saveBoardCertificationPhoto($value)
+            : $value;
     }
 }
