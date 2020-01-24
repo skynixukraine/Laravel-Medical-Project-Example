@@ -31,13 +31,10 @@ class DoctorVerifyEmail extends QueueableNotification
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage())
-            ->subject(Lang::getFromJson('Verify Email Address'))
-            ->line(Lang::getFromJson('Please click the button below to verify your email address.'))
-            ->action(
-                Lang::getFromJson('Verify Email Address'),
-                $this->verificationUrl($notifiable)
-            )
-            ->line(Lang::getFromJson('If you did not create an account, no further action is required.'));
+            ->subject(__('Please Confirm Your E-Mail Address'))
+            ->greeting(__('Hello,'))
+            ->line(__('Please confirm your email address by clicking on the following link:'))
+            ->action(__('Verify Email Address'), $this->verificationUrl($notifiable));
     }
 
     /**

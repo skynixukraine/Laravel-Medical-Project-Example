@@ -70,5 +70,13 @@
   "Your account has been closed": "Your account has been closed",
   "Your Doctor Profile is approved and is now visible on Online-Hautarzt.org site": "Ihr Ärzteprofil wurde freigegeben und ist auf online-hautarzt.org abrufbar",
   "Dear Sir or Madam,": "Hallo,",
-  "Your profile was approved and is accessible via online-hautarzt.org.": "Ihr Profil wurde freigegeben und kann auf online-hautarzt.org eingesehen werden."
+  "Your profile was approved and is accessible via online-hautarzt.org.": "Ihr Profil wurde freigegeben und kann auf online-hautarzt.org eingesehen werden.",
+  "Account paused": "Konto pausiert",
+  "Hello,": "Hallo,",
+  "Your account was paused successfully.": "Ihr Konto ist nun im Pausenmodus.",
+  "Account unpaused": "Konto wieder aktiv",
+  "Your account was successfully unpaused and may now receive patients requests.": "der Pausenmodus Ihres Kontos wurde beendet und Sie können nun wieder Anfragen von Patienten erhalten.",
+  "Please confirm your email address by clicking on the following link:": "Bitte bestätigen Sie Ihre E-Mail Adresse durch einen Klick auf den folgenden Link:",
+  "Please Confirm Your E-Mail Address": "Bitte bestätigen Sie Ihre E-Mail Adresse",
+  "Verify Email Address": "Verify Email Address"
 }
