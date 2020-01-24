@@ -27,9 +27,10 @@ class DoctorActivated extends QueueableNotification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->markdown('mail.doctor.doctor-activated', ['doctor' => $this->doctor])
-            ->subject('Account activated');
+        return $this->createMailMessage()
+            ->subject(__('Account unpaused'))
+            ->greeting(__('Dear Sir or Madam,'))
+            ->line(__('Your account was successfully unpaused and may now receive patients requests.'));
     }
 
     /**
