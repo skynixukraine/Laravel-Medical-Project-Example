@@ -49,8 +49,6 @@ class Enquire extends Model
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
 
-    private $tokenName = 'Enquire Access Token';
-
     protected $fillable = [
         'first_name',
         'last_name',

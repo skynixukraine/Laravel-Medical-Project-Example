@@ -58,8 +58,6 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
-    private $tokenName = 'Doctor Access Token';
-
     /**
      * The attributes that are mass assignable.
      *
