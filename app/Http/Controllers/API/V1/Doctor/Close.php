@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Doctor;
 
-use App\Events\DoctorClosedAccount;
+use App\Events\DoctorClosed;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
+use Illuminate\Support\Facades\DB;
 use OpenApi\Annotations as OA;
 
 /**
@@ -96,8 +97,11 @@ class Close extends ApiController
     {
         abort_if($doctor->status === Doctor::STATUS_CLOSED, 304);
 
-        $doctor->update(['status' => Doctor::STATUS_CLOSED]);
+        DB::transaction(function () use ($doctor) {
+            $doctor->update(['status' => Doctor::STATUS_CLOSED]);
+            request()->user()->token()->revoke();
 
-        event(new DoctorClosedAccount($doctor));
+            event(new DoctorClosed($doctor));
+        });
     }
 }

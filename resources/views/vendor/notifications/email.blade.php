@@ -47,12 +47,4 @@
 @else
 Regards,<br>{{ config('app.name') }}
 @endif
-
-{{-- Subcopy --}}
-@isset($actionText)
-@component('mail::subcopy')
-Falls Sie den Link "{{ $actionText }}" nicht anklicken können, benutzen Sie bitte folgenden Link:
-[{{ $actionUrl }}]({{ $actionUrl }})
-@endcomponent
-@endisset
 @endcomponent

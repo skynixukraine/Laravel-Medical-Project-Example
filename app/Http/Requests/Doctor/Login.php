@@ -30,16 +30,7 @@ class Login extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => [
-                'required', 'string', 'email',
-                Rule::exists('doctors')->where(static function (Builder $query) {
-                    $query->whereIn('status', [
-                        Doctor::STATUS_CREATED,
-                        Doctor::STATUS_ACTIVATION_REQUESTED,
-                        Doctor::STATUS_ACTIVATED,
-                    ]);
-                }),
-            ],
+            'email' => 'required|string|email|exists:doctors,email',
             'password' => 'required|string',
             'recaptcha' => ['required', 'string', new Recaptcha('login_doctor')],
         ];

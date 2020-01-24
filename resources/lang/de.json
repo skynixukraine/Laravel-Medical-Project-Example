@@ -59,8 +59,16 @@
   "Upload image": "Upload image",
   "Female": "Female",
   "Male": "Male",
+  "Approve": "Approve",
   "New enquiry": "Neuer Fall verfügbar",
   ":gender, :age just submitted a case.": ":gender, :age hat soeben einen Fall eingereicht.",
   "Login to the doctors portal to answer it :link": "Zum Ärzteportal: :link",
-  "Please verify your e-mail address to login": "Please verify your e-mail address to login"
+  "Please verify your e-mail address to login": "Please verify your e-mail address to login",
+  "Dear :title :first_name :last_name,": "Hallo :title :first_name :last_name,",
+  "Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.": "Ihr Online Hautarzt Konto wurde erfolgreich gelöscht. Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.",
+  "All rights reserved.": "All rights reserved.",
+  "Your account has been closed": "Your account has been closed",
+  "Your Doctor Profile is approved and is now visible on Online-Hautarzt.org site": "Ihr Ärzteprofil wurde freigegeben und ist auf online-hautarzt.org abrufbar",
+  "Dear Sir or Madam,": "Hallo,",
+  "Your profile was approved and is accessible via online-hautarzt.org.": "Ihr Profil wurde freigegeben und kann auf online-hautarzt.org eingesehen werden."
 }

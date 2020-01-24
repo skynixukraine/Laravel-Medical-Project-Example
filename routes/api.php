@@ -9,7 +9,7 @@ Route::prefix('v1')->group(function () {
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
         Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
         Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
-        Route::get('download-conclusion', 'Enquire\DownloadConclusion');
+        Route::get('{enquire}/download-conclusion', 'Enquire\DownloadConclusion');
     });
 
     Route::prefix('doctors')->group(function () {
@@ -27,8 +27,10 @@ Route::prefix('v1')->group(function () {
             Route::patch('logout', 'Doctor\Logout')->name('doctors.logout');
             Route::get('{doctor}', 'Doctor\Show')->middleware('can:view,doctor');
             Route::patch('{doctor}', 'Doctor\Update')->middleware('can:update,doctor');
-            Route::patch('{doctor}/request-activation', 'Doctor\RequestActivation')->middleware('can:activate,doctor');
+            Route::patch('{doctor}/request-activation', 'Doctor\RequestActivation')->middleware('can:request-activation,doctor');
             Route::patch('{doctor}/close', 'Doctor\Close')->middleware('can:close,doctor');
+            Route::patch('{doctor}/activate', 'Doctor\Activate')->middleware('can:activate,doctor');
+            Route::patch('{doctor}/deactivate', 'Doctor\Deactivate')->middleware('can:deactivate,doctor');
             Route::get('{doctor}/stripe-connect', 'Doctor\StripeConnect')->middleware('can:stripe-connect,doctor');
             Route::patch('{doctor}/stripe-token', 'Doctor\StripeToken')->middleware('can:stripe-token,doctor');
             Route::get('{doctor}/billings', 'Doctor\Billings')->name('doctors.billings');

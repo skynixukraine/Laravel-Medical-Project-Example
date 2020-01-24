@@ -21,13 +21,9 @@ class DoctorPolicy
         return $user->is($doctor);
     }
 
-    public function activate(Doctor $user, Doctor $doctor): bool
+    public function requestActivation(Doctor $user, Doctor $doctor): bool
     {
-        if (!$user->is($doctor)) {
-            return false;
-        }
-
-        return $doctor->canBeApproved();
+        return $user->is($doctor) && $doctor->canBeApproved();
     }
 
     public function close(Doctor $user, Doctor $doctor): bool
@@ -43,5 +39,15 @@ class DoctorPolicy
     public function stripeToken(Doctor $user, Doctor $doctor): bool
     {
         return $user->is($doctor);
+    }
+
+    public function deactivate(Doctor $user, Doctor $doctor): bool
+    {
+        return $user->is($doctor) && $doctor->status === Doctor::STATUS_ACTIVATED;
+    }
+
+    public function activate(Doctor $user, Doctor $doctor): bool
+    {
+        return $user->is($doctor) && $doctor->status === Doctor::STATUS_DEACTIVATED;
     }
 }

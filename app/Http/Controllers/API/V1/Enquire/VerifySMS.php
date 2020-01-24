@@ -6,8 +6,9 @@ namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\VerifySMS as VerifySMSRequest;
-use App\Http\Resources\AuthToken;
 use App\Models\Enquire;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -48,16 +49,26 @@ use Illuminate\Validation\ValidationException;
  *     ),
  *     @OA\Response(
  *          response=200,
- *          description="Verification code has been verified",
+ *          description="Verification code has been verified and an access token created",
  *          @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  properties={
  *                      @OA\Property(
- *                          ref="#/components/schemas/AuthTokenResource",
+ *                          format="integer",
+ *                          property="id",
+ *                          example="1"
+ *                      ),
+ *                      @OA\Property(
+ *                          format="string",
+ *                          property="access_token",
+ *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
+ *                      ),
+ *                      @OA\Property(
+ *                          ref="#/components/schemas/CarbonResource",
  *                          format="object",
- *                          property="data"
- *                      )
+ *                          property="expires_at",
+ *                      ),
  *                  }
  *              )
  *          )
@@ -134,6 +145,17 @@ class VerifySMS extends ApiController
             'verification_code' => __('Verification code is invalid'),
         ]));
 
-        return AuthToken::make($enquire->saveToken());
+        $accessToken = Str::random(100);
+
+        $token = $enquire->token()->create([
+            'access_token' => Hash::make($accessToken),
+            'expires_at' => now()->addHour(),
+        ]);
+
+        return [
+            'id' => $token->id,
+            'access_token' => $accessToken,
+            'expires_at' => $token->expires_at
+        ];
     }
 }
