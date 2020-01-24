@@ -150,6 +150,10 @@ class Login extends ApiController
             'email' => __('Please verify your e-mail address to login'),
         ]));
 
+        throw_if($doctor->status === Doctor::STATUS_CLOSED, ValidationException::withMessages([
+            'email' => __('Your account has been closed'),
+        ]));
+
         abort_if(!Hash::check($request->password, $doctor->password), 401, 'Unauthenticated');
 
         return AuthToken::make($doctor->saveToken());

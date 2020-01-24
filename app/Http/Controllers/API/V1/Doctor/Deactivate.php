@@ -2,40 +2,41 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\API\V1\Enquire;
+namespace App\Http\Controllers\API\V1\Doctor;
 
+use App\Events\DoctorClosed;
+use App\Events\DoctorDeactivated;
 use App\Http\Controllers\API\V1\ApiController;
-use App\Http\Requests\Enquire\DownloadConclusion as DownloadConclusionRequest;
-use App\Models\Enquire;
-use Barryvdh\DomPDF\Facade as PDF;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Doctor;
+use OpenApi\Annotations as OA;
 
 /**
- * @OA\Post(
- *     tags={"Enquires"},
- *     path="/api/v1/enquires/{id}/download-conclusion",
- *     summary="Download enquire's conclusion",
- *     description="Download enquire's conclusion",
+ * @OA\Patch(
+ *     tags={"Doctors"},
+ *     path="/api/v1/doctors/{id}/deactivate",
+ *     summary="Deactivated a doctor's account",
+ *     description="Deactivated a doctor's account",
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
- *          description="An enquire's identificator",
+ *          description="A doctor's identificator",
  *          in="path",
  *          example="1"
  *     ),
+ *     @OA\Response(response=200, description="An account has been succesfully deactivated"),
+ *     @OA\Response(response=304, description="An account already deactivated"),
  *     @OA\Response(
- *          response=200,
- *          description="Verification code has been verified",
- *          @OA\MediaType(
+ *         response=401,
+ *         description="Authorization failed",
+ *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
  *                  properties={
  *                      @OA\Property(
- *                          type="string",
- *                          property="conclusion",
- *                          example="Ri0xLjMKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZwovT3V0bGluZXMgMiAwIFIKL1BhZ2VzIDMgMC"
- *                      )
+ *                          format="string",
+ *                          property="message",
+ *                          example="Unauthenticated."
+ *                      ),
  *                  }
  *              )
  *          )
@@ -66,7 +67,7 @@ use Illuminate\Support\Facades\Hash;
  *                      @OA\Property(
  *                          format="string",
  *                          property="message",
- *                          example="No query results for model [App\Models\Enquire]."
+ *                          example="No query results for model [App\Models\Doctor]."
  *                      ),
  *                  }
  *              )
@@ -90,13 +91,14 @@ use Illuminate\Support\Facades\Hash;
  *      )
  * )
  */
-class DownloadConclusion extends ApiController
+class Deactivate extends ApiController
 {
-    public function __invoke(DownloadConclusionRequest $request, Enquire $enquire)
+    public function __invoke(Doctor $doctor): void
     {
-        throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
+        abort_if($doctor->status === Doctor::STATUS_DEACTIVATED, 304);
 
-        $pdf = PDF::loadView('pdf.conclusion', ['enquire' => $enquire]);
-        return ['conclusion' => base64_encode($pdf->output())];
+        $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
+
+        event(new DoctorDeactivated($doctor));
     }
 }

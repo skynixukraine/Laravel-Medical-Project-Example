@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Nova\Actions;
 
 use App\Events\DoctorActivated;
+use App\Events\DoctorApproved;
 use App\Models\Doctor;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
 
-class ActivateDoctor extends Action
+class ApproveDoctor extends Action
 {
     /**
      * Indicates if this action is only available on the resource index view.
@@ -19,7 +22,7 @@ class ActivateDoctor extends Action
 
     public function name()
     {
-        return __('Activate');
+        return __('Approve');
     }
 
     /**
@@ -32,9 +35,9 @@ class ActivateDoctor extends Action
     public function handle(ActionFields $fields, Collection $doctors)
     {
         foreach ($doctors as $doctor) {
-            if ($doctor->getOriginal('status') !== Doctor::STATUS_ACTIVATED) {
+            if ($doctor->getOriginal('status') === Doctor::STATUS_ACTIVATION_REQUESTED) {
                 $doctor->update(['status' => Doctor::STATUS_ACTIVATED]);
-                event(new DoctorActivated($doctor));
+                event(new DoctorApproved($doctor));
             }
         }
     }

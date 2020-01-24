@@ -2360,6 +2360,38 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Enquire]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "500": {
                         "description": "Internal technical error was happened",
                         "content": {
@@ -2870,14 +2902,22 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Verification code has been verified",
+                        "description": "Verification code has been verified and an access token created",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "data": {
+                                        "id": {
+                                            "format": "integer",
+                                            "example": "1"
+                                        },
+                                        "access_token": {
+                                            "format": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                                        },
+                                        "expires_at": {
                                             "format": "object",
-                                            "$ref": "#/components/schemas/AuthTokenResource"
+                                            "$ref": "#/components/schemas/CarbonResource"
                                         }
                                     },
                                     "type": "object"
@@ -3342,7 +3382,7 @@
                     "status": {
                         "title": "Status",
                         "description": "A doctor's status",
-                        "format": "boolean",
+                        "format": "string",
                         "example": "CREATED"
                     },
                     "created_at": {
@@ -3373,6 +3413,12 @@
                             "type": "object",
                             "$ref": "#/components/schemas/LanguageResource"
                         }
+                    },
+                    "can_be_approved": {
+                        "title": "Can be approved",
+                        "description": "Determine if a doctor can be approved. The property available only if status property equals 'CREATED'",
+                        "format": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
@@ -3562,6 +3608,25 @@
                         "schema": "EnquireMessage",
                         "title": "Updated at",
                         "description": "Last updated datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    }
+                },
+                "type": "object"
+            },
+            "EnquireToken Resource": {
+                "title": "EnquireToken resource",
+                "description": "Resource for an enquire token representation",
+                "properties": {
+                    "id": {
+                        "format": "integer",
+                        "example": "1"
+                    },
+                    "access_token": {
+                        "format": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
+                    },
+                    "expires_at": {
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     }

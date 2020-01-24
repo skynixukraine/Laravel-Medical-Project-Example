@@ -7,7 +7,7 @@ namespace App\Notifications;
 use App\Traits\DoctorInfo;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class DoctorClosedAccount extends QueueableNotification
+class DoctorClosed extends QueueableNotification
 {
     use DoctorInfo;
 
@@ -27,9 +27,14 @@ class DoctorClosedAccount extends QueueableNotification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->markdown('mail.doctor.doctor-closed-account', ['doctor' => $this->doctor])
-            ->subject('Account closed');
+        return $this->createMailMessage()
+            ->subject(__('Online-Hautarzt.org Account Closed'))
+            ->greeting(__('Dear :title :first_name :last_name,', [
+                'title' => $this->doctor->title,
+                'first_name' => $this->doctor->first_name,
+                'last_name' => $this->doctor->last_name,
+            ]))
+            ->line(__('Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.'));
     }
 
     /**

@@ -1,7 +1,7 @@
 @component('mail::layout')
     {{-- Header --}}
     @slot('header')
-        @component('mail::header', ['url' => config('app.MIX_WEB_URL')])
+        @component('mail::header', ['url' => config('app.url')])
             {{ config('app.name') }}
         @endcomponent
     @endslot
@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('case-submit.all_rights_reserved') }}
+            &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}
         @endcomponent
     @endslot
 @endcomponent
