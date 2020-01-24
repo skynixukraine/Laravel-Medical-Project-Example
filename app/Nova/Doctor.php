@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Nova;
 
 use App\Nova\Actions\ActivateDoctor;
+use App\Nova\Actions\ApproveDoctor;
 use App\Nova\Actions\DeactivateDoctor;
 use App\Services\StorageService;
 use Laravel\Nova\Fields\Avatar;
@@ -209,6 +210,6 @@ class Doctor extends Resource
      */
     public function actions(Request $request)
     {
-        return [new ActivateDoctor(), new DeactivateDoctor()];
+        return [new ApproveDoctor()];
     }
 }
