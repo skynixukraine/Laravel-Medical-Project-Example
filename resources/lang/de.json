@@ -78,5 +78,9 @@
   "Your account was successfully unpaused and may now receive patients requests.": "der Pausenmodus Ihres Kontos wurde beendet und Sie können nun wieder Anfragen von Patienten erhalten.",
   "Please confirm your email address by clicking on the following link:": "Bitte bestätigen Sie Ihre E-Mail Adresse durch einen Klick auf den folgenden Link:",
   "Please Confirm Your E-Mail Address": "Bitte bestätigen Sie Ihre E-Mail Adresse",
-  "Verify Email Address": "Verify Email Address"
+  "Verify Email Address": "Verify Email Address",
+  "Dear Colleague,": "Liebe Kollegin, lieber Kollege,",
+  "Thank you for your application for our doctors portal.": "Ihre Bewerbung wird nun begutachtet.",
+  "We can only approve your application and fully activate your account once we have received a) your medical degree and b) your board-certification for dermatology and c) a profile picture.": "Bitte beachten Sie, dass wir Sie erst freischalten können, wenn Sie uns sowohl Ihre Approbationsurkunde, als auch Ihr Facharztzeugnis eingescannt und zugeschickt haben. Außerdem benötigen wir ein Profilfoto von Ihnen.",
+  "Please make sure that you have uploaded this documents under your account. If not, please do so.": "Bitte stellen Sie sicher, dass Sie diese Dateien in ihrem Konto hochgeladen haben. Falls nicht, bitte holen Sie dies nach."
 }

@@ -23,7 +23,7 @@ use OpenApi\Annotations as OA;
  *          example="1"
  *     ),
  *     @OA\Response(response=200, description="A request has been succesfully created"),
- *     @OA\Response(response=304, description="Only new doctors can create a request"),
+ *     @OA\Response(response=304, description="An account activation already requested"),
  *     @OA\Response(
  *         response=401,
  *         description="Authorization failed",
@@ -94,7 +94,7 @@ class RequestActivation extends ApiController
 {
     public function __invoke(Doctor $doctor): void
     {
-        abort_if($doctor->status !== Doctor::STATUS_CREATED, 304);
+        abort_if($doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED, 304);
 
         $doctor->update(['status' => Doctor::STATUS_ACTIVATION_REQUESTED]);
 

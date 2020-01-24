@@ -23,7 +23,8 @@ class DoctorPolicy
 
     public function requestActivation(Doctor $user, Doctor $doctor): bool
     {
-        return $user->is($doctor) && $doctor->canBeApproved();
+        return $user->is($doctor) && $doctor->canBeApproved()
+            && ($doctor->status === Doctor::STATUS_CREATED || $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED);
     }
 
     public function close(Doctor $user, Doctor $doctor): bool

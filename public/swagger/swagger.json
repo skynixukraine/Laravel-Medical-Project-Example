@@ -5,6 +5,96 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/v1/doctors/{id}/activate": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Activated a doctor's account",
+                "description": "Activated a doctor's account",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An account has been succesfully activated"
+                    },
+                    "304": {
+                        "description": "An account already activated"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/{id}/billings": {
             "get": {
                 "tags": [
@@ -144,6 +234,96 @@
                     },
                     "304": {
                         "description": "An account already closed"
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Current user has not permissions to do this action",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctors/{id}/deactivate": {
+            "patch": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Deactivated a doctor's account",
+                "description": "Deactivated a doctor's account",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "A doctor's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An account has been succesfully deactivated"
+                    },
+                    "304": {
+                        "description": "An account already deactivated"
                     },
                     "401": {
                         "description": "Authorization failed",
@@ -876,7 +1056,7 @@
                         "description": "A request has been succesfully created"
                     },
                     "304": {
-                        "description": "Only new doctors can create a request"
+                        "description": "An account activation already requested"
                     },
                     "401": {
                         "description": "Authorization failed",
@@ -2336,13 +2516,22 @@
                 }
             }
         },
-        "/api/v1/enquires/download-conclusion": {
+        "/api/v1/enquires/{id}/download-conclusion": {
             "post": {
                 "tags": [
                     "Enquires"
                 ],
                 "summary": "Download enquire's conclusion",
                 "description": "Download enquire's conclusion",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "An enquire's identificator",
+                        "required": true,
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Verification code has been verified",
@@ -3608,25 +3797,6 @@
                         "schema": "EnquireMessage",
                         "title": "Updated at",
                         "description": "Last updated datetime representation",
-                        "format": "object",
-                        "$ref": "#/components/schemas/CarbonResource"
-                    }
-                },
-                "type": "object"
-            },
-            "EnquireToken Resource": {
-                "title": "EnquireToken resource",
-                "description": "Resource for an enquire token representation",
-                "properties": {
-                    "id": {
-                        "format": "integer",
-                        "example": "1"
-                    },
-                    "access_token": {
-                        "format": "string",
-                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz"
-                    },
-                    "expires_at": {
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     }
