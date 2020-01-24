@@ -226,15 +226,15 @@ class Update extends ApiController
     public function __invoke(UpdateRequest $request, Doctor $doctor, StorageService $storage): DoctorResource
     {
         DB::transaction(function () use ($request, $doctor) {
+            $doctor->update($request->only(
+                'prefix', 'first_name', 'last_name', 'description', 'region_id',
+                'specialization_id', 'password', 'photo', 'medical_degree', 'board_certification'
+            ));
+
             if ($request->has('language_ids')) {
                 $doctor->languages()->detach();
                 $doctor->languages()->attach($request->language_ids);
             }
-
-            $doctor->fill($request->only([
-                'prefix', 'first_name', 'last_name', 'description', 'region_id',
-                'specialization_id', 'password', 'photo', 'medical_degree', 'board_certification'
-            ]))->save();
 
             $doctor->location()->updateOrCreate(
                 ['model_id' => $doctor->id, 'model_type' => Doctor::class],
