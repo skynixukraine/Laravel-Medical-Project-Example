@@ -8,8 +8,6 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
 use App\Services\StorageService;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\Doctor\Register as RegisterRequest;
 
