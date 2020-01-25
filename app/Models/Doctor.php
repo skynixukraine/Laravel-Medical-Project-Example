@@ -196,12 +196,12 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 
     public function setMedicalDegreeAttribute($value)
     {
-        if ($this->photo) {
+        if ($this->medical_degree) {
             Storage::removeFile($this->medical_degree);
         }
 
         $this->attributes['medical_degree'] = $value instanceof UploadedFile
-            ? Storage::saveMedicalDegreePhoto($value)
+            ? Storage::saveDoctorsMedicalDegree($value)
             : $value;
     }
 
@@ -212,7 +212,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         }
 
         $this->attributes['board_certification'] = $value instanceof UploadedFile
-            ? Storage::saveBoardCertificationPhoto($value)
+            ? Storage::saveDoctorsBoardCertification($value)
             : $value;
     }
 }
