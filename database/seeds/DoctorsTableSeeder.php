@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Models\Doctor;
+use App\Models\DoctorTitle;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DoctorsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        factory(App\Models\Doctor::class, 10)->create()->each(function (\App\Models\Doctor $doctor) {
-            $doctor->markEmailAsVerified();
+        factory(App\Models\Doctor::class, 10)->create()->each(function (Doctor $doctor) {
+            $doctor->forceFill([
+                'email_verified_at' => $doctor->freshTimestamp(),
+                'title_id' => DoctorTitle::inRandomOrder()->first(['id'])->id
+            ])->saveOrFail();
         });
     }
 }

@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Passport;
 use Laravel\Passport\PersonalAccessTokenResult;
-use Throwable;
 use App\Facades\Storage;
 
 /**
@@ -34,7 +33,7 @@ use App\Facades\Storage;
  * @property string|null photo
  * @property string|null board_certification
  * @property string|null medical_degree
- * @property string|null title
+ * @property int|null title_id
  * @property string|null first_name
  * @property string|null last_name
  * @property string|null description
@@ -52,7 +51,10 @@ use App\Facades\Storage;
  */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
-    use Notifiable, HasApiTokens, Authenticatable, MustVerifyEmailTrait;
+    use Authenticatable;
+    use HasApiTokens;
+    use MustVerifyEmailTrait;
+    use Notifiable;
 
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
@@ -60,25 +62,20 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'photo', 'title', 'phone_number', 'board_certification', 'medical_degree',
+        'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
         'first_name', 'last_name', 'description', 'email', 'status', 'password',
         'region_id', 'specialization_id', 'stripe_account_id',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
+
+    public function title(): BelongsTo
+    {
+        return $this->belongsTo(DoctorTitle::class);
+    }
 
     public function region(): BelongsTo
     {
@@ -110,38 +107,21 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         return $this->hasManyThrough(Billing::class, Enquire::class);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getEmailForPasswordReset()
     {
         return $this->email;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new DoctorRequestedResetPassword($token));
     }
 
-    /**
-     * Mark the given user's email as verified.
-     *
-     * @return bool
-     * @throws Throwable
-     */
     public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
     }
 
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new DoctorVerifyEmail());
@@ -159,7 +139,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function canBeApproved()
     {
         $requiredAttributes = [
-            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
+            'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
             'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
         ];
 

@@ -10,7 +10,6 @@ use App\Http\Resources\Doctor as DoctorResource;
 use App\Models\Doctor;
 use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
 /**
@@ -227,7 +226,7 @@ class Update extends ApiController
     {
         DB::transaction(function () use ($request, $doctor) {
             $doctor->update($request->only(
-                'prefix', 'first_name', 'last_name', 'description', 'region_id',
+                'title_id', 'first_name', 'last_name', 'description', 'region_id',
                 'specialization_id', 'password', 'photo', 'medical_degree', 'board_certification'
             ));
 

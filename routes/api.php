@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-
     Route::prefix('enquires')->group(function () {
         Route::post('', 'Enquire\Create')->name('enquire.create');
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
@@ -43,11 +42,11 @@ Route::prefix('v1')->group(function () {
             Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
             Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
             Route::get('{enquire}/messages', 'Enquire\Messages')->middleware('can:messages,enquire');
-
         });
     });
 
     Route::get('regions', 'RegionController@index')->name('regions.index');
+    Route::get('doctor-titles', 'DoctorTitleController@index')->name('doctor-titles.index');
     Route::get('specializations', 'SpecializationController@index')->name('specializations.index');
     Route::get('languages', 'LanguageController@index')->name('languages.index');
     Route::get('messages/first', 'MessageController@first')->name('messages.first');
