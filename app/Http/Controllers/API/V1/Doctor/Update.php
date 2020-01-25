@@ -33,9 +33,9 @@ use OpenApi\Annotations as OA;
  *                  type="object",
  *                  @OA\Property(
  *                      format="string",
- *                      description="A doctor's title",
- *                      property="title",
- *                      example="Dr."
+ *                      description="A doctor's title ID",
+ *                      property="title_id",
+ *                      example="1"
  *                  ),
  *                  @OA\Property(
  *                      format="string",
