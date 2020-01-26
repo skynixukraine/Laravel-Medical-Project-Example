@@ -8,6 +8,7 @@ use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -48,7 +49,7 @@ use App\Facades\Storage;
  * @property DoctorTitle|null title
  * @property Carbon email_verified_at
  */
-class Doctor extends Model implements CanResetPassword
+class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
     use Authenticatable;
     use HasApiTokens;
