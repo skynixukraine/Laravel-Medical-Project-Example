@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Notifications\DoctorVerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\CanResetPassword;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -47,9 +45,10 @@ use App\Facades\Storage;
  * @property Specialization|null specialization
  * @property Language[] languages
  * @property Location|null location
+ * @property DoctorTitle|null title
  * @property Carbon email_verified_at
  */
-class Doctor extends Model implements CanResetPassword, MustVerifyEmail
+class Doctor extends Model implements CanResetPassword
 {
     use Authenticatable;
     use HasApiTokens;
@@ -107,12 +106,17 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         return $this->hasManyThrough(Billing::class, Enquire::class);
     }
 
-    public function getEmailForPasswordReset()
+    public function emailVerify()
+    {
+        return $this->morphOne(EmailVerifies::class, 'model')->orderByDesc('created_at');
+    }
+
+    public function getEmailForPasswordReset(): string
     {
         return $this->email;
     }
 
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void 
     {
         $this->notify(new DoctorRequestedResetPassword($token));
     }
@@ -120,11 +124,6 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
-    }
-
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new DoctorVerifyEmail());
     }
 
     public function saveToken(): PersonalAccessTokenResult
