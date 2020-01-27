@@ -16,6 +16,7 @@ use App\Models\EnquireMessage;
  *     path="/api/v1/enquires/{id}/add-message",
  *     summary="Add a new enquire message to enquire",
  *     description="Add a new enquire message to enquire",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

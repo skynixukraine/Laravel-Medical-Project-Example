@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/activate",
  *     summary="Activated a doctor's account",
  *     description="Activated a doctor's account",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

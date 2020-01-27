@@ -17,6 +17,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/enquires",
  *     summary="Get enquires page",
  *     description="Get enquires page",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

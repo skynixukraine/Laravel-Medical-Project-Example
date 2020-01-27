@@ -15,6 +15,7 @@ use App\Models\Enquire;
  *     path="/api/v1/enquires/{id}",
  *     summary="Get an enquires resource by id",
  *     description="Get a enquires resource by id",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

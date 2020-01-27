@@ -15,6 +15,7 @@ use App\Models\Enquire;
  *     path="/api/v1/enquires/{id}/close",
  *     summary="Close an enquire",
  *     description="Close an enquire",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

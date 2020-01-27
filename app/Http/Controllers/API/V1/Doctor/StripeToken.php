@@ -6,14 +6,11 @@ namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
-use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Stripe\Exception\OAuth\InvalidGrantException;
 use Stripe\OAuth;
 use OpenApi\Annotations as OA;
-use Stripe\Stripe;
 
 /**
  * @OA\Patch(
@@ -21,6 +18,7 @@ use Stripe\Stripe;
  *     path="/api/v1/doctors/{id}/stripe-token",
  *     summary="Set stripe account id for a doctor",
  *     description="Set stripe account id for a doctor",
+ *     security={{"bearerAuth":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\MediaType(

@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/billings",
  *     summary="Get billings page",
  *     description="Get billings page",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
@@ -115,6 +116,22 @@ use OpenApi\Annotations as OA;
  *              )
  *          )
  *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Authorization failed",
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  properties={
+ *                      @OA\Property(
+ *                          format="string",
+ *                          property="message",
+ *                          example="Unauthenticated."
+ *                      ),
+ *                  }
+ *              )
+ *          )
+ *      ),
  *     @OA\Response(
  *         response=500,
  *         description="Internal technical error was happened",

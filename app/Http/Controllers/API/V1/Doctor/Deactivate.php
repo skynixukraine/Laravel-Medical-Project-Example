@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/deactivate",
  *     summary="Deactivated a doctor's account",
  *     description="Deactivated a doctor's account",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
