@@ -30,7 +30,7 @@ class DoctorClosed extends QueueableNotification
         return $this->createMailMessage()
             ->subject(__('Online-Hautarzt.org Account Closed'))
             ->greeting(__('Dear :title :first_name :last_name,', [
-                'title' => $this->doctor->title,
+                'title' => $this->doctor->title->name,
                 'first_name' => $this->doctor->first_name,
                 'last_name' => $this->doctor->last_name,
             ]))

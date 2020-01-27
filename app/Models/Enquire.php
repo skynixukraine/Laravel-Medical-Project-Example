@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Traits\HasApiTokensWithName;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,20 +48,9 @@ class Enquire extends Model
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
 
-    private $tokenName = 'Enquire Access Token';
-
     protected $fillable = [
-        'first_name',
-        'last_name',
-        'gender',
-        'date_of_birth',
-        'phone_number',
-        'email',
-        'doctor_id',
-        'status',
-        'conclusion',
-        'authy_id',
-        'conclusion_created_at',
+        'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number',
+        'email', 'doctor_id', 'status', 'conclusion', 'authy_id', 'conclusion_created_at',
     ];
 
     protected $casts = [
@@ -100,10 +88,5 @@ class Enquire extends Model
     public function isConclusionExpired(): bool
     {
         return $this->conclusion_created_at->addWeek(6)->lessThanOrEqualTo(now());
-    }
-
-    public function token()
-    {
-        return $this->hasOne(EnquireToken::class)->orderByDesc('expires_at');
     }
 }

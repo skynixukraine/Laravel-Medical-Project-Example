@@ -10,7 +10,6 @@ use App\Http\Resources\Doctor as DoctorResource;
 use App\Models\Doctor;
 use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
 /**
@@ -34,15 +33,9 @@ use OpenApi\Annotations as OA;
  *                  type="object",
  *                  @OA\Property(
  *                      format="string",
- *                      description="A doctor's e-mail",
- *                      property="email",
- *                      example="doctor@gmail.com"
- *                  ),
- *                  @OA\Property(
- *                      format="string",
- *                      description="A doctor's title",
- *                      property="title",
- *                      example="Dr."
+ *                      description="A doctor's title ID",
+ *                      property="title_id",
+ *                      example="1"
  *                  ),
  *                  @OA\Property(
  *                      format="string",
@@ -231,34 +224,16 @@ class Update extends ApiController
 {
     public function __invoke(UpdateRequest $request, Doctor $doctor, StorageService $storage): DoctorResource
     {
-        if ($request->hasFile('photo')) {
-            $storage->removeFile($doctor->photo);
-            $doctor->photo = $storage->saveDoctorsPhoto($request->photo);
-        }
-
-        if ($request->hasFile('medical_degree')) {
-            $storage->removeFile($doctor->medical_degree);
-            $doctor->medical_degree = $storage->saveDoctorsMedicalDegree($request->medical_degree);
-        }
-
-        if ($request->hasFile('board_certification')) {
-            $storage->removeFile($doctor->board_certification);
-            $doctor->board_certification = $storage->saveDoctorsBoardCertification($request->board_certification);
-        }
-
-        if ($request->has('password')) {
-            $doctor->password = Hash::make($request->password);
-        }
-
         DB::transaction(function () use ($request, $doctor) {
+            $doctor->update($request->only(
+                'title_id', 'first_name', 'last_name', 'description', 'region_id',
+                'specialization_id', 'password', 'photo', 'medical_degree', 'board_certification'
+            ));
+
             if ($request->has('language_ids')) {
                 $doctor->languages()->detach();
                 $doctor->languages()->attach($request->language_ids);
             }
-
-            $doctor->fill($request->only([
-                'prefix', 'first_name', 'last_name', 'description', 'region_id', 'specialization_id', 'email'
-            ]))->save();
 
             $doctor->location()->updateOrCreate(
                 ['model_id' => $doctor->id, 'model_type' => Doctor::class],
@@ -266,6 +241,6 @@ class Update extends ApiController
             );
         }, 2);
 
-        return DoctorResource::make($doctor);
+        return DoctorResource::make($doctor->fresh());
     }
 }

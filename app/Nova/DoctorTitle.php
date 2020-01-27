@@ -8,9 +8,9 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
 
-class Region extends Resource
+class DoctorTitle extends Resource
 {
-    public static $model = \App\Models\Region::class;
+    public static $model = \App\Models\DoctorTitle::class;
 
     public static $title = 'name';
 
@@ -18,12 +18,12 @@ class Region extends Resource
 
     public static function label(): string
     {
-        return __('Regions');
+        return __('Titles');
     }
 
     public static function singularLabel(): string
     {
-        return __('Region');
+        return __('Title');
     }
 
     public function fields(Request $request): array
@@ -33,8 +33,8 @@ class Region extends Resource
             Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required', 'max:255')
-                ->creationRules('unique:regions,name')
-                ->updateRules('unique:regions,name,{{resourceId}}')
+                ->creationRules('unique:doctor_titles,name')
+                ->updateRules('unique:doctor_titles,name,{{resourceId}}')
         ];
     }
 }

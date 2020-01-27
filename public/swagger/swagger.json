@@ -212,6 +212,93 @@
                 }
             }
         },
+        "/api/v1/doctors/change-email": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Change an email",
+                "description": "Change an email",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "id",
+                                    "token"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "title": "ID",
+                                        "description": "A doctor's ID",
+                                        "format": "int64",
+                                        "example": "2"
+                                    },
+                                    "token": {
+                                        "title": "token",
+                                        "description": "Tokent to verification. Must be 100 charecters long",
+                                        "format": "string",
+                                        "example": "dfgdfgdfgdfg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been changed"
+                    },
+                    "422": {
+                        "description": "Some validation errors was heppened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "token": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The token is invalid."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/{id}/close": {
             "patch": {
                 "tags": [
@@ -1254,6 +1341,102 @@
                 }
             }
         },
+        "/api/v1/doctors/send-change-email-request-link": {
+            "post": {
+                "tags": [
+                    "Doctors"
+                ],
+                "summary": "Send verification email link to change email",
+                "description": "Send verification email link to change email",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "E-mail",
+                                        "description": "A new e-mail",
+                                        "format": "string",
+                                        "example": "doctor@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been sent"
+                    },
+                    "422": {
+                        "description": "An email is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "email": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The email field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/doctors/send-email-verification-link": {
             "post": {
                 "tags": [
@@ -1577,15 +1760,10 @@
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "properties": {
-                                    "email": {
-                                        "description": "A doctor's e-mail",
+                                    "title_id": {
+                                        "description": "A doctor's title ID",
                                         "format": "string",
-                                        "example": "doctor@gmail.com"
-                                    },
-                                    "title": {
-                                        "description": "A doctor's title",
-                                        "format": "string",
-                                        "example": "Dr."
+                                        "example": "1"
                                     },
                                     "first_name": {
                                         "description": "A doctor's first name",
@@ -2018,6 +2196,52 @@
                                         "message": {
                                             "format": "string",
                                             "example": "No query results for model [App\\Models\\Doctor]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/doctor-titles": {
+            "get": {
+                "tags": [
+                    "DoctorTitle"
+                ],
+                "summary": "Get all titles",
+                "description": "Get all titles",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\DoctorTitleController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/DoctorTitleResource"
+                                            }
                                         }
                                     },
                                     "type": "object"
@@ -3608,6 +3832,27 @@
                         "description": "Determine if a doctor can be approved. The property available only if status property equals 'CREATED'",
                         "format": "boolean",
                         "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "DoctorTitleResource": {
+                "title": "DoctorTitle resource",
+                "description": "DoctorTitle for a region representation",
+                "properties": {
+                    "id": {
+                        "schema": "DoctorTitle",
+                        "title": "ID",
+                        "description": "A region's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "name": {
+                        "schema": "DoctorTitle",
+                        "title": "A title's name",
+                        "description": "A title's name",
+                        "format": "string",
+                        "example": "Dr."
                     }
                 },
                 "type": "object"

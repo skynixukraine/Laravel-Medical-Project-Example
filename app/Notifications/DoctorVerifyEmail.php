@@ -30,7 +30,7 @@ class DoctorVerifyEmail extends QueueableNotification
      */
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage())
+        return $this->createMailMessage()
             ->subject(__('Please Confirm Your E-Mail Address'))
             ->greeting(__('Hello,'))
             ->line(__('Please confirm your email address by clicking on the following link:'))

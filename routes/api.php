@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
-
     Route::prefix('enquires')->group(function () {
         Route::post('', 'Enquire\Create')->name('enquire.create');
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
@@ -20,6 +19,7 @@ Route::prefix('v1')->group(function () {
         Route::get('', 'Doctor\Index')->name('doctors.index');
         Route::get('verify-email', 'Doctor\VerifyEmail')->name('doctors.verify-email');
         Route::post('send-email-verification-link', 'Doctor\SendEmailVerificationLink')->name('doctors.send-email-verification-link');
+        Route::post('change-email', 'Doctor\ChangeEmail');
     });
 
     Route::middleware(['auth:api'])->group(function () {
@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
             Route::patch('{doctor}/stripe-token', 'Doctor\StripeToken')->middleware('can:stripe-token,doctor');
             Route::get('{doctor}/billings', 'Doctor\Billings')->name('doctors.billings');
             Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
+            Route::post('send-change-email-request-link', 'Doctor\SendChangeEmailRequestLink');
         });
 
         Route::prefix('enquires')->group(function () {
@@ -43,11 +44,11 @@ Route::prefix('v1')->group(function () {
             Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
             Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
             Route::get('{enquire}/messages', 'Enquire\Messages')->middleware('can:messages,enquire');
-
         });
     });
 
     Route::get('regions', 'RegionController@index')->name('regions.index');
+    Route::get('doctor-titles', 'DoctorTitleController@index')->name('doctor-titles.index');
     Route::get('specializations', 'SpecializationController@index')->name('specializations.index');
     Route::get('languages', 'LanguageController@index')->name('languages.index');
     Route::get('messages/first', 'MessageController@first')->name('messages.first');

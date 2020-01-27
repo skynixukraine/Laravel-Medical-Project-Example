@@ -8,8 +8,6 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\AuthToken;
 use App\Models\Doctor;
 use App\Services\StorageService;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Passport\Passport;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\Doctor\Register as RegisterRequest;
 
@@ -167,14 +165,9 @@ class Register extends ApiController
 {
     public function __invoke(RegisterRequest $request, StorageService $storage)
     {
-        $doctor = Doctor::create([
-            'email' => $request->email,
-            'phone_number' => $request->phone_number,
-            'password' => Hash::make($request->password),
-            'status' => Doctor::STATUS_CREATED,
-            'board_certification' => $request->hasFile('board_certification') ? $storage->saveDoctorsBoardCertification($request->board_certification) : null,
-            'medical_degree' => $request->hasFile('medical_degree') ? $storage->saveDoctorsMedicalDegree($request->medical_degree) : null,
-        ]);
+        $doctor = Doctor::create(
+            $request->only('email', 'phone_number', 'password', 'board_certification', 'medical_degree')
+        );
 
         return AuthToken::make($doctor->saveToken())->response()->setStatusCode(201);
     }

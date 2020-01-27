@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Events\DoctorSaved;
-use App\Notifications\DoctorVerifyEmail;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
@@ -17,12 +15,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\HasApiTokens;
 use Laravel\Passport\Passport;
 use Laravel\Passport\PersonalAccessTokenResult;
-use Throwable;
+use App\Facades\Storage;
 
 /**
  * Class Doctor
@@ -32,7 +32,7 @@ use Throwable;
  * @property string|null photo
  * @property string|null board_certification
  * @property string|null medical_degree
- * @property string|null title
+ * @property int|null title_id
  * @property string|null first_name
  * @property string|null last_name
  * @property string|null description
@@ -46,11 +46,15 @@ use Throwable;
  * @property Specialization|null specialization
  * @property Language[] languages
  * @property Location|null location
+ * @property DoctorTitle|null title
  * @property Carbon email_verified_at
  */
 class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 {
-    use Notifiable, HasApiTokens, Authenticatable, MustVerifyEmailTrait;
+    use Authenticatable;
+    use HasApiTokens;
+    use MustVerifyEmailTrait;
+    use Notifiable;
 
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
@@ -58,38 +62,20 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
-    private $tokenName = 'Doctor Access Token';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'photo', 'title', 'phone_number', 'board_certification', 'medical_degree',
+        'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
         'first_name', 'last_name', 'description', 'email', 'status', 'password',
-        'region_id', 'specialization_id', 'stripe_account_id',
+        'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at'
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime'
     ];
 
-    /**
-     * The event map for the model.
-     *
-     * Allows for object-based events for native Eloquent events.
-     *
-     * @var array
-     */
-    protected $dispatchesEvents = [
-        'saved' => DoctorSaved::class,
-    ];
+    public function title(): BelongsTo
+    {
+        return $this->belongsTo(DoctorTitle::class);
+    }
 
     public function region(): BelongsTo
     {
@@ -121,41 +107,24 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         return $this->hasManyThrough(Billing::class, Enquire::class);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getEmailForPasswordReset()
+    public function emailVerify()
+    {
+        return $this->morphOne(EmailVerifies::class, 'model')->orderByDesc('created_at');
+    }
+
+    public function getEmailForPasswordReset(): string
     {
         return $this->email;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotification($token): void 
     {
         $this->notify(new DoctorRequestedResetPassword($token));
     }
 
-    /**
-     * Mark the given user's email as verified.
-     *
-     * @return bool
-     * @throws Throwable
-     */
     public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
-    }
-
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new DoctorVerifyEmail());
     }
 
     public function saveToken(): PersonalAccessTokenResult
@@ -170,7 +139,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function canBeApproved()
     {
         $requiredAttributes = [
-            'photo', 'title', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
+            'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
             'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
         ];
 
@@ -187,5 +156,43 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
         }
 
         return true;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] =  Hash::make($value);
+    }
+
+    public function setPhotoAttribute($value)
+    {
+        if ($this->photo) {
+            Storage::removeFile($this->photo);
+        }
+
+        $this->attributes['photo'] = $value instanceof UploadedFile
+            ? Storage::saveDoctorsPhoto($value)
+            : $value;
+    }
+
+    public function setMedicalDegreeAttribute($value)
+    {
+        if ($this->medical_degree) {
+            Storage::removeFile($this->medical_degree);
+        }
+
+        $this->attributes['medical_degree'] = $value instanceof UploadedFile
+            ? Storage::saveDoctorsMedicalDegree($value)
+            : $value;
+    }
+
+    public function setBoardCertificationAttribute($value)
+    {
+        if ($this->board_certification) {
+            Storage::removeFile($this->board_certification);
+        }
+
+        $this->attributes['board_certification'] = $value instanceof UploadedFile
+            ? Storage::saveDoctorsBoardCertification($value)
+            : $value;
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubmissionSymptomTable extends Migration
+class CreateEmailVerifiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateSubmissionSymptomTable extends Migration
      */
     public function up()
     {
-        Schema::create('submission_symptom', function (Blueprint $table) {
+        Schema::create('email_verifies', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('submission_id');
-            $table->integer('symptom_id');
+            $table->string('email');
+            $table->string('token');
+            $table->timestamp('created_at');
+            $table->integer('model_id');
+            $table->string('model_type');
         });
     }
 
@@ -27,6 +30,6 @@ class CreateSubmissionSymptomTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submission_symptom');
+        Schema::dropIfExists('email_verifies');
     }
 }
