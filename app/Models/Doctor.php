@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\DoctorUpdated;
 use Illuminate\Auth\Authenticatable;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
@@ -61,6 +62,10 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public const STATUS_ACTIVATED = 'ACTIVATED';
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
+
+    protected $dispatchesEvents = [
+        'updated' => DoctorUpdated::class,
+    ];
 
     protected $fillable = [
         'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
