@@ -6,10 +6,8 @@ namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
-use App\Models\Setting;
 use Stripe\OAuth;
 use OpenApi\Annotations as OA;
-use Stripe\Stripe;
 
 /**
  * @OA\Get(
@@ -17,6 +15,7 @@ use Stripe\Stripe;
  *     path="/api/v1/doctors/{id}/stripe-connect",
  *     summary="Get a doctors url to connect to stripe",
  *     description="Get a doctors url to connect to stripe and current stripe account id",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Response(
  *         response=200,
  *         description="Data has been succesfully received",

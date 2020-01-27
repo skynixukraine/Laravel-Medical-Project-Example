@@ -15,6 +15,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}",
  *     summary="Get a doctor resource by id",
  *     description="Get a doctor resource by id",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
  *     path="/api/v1/doctors/send-change-email-request-link",
  *     summary="Send verification email link to change email",
  *     description="Send verification email link to change email",
+ *     security={{"bearerAuth":{}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\MediaType(

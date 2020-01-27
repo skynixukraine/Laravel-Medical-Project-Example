@@ -14,6 +14,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/logout",
  *     summary="Revoke current doctor's token",
  *     description="Revoke current doctor's token",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Response(response=200, description="A token has been revoked"),
  *     @OA\Response(
  *         response=401,

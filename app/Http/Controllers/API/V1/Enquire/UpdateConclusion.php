@@ -15,6 +15,7 @@ use App\Models\Enquire;
  *     path="/api/v1/enquires/{id}/update-conclusion",
  *     summary="Update an enquire's conclusion by id",
  *     description="Update an enquire's conclusion by id",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,

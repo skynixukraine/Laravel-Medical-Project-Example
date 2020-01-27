@@ -13,6 +13,14 @@ use OpenApi\Annotations as OA;
  *     title="Online hautarzt API",
  *     version="1.0.0",
  * )
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      in="header",
+ *      name="bearerAuth",
+ *      type="http",
+ *      scheme="bearer",
+ *      bearerFormat="JWT",
+ * ),
  */
 class ApiController extends BaseController
 {

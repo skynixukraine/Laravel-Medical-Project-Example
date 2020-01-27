@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
  *     path="/api/v1/enquires/{id}/messages",
  *     summary="Get enquire messages page",
  *     description="Get enquire messages page",
- *
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=false,

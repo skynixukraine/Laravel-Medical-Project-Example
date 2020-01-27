@@ -16,6 +16,7 @@ use OpenApi\Annotations as OA;
  *     path="/api/v1/doctors/{id}/close",
  *     summary="Close a doctor's account",
  *     description="Close a doctor's account",
+ *     security={{"bearerAuth":{}}},
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
