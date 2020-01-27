@@ -20,8 +20,7 @@ class CreateDoctorTitlesTable extends Migration
         });
 
         DB::statement('UPDATE doctors SET title = null WHERE title is not null;');
-        DB::statement('ALTER TABLE doctors RENAME COLUMN title TO title_id;');
-        DB::statement('ALTER TABLE doctors MODIFY COLUMN title_id integer unsigned;');
+        DB::statement('ALTER TABLE doctors CHANGE title title_id integer unsigned DEFAULT NULL;');
 
         Schema::table('doctors', function (Blueprint $table) {
             $table->foreign('title_id')
