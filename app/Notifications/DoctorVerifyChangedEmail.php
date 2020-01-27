@@ -38,7 +38,7 @@ class DoctorVerifyChangedEmail extends QueueableNotification
 
     protected function verificationUrl(Doctor $doctor): string
     {
-        return config('app.url') . '/verify?' . build_query([
+        return config('app.url') . '/change-email-verify?' . build_query([
             'id' => $doctor->id,
             'token' => $this->token,
         ]);

@@ -53,6 +53,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\EnquireCreated::class => [
             \App\Listeners\SendEnquireCreatedNotification::class
         ],
+
+        \App\Events\DoctorChangedEmail::class => [
+            \App\Listeners\SendDoctorChangedEmailNotification::class
+        ],
     ];
 
     /**

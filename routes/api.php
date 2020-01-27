@@ -19,6 +19,7 @@ Route::prefix('v1')->group(function () {
         Route::get('', 'Doctor\Index')->name('doctors.index');
         Route::get('verify-email', 'Doctor\VerifyEmail')->name('doctors.verify-email');
         Route::post('send-email-verification-link', 'Doctor\SendEmailVerificationLink')->name('doctors.send-email-verification-link');
+        Route::post('change-email', 'Doctor\ChangeEmail');
     });
 
     Route::middleware(['auth:api'])->group(function () {
