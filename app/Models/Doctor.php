@@ -65,7 +65,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     protected $fillable = [
         'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
         'first_name', 'last_name', 'description', 'email', 'status', 'password',
-        'region_id', 'specialization_id', 'stripe_account_id',
+        'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at'
     ];
 
     protected $casts = [
