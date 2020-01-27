@@ -11,28 +11,17 @@ class EnquireCreated extends QueueableNotification
 {
     private $enquire;
 
-    protected $mailConfig = 'system';
-
     public function __construct(Enquire $enquire)
     {
         $this->enquire = $enquire;
     }
 
-    /**
-     * Doctors will always be notified by Email
-     */
-    public function via()
+    public function via(): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return MailMessage
-     */
-    public function toMail($notifiable): MailMessage
+    public function toMail(Doctor $doctor): MailMessage
     {
         return $this->createMailMessage()
             ->subject(__('New enquiry'))
@@ -44,18 +33,5 @@ class EnquireCreated extends QueueableNotification
             ->line(__('Login to the doctors portal to answer it: :link', [
                 'link' => config('app.url') . '/dashboard'
             ]));
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
     }
 }

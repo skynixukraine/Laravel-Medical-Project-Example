@@ -6,7 +6,6 @@ namespace App\Notifications;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Notifications\Messages\MailMessage;
 
 class DoctorVerifyEmail extends QueueableNotification

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\DoctorCreated;
 use App\Events\DoctorUpdated;
-use Illuminate\Auth\Authenticatable;
+use App\Notifications\DoctorVerifyEmail;
 use App\Notifications\DoctorRequestedResetPassword;
-use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
-use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,11 +49,9 @@ use App\Facades\Storage;
  * @property DoctorTitle|null title
  * @property Carbon email_verified_at
  */
-class Doctor extends Model implements CanResetPassword, MustVerifyEmail
+class Doctor extends Authenticatable implements MustVerifyEmail
 {
-    use Authenticatable;
     use HasApiTokens;
-    use MustVerifyEmailTrait;
     use Notifiable;
 
     public const STATUS_CREATED = 'CREATED';
@@ -65,6 +62,7 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
 
     protected $dispatchesEvents = [
         'updated' => DoctorUpdated::class,
+        'created' => DoctorCreated::class,
     ];
 
     protected $fillable = [
@@ -125,6 +123,16 @@ class Doctor extends Model implements CanResetPassword, MustVerifyEmail
     public function sendPasswordResetNotification($token): void 
     {
         $this->notify(new DoctorRequestedResetPassword($token));
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new DoctorVerifyEmail());
+    }
+
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
     }
 
     public function markEmailAsVerified(): bool
