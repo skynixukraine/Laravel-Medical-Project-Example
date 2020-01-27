@@ -41,8 +41,7 @@ class CreateDoctorTitlesTable extends Migration
             $table->dropForeign('doctors_title_id_foreign');
         });
 
-        DB::statement('ALTER TABLE doctors RENAME COLUMN title_id TO title;');
-        DB::statement('ALTER TABLE doctors MODIFY COLUMN title varchar(255);');
+        DB::statement('ALTER TABLE doctors CHANGE title_id title varchar(255) DEFAULT NULL;');
 
         Schema::dropIfExists('doctor_titles');
     }
