@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Events\EnquireCreated;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  */
 class Enquire extends Model
 {
-    use Notifiable, Authenticatable;
+    use Notifiable;
 
     public const STATUS_UNREAD = 'UNREAD';
     public const STATUS_READ = 'READ';

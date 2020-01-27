@@ -61,6 +61,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\DoctorUpdated::class => [
             \App\Listeners\SendDoctorPasswordChangedNotification::class
         ],
+
+        \App\Events\DoctorCreated::class => [
+            \App\Listeners\SendDoctorVerifyEmailNotification::class
+        ],
     ];
 
     /**
