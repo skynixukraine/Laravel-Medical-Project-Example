@@ -237,7 +237,7 @@
                                     },
                                     "token": {
                                         "title": "token",
-                                        "description": "Tokent to verification. Must be 100 charecters long",
+                                        "description": "Token to verification. Must be 100 charecters long",
                                         "format": "string",
                                         "example": "dfgdfgdfgdfg"
                                     }
@@ -3756,11 +3756,8 @@
                         "format": "string",
                         "example": "public/doctors/2019-12/john-sanchess89.jpeg"
                     },
-                    "prefix": {
-                        "title": "Prefix",
-                        "description": "A doctor's prefix",
-                        "format": "string",
-                        "example": "Dr. med."
+                    "title": {
+                        "$ref": "#/components/schemas/DoctorTitleResource"
                     },
                     "first_name": {
                         "title": "First name",
