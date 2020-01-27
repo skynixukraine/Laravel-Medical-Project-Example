@@ -52,11 +52,8 @@ use OpenApi\Annotations as OA;
  *              example="public/doctors/2019-12/john-sanchess89.jpeg"
  *          ),
  *          @OA\Property(
- *              format="string",
- *              title="Prefix",
- *              description="A doctor's prefix",
- *              property="prefix",
- *              example="Dr. med."
+ *              ref="#/components/schemas/DoctorTitleResource",
+ *              property="title"
  *          ),
  *          @OA\Property(
  *              format="string",
@@ -160,7 +157,7 @@ class Doctor extends JsonResource
             'photo' => $this->photo,
             'board_certification' => $this->board_certification,
             'medical_degree' => $this->medical_degree,
-            'prefix' => $this->prefix,
+            'title' => $this->title,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
