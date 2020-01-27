@@ -19,6 +19,7 @@ class CreateDoctorTitlesTable extends Migration
             $table->string('name')->unique();
         });
 
+        DB::statement('UPDATE doctors SET title = null WHERE title is not null;');
         DB::statement('ALTER TABLE doctors RENAME COLUMN title TO title_id;');
         DB::statement('ALTER TABLE doctors MODIFY COLUMN title_id integer unsigned;');
 
