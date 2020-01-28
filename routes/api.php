@@ -26,7 +26,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('doctors')->group(function () {
             Route::patch('logout', 'Doctor\Logout')->name('doctors.logout');
             Route::get('{doctor}', 'Doctor\Show')->middleware('can:view,doctor');
-            Route::patch('{doctor}', 'Doctor\Update')->middleware('can:update,doctor');
+            Route::patch('{doctor}', 'Doctor\Update')->middleware(['can:update,doctor', 'base64file:photo,medical_degree,board_certification']);
             Route::patch('{doctor}/request-activation', 'Doctor\RequestActivation')->middleware('can:request-activation,doctor');
             Route::patch('{doctor}/close', 'Doctor\Close')->middleware('can:close,doctor');
             Route::patch('{doctor}/activate', 'Doctor\Activate')->middleware('can:activate,doctor');

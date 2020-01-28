@@ -29,7 +29,9 @@ class Update extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => 'dimensions:min_width=256,min_height=256,max_width=540,max_height=540',
+            'photo' => 'mimes:jpg,png,jpeg|max:50000',
+            'medical_degree' => 'mimes:pdf,jpg,png,jpeg|max:50000',
+            'board_certification' => 'mimes:pdf,jpg,png,jpeg|max:50000',
             'prefix' => 'string|max:255',
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
