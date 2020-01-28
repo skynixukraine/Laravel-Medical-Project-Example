@@ -6,6 +6,7 @@ namespace App\Jobs;
 
 use App\Models\Enquire;
 use App\Models\EnquireMessage;
+use App\Notifications\EnquireMessageCanNotBeCreated;
 use App\Services\StorageService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -63,11 +64,16 @@ class ProcessPatientsMessages implements ShouldQueue
         foreach ($messages as $message) {
             $enquire = Enquire::query()
                 ->whereIn('email', array_map(function ($sender) { return $sender->mail; }, $message->getSender()))
-                ->where('status', '<>', Enquire::STATUS_ARCHIVED)
                 ->orderByDesc('created_at')
                 ->first();
 
             if (!$enquire) { continue; }
+
+            if ($enquire->status === Enquire::STATUS_ARCHIVED) {
+                $enquire->notify(new EnquireMessageCanNotBeCreated());
+                $message->delete();
+                continue;
+            }
 
             /**  @var $message Message */
             $message->setMask(MessageMask::class);

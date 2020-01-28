@@ -124,16 +124,11 @@ class UpdateConclusion extends ApiController
 {
     public function __invoke(UpdateConclusionRequest $request, Enquire $enquire)
     {
-        $newAttributes = [
+        $enquire->update([
             'conclusion' => $request->conclusion,
             'status' => Enquire::STATUS_ARCHIVED,
-        ];
-
-        if (blank($enquire->conclusion)) {
-            $newAttributes['conclusion_created_at'] = now();
-        }
-
-        $enquire->update($newAttributes);
+            'conclusion_created_at' => $enquire->conclusion === null ? now() : $enquire->conclusion_created_at
+        ]);
 
         return EnquireResource::make($enquire);
     }

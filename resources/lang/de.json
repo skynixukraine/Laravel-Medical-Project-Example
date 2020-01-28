@@ -62,7 +62,7 @@
   "Approve": "Approve",
   "New enquiry": "Neuer Fall verfügbar",
   ":gender, :age just submitted a case.": ":gender, :age hat soeben einen Fall eingereicht.",
-  "Login to the doctors portal to answer it :link": "Zum Ärzteportal: :link",
+  "Login to the doctors portal to answer it: :link": "Zum Ärzteportal: :link",
   "Please verify your e-mail address to login": "Please verify your e-mail address to login",
   "Dear :title :first_name :last_name,": "Hallo :title :first_name :last_name,",
   "Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.": "Ihr Online Hautarzt Konto wurde erfolgreich gelöscht. Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.",
@@ -93,5 +93,13 @@
   "The verification token is invalid": "The verification token is invalid",
   "The verification token was expired": "The verification token was expired",
   "The doctor with requested email already exists": "The doctor with requested email already exists",
-  "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support."
+  "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support.",
+  "The patient sent you a message": "Der Patient hat eine Nachricht geschickt",
+  "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:": "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:",
+  "Your case was answered": "Your case was answered",
+  "Your case :num was answered": "Your case :num was answered",
+  "You can download it using link below:": "You can download it using link below:",
+  "Download answer": "Download answer",
+  "You attempt to send a message according to your case :num but it was already closed.": "You attempt to send a message according to your case :num but it was already closed.",
+  "Your case was closed": "Your case was closed"
 }

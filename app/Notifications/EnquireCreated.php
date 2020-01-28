@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\Doctor;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Enquire;
 
