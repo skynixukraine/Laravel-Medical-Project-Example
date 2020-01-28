@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Models\Doctor;
+use App\Models\Enquire;
 use App\Models\EnquireMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\HtmlString;
@@ -25,7 +26,7 @@ class DoctorCreatedEnquireMessage extends QueueableNotification
         return ['mail'];
     }
 
-    public function toMail(Doctor $doctor): MailMessage
+    public function toMail(Enquire $enquire): MailMessage
     {
         return $this->createMailMessage()
             ->subject(__('The dermatologist sent you a message'))
