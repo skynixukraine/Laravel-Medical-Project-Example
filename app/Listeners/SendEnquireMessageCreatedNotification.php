@@ -16,6 +16,6 @@ class SendEnquireMessageCreatedNotification
         $message = $event->getMessage();
         $message->sender === EnquireMessage::SENDER_DOCTOR
             ? $message->enquire->notify(new DoctorCreatedEnquireMessage($message))
-            : $message->enquire->doctor->notify(new PatientCreatedEnquireMessage());
+            : $message->enquire->doctor->notify(new PatientCreatedEnquireMessage($message));
     }
 }
