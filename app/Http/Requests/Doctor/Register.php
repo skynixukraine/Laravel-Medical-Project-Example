@@ -31,7 +31,7 @@ class Register extends FormRequest
             'email' => 'required|email|unique:doctors',
             'medical_degree' => 'nullable|mimes:pdf,jpg,png,jpeg|max:50000',
             'board_certification' => 'nullable|mimes:pdf,jpg,png,jpeg|max:50000',
-            'password' => 'required|string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/|confirmed',
+            'password' => 'required|string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.]).*$/|confirmed',
             'accepted' => 'required|accepted',
             'recaptcha' => ['required', 'string', new Recaptcha('register_doctor')],
         ];
