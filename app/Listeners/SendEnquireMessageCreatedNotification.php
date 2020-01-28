@@ -6,7 +6,8 @@ namespace App\Listeners;
 
 use App\Events\EnquireMessageCreated;
 use App\Models\EnquireMessage;
-use App\Notifications\EnquireMessageCreated as EnquireMessageCreatedNotification;
+use App\Notifications\PatientCreatedEnquireMessage;
+use App\Notifications\DoctorCreatedEnquireMessage;
 
 class SendEnquireMessageCreatedNotification
 {
@@ -14,7 +15,7 @@ class SendEnquireMessageCreatedNotification
     {
         $message = $event->getMessage();
         $message->sender === EnquireMessage::SENDER_DOCTOR
-            ? $message->enquire->notify(new EnquireMessageCreatedNotification($message))
-            : $message->enquire->doctor->notify(new EnquireMessageCreatedNotification($message));
+            ? $message->enquire->notify(new DoctorCreatedEnquireMessage($message))
+            : $message->enquire->doctor->notify(new PatientCreatedEnquireMessage());
     }
 }

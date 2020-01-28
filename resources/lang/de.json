@@ -93,5 +93,6 @@
   "The verification token is invalid": "The verification token is invalid",
   "The verification token was expired": "The verification token was expired",
   "The doctor with requested email already exists": "The doctor with requested email already exists",
-  "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support."
+  "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support.",
+  "The patient sent you a message": "Der Patient hat eine Nachricht geschickt",
 }
