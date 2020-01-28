@@ -95,5 +95,9 @@
   "The doctor with requested email already exists": "The doctor with requested email already exists",
   "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support.",
   "The patient sent you a message": "Der Patient hat eine Nachricht geschickt",
-  "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:": "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:"
+  "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:": "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:",
+  "Your case was answered": "Your case was answered",
+  "Your case :num was answered": "Your case :num was answered",
+  "You can download it using link below:": "You can download it using link below:",
+  "Download answer": "Download answer"
 }

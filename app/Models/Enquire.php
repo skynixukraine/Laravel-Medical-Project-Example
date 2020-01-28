@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Events\EnquireCreated;
+use App\Events\EnquireUpdated;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,6 +60,10 @@ class Enquire extends Model
         'updated_at' => 'datetime',
         'conclusion_created_at' => 'datetime',
         'date_of_birth' => 'date',
+    ];
+
+    protected $dispatchesEvents = [
+        'updated' => EnquireUpdated::class
     ];
 
     public function location(): MorphOne
