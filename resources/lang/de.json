@@ -105,6 +105,14 @@
   "Pause": "Pause",
   "Activation requested": "Activation requested",
   "Closed": "Closed",
-  "Created": "Created"
-
+  "Created": "Created",
+  ":num day": ":num day",
+  ":num days": ":num days",
+  "Month To Date": "Month To Date",
+  "Quarter To Date": "Quarter To Date",
+  "Year To Date": "Year To Date",
+  "New enquires": "New enquires",
+  "Enquires per day": "Enquires per day",
+  "Enquires per month": "Enquires per month",
+  ":num months": ":num months"
 }
