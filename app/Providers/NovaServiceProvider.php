@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Nova\Metrics\EnquiresPerDay;
+use App\Nova\Metrics\EnquiresPerMonth;
+use App\Nova\Metrics\NewDoctors;
+use App\Nova\Metrics\NewEnquires;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -49,7 +53,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function cards()
     {
-        return [];
+        return [
+            new NewEnquires(),
+            new NewDoctors(),
+            new EnquiresPerDay(),
+            new EnquiresPerMonth(),
+        ];
     }
 
     /**
