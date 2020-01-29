@@ -101,5 +101,10 @@
   "You can download it using link below:": "You can download it using link below:",
   "Download answer": "Download answer",
   "You attempt to send a message according to your case :num but it was already closed.": "You attempt to send a message according to your case :num but it was already closed.",
-  "Your case was closed": "Your case was closed"
+  "Your case was closed": "Your case was closed",
+  "Pause": "Pause",
+  "Activation requested": "Activation requested",
+  "Closed": "Closed",
+  "Created": "Created"
+
 }

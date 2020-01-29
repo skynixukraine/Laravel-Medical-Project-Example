@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Nova;
 
+use App\Models\Doctor as DoctorModel;
+use App\Nova\Actions\ActivateDoctor;
 use App\Nova\Actions\ApproveDoctor;
+use App\Nova\Actions\DeactivateDoctor;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
@@ -14,8 +17,7 @@ use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphOne;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\PasswordConfirmation;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 
@@ -34,11 +36,11 @@ class Doctor extends Resource
     public function title(): string
     {
         return !blank($this->first_name) || !blank($this->last_name)
-            ? (($this->title . ' ') ?: '') . (($this->first_name . ' ') ?: '') . (($this->last_name . ' ') ?: '')
+            ? ($this->title ? ($this->title->name . ' ') : '') . (($this->first_name . ' ') ?: '') . (($this->last_name . ' ') ?: '')
             : $this->email;
     }
 
-    public static $model = \App\Models\Doctor::class;
+    public static $model = DoctorModel::class;
 
     public static $search = [
         'id', 'title', 'first_name', 'last_name',
@@ -83,7 +85,18 @@ class Doctor extends Resource
 
             Trix::make(__('Description'), 'description')->hideFromIndex(),
 
-            Text::make('Status', 'status')->hideWhenCreating()->hideWhenUpdating()->sortable(),
+            Select::make(__('Status'), 'status')
+                ->hideWhenCreating()
+                ->hideWhenUpdating()
+                ->displayUsingLabels()
+                ->sortable()
+                ->options([
+                    DoctorModel::STATUS_CREATED => __('Created'),
+                    DoctorModel::STATUS_ACTIVATION_REQUESTED => __('Activation requested'),
+                    DoctorModel::STATUS_ACTIVATED => __('Activated'),
+                    DoctorModel::STATUS_DEACTIVATED => __('Deactivated'),
+                    DoctorModel::STATUS_CLOSED => __('Closed'),
+                ]),
 
             DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
 
@@ -105,6 +118,10 @@ class Doctor extends Resource
 
     public function actions(Request $request): array
     {
-        return [new ApproveDoctor()];
+        return [
+            new ApproveDoctor(),
+            new ActivateDoctor(),
+            new DeactivateDoctor()
+        ];
     }
 }

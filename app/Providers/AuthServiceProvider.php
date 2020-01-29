@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\Billing;
 use App\Models\Doctor;
 use App\Models\Enquire;
+use App\Models\Location;
+use App\Models\Setting;
+use App\Policies\BillingPolicy;
 use App\Policies\DoctorPolicy;
 use App\Policies\EnquirePolicy;
+use App\Policies\LocationPolicy;
+use App\Policies\SettingPolicy;
 use Carbon\Carbon;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -20,6 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Doctor::class => DoctorPolicy::class,
         Enquire::class => EnquirePolicy::class,
+        Billing::class => BillingPolicy::class,
+        Location::class => LocationPolicy::class,
+        Setting::class => SettingPolicy::class,
     ];
 
     /**
