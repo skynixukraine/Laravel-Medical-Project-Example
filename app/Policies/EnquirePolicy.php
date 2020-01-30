@@ -37,7 +37,8 @@ class EnquirePolicy
 
     public function addMessage($user, Enquire $enquire): bool
     {
-        return $user instanceof Doctor && $user->id === $enquire->doctor_id;
+        return $user instanceof Doctor && $user->id === $enquire->doctor_id
+            && $enquire->status !== Enquire::STATUS_RESOLVED && $enquire->status !== Enquire::STATUS_ARCHIVED;
     }
 
     public function messages($user, Enquire $enquire): bool

@@ -114,5 +114,10 @@
   "New enquires": "New enquires",
   "Enquires per day": "Enquires per day",
   "Enquires per month": "Enquires per month",
-  ":num months": ":num months"
+  ":num months": ":num months",
+  "New" : "Neu",
+  "Awaiting for patient response" : "Awaiting for patient response",
+  "Awaiting for doctor response" : "Awaiting for doctor response",
+  "Resolved" : "Resolved",
+  "Archived" : "Archived"
 }

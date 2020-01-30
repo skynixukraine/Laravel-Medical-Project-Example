@@ -22,8 +22,7 @@ class RefactorEnquiresTable extends Migration
             $table->string('phone_number');
             $table->string('email');
             $table->text('conclusion')->nullable(true);
-            $table->enum('status', [Enquire::STATUS_UNREAD, Enquire::STATUS_READ, Enquire::STATUS_ARCHIVED])
-                ->default(Enquire::STATUS_UNREAD);
+            $table->enum('status', ['UNREAD', 'READ', Enquire::STATUS_ARCHIVED])->default('UNREAD');
             $table->boolean('is_paid')->default(false);
             $table->unsignedInteger('doctor_id')->nullable();
             $table->foreign('doctor_id')

@@ -35,9 +35,9 @@ use OpenApi\Annotations as OA;
  *     @OA\Parameter(
  *          name="status",
  *          required=false,
- *          description="Filter enquires by status. Possible values: UNREAD, READ, ARCHIVED",
+ *          description="Filter enquires by status. Possible values: NEW, AWAITING_PATIENT_RESPONSE, AWAITING_DOCTOR_RESPONSE, RESOLVED, ARCHIVED",
  *          in="query",
- *          example="UNREAD"
+ *          example="NEW"
  *     ),
  *     @OA\Parameter(
  *          name="page",
@@ -61,16 +61,9 @@ use OpenApi\Annotations as OA;
  *          example="John"
  *     ),
  *     @OA\Parameter(
- *          name="search_field",
- *          required=false,
- *          description="Search field. Possible values: id, first_name, last_name, phone_number, email",
- *          in="query",
- *          example="first_name"
- *     ),
- *     @OA\Parameter(
  *          name="order_field",
  *          required=false,
- *          description="Order field. Possible values: id, first_name, last_name, phone_number, email, status, conclusion, created_at",
+ *          description="Order field. Possible values: id, first_name, last_name, status, last_contacted_at, created_at",
  *          in="query",
  *          example="first_name"
  *     ),
@@ -80,6 +73,34 @@ use OpenApi\Annotations as OA;
  *          description="Order direction. Possible values: asc, desc",
  *          in="query",
  *          example="asc"
+ *     ),
+ *     @OA\Parameter(
+ *          name="created_at_from",
+ *          required=false,
+ *          description="Enquires must be newer then this value",
+ *          in="query",
+ *          example="2020-01-15"
+ *     ),
+ *     @OA\Parameter(
+ *          name="created_at_to",
+ *          required=false,
+ *          description="Enquires must be older then this value",
+ *          in="query",
+ *          example="2020-01-20"
+ *     ),
+ *     @OA\Parameter(
+ *          name="last_contacted_at_from",
+ *          required=false,
+ *          description="Last contact must be later this value",
+ *          in="query",
+ *          example="2020-01-15"
+ *     ),
+ *     @OA\Parameter(
+ *          name="last_contacted_at_to",
+ *          required=false,
+ *          description="Last contact must be before this value",
+ *          in="query",
+ *          example="2020-01-20"
  *     ),
  *     @OA\Response(
  *         response=200,
@@ -181,30 +202,44 @@ class Enquires extends ApiController
 {
     public function __invoke(Request $request, Doctor $doctor)
     {
-        $enquires = $doctor->enquires()
-            ->where($request->only(['gender', 'first_name', 'last_name']));
+        $enquires = $doctor->enquires()->orderBy('is_seen');
+
+        if ($request->has('created_at_from')) {
+            $enquires->whereDate('enquires.created_at', '>=', $request->created_at_from);
+        }
+
+        if ($request->has('created_at_to')) {
+            $enquires->whereDate('enquires.created_at', '<=', $request->created_at_to);
+        }
+
+        if ($request->has('last_contact_from')) {
+            $enquires->whereDate('last_contacted_at', '<=', $request->last_contact_from);
+        }
+
+        if ($request->has('last_contact_to')) {
+            $enquires->whereDate('last_contacted_at', '>=', $request->last_contact_to);
+        }
 
         if ($request->has('status')) {
-            $enquires->where('status', $request->query('status'));
-        } else if (!(bool) $request->query('with_archived', false)) {
+            $enquires->where('status', $request->status);
+        }
+
+        if (!$request->with_archived) {
             $enquires->where('status', '!=', Enquire::STATUS_ARCHIVED);
         }
 
-        if ($request->has('created_at')) {
-            $enquires->whereDate('created_at', $request->query('date'));
+        if ($request->has('search')) {
+            $enquires->where(function ($query) use ($request) {
+                $query->where('id', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('first_name', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('last_name', 'LIKE', '%' . $request->search . '%');
+            });
         }
 
-        $sortableFields = ['id', 'first_name', 'last_name', 'phone_number', 'email', 'status', 'conclusion', 'created_at'];
-        $searchableFields = ['id', 'first_name', 'last_name', 'phone_number', 'email'];
+        $sortableFields = ['id', 'first_name', 'last_name', 'created_at', 'last_contacted_at', 'status'];
 
-        if ($request->has('search', 'search_field')
-            && collect($searchableFields)->contains($request->query('search_field'))) {
-            $enquires->where($request->query('search_field'), 'LIKE', '%' . $request->query('search') . '%');
-        }
-
-        $request->has('order_field')
-        && collect($sortableFields)->contains($request->query('order_field'))
-            ? $enquires->orderBy($request->query('order_field'), $request->query('order_direction', 'asc'))
+        $request->has('order_field') && collect($sortableFields)->contains($request->order_field)
+            ? $enquires->orderBy($request->order_field, $request->query('order_direction', 'asc'))
             : $enquires->orderBy('status')->orderByDesc('created_at');
 
         return EnquireResource::collection($enquires->with('answers')->paginate($request->query('per_page', 50)));

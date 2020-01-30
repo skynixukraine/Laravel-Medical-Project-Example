@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Events\EnquireCreated;
 use App\Events\EnquireUpdated;
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -38,21 +36,26 @@ use Illuminate\Support\Carbon;
  * @property Doctor doctor
  * @property Billing billing
  * @property Message[] messages
+ * @property boolean is_seen
+ * @property Carbon|null last_contacted_at
  */
 class Enquire extends Model
 {
     use Notifiable;
 
-    public const STATUS_UNREAD = 'UNREAD';
-    public const STATUS_READ = 'READ';
+    public const STATUS_NEW = 'NEW';
+    public const STATUS_WAIT_PATIENT_RESPONSE = 'AWAITING_PATIENT_RESPONSE';
+    public const STATUS_WAIT_DOCTOR_RESPONSE = 'AWAITING_DOCTOR_RESPONSE';
+    public const STATUS_RESOLVED = 'RESOLVED';
     public const STATUS_ARCHIVED = 'ARCHIVED';
 
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
 
     protected $fillable = [
-        'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number',
+        'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'is_seen',
         'email', 'doctor_id', 'status', 'conclusion', 'authy_id', 'conclusion_created_at',
+        'last_contacted_at'
     ];
 
     protected $casts = [
@@ -60,6 +63,7 @@ class Enquire extends Model
         'updated_at' => 'datetime',
         'conclusion_created_at' => 'datetime',
         'date_of_birth' => 'date',
+        'is_seen' => 'boolean'
     ];
 
     protected $dispatchesEvents = [

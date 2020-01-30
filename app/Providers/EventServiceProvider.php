@@ -47,6 +47,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         \App\Events\EnquireMessageCreated::class => [
+            \App\Listeners\UpdateLastContactedAtAndStatus::class,
             \App\Listeners\SendEnquireMessageCreatedNotification::class
         ],
 

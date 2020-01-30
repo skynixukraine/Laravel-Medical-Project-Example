@@ -64,6 +64,13 @@ use OpenApi\Annotations as OA;
  *     ref="#/components/schemas/CarbonResource",
  * )
  * @OA\Property(
+ *     format="object",
+ *     title="Last contacted at",
+ *     description="Last contacted datetime representation",
+ *     property="last_contacted_at",
+ *     ref="#/components/schemas/CarbonResource",
+ * )
+ * @OA\Property(
  *     format="string",
  *     title="Phone number",
  *     description="An enquire customer's phone number",
@@ -106,6 +113,13 @@ use OpenApi\Annotations as OA;
  *     example="true"
  * ),
  * @OA\Property(
+ *     format="boolean",
+ *     title="Is seen",
+ *     description="Is an enquire seen",
+ *     property="is_seen",
+ *     example="true"
+ * ),
+ * @OA\Property(
  *     ref="#/components/schemas/LocationResource",
  *     property="location"
  * ),
@@ -142,9 +156,11 @@ class Enquire extends JsonResource
             'conclusion' => $this->conclusion,
             'conclusion_created_at' => $this->conclusion_created_at,
             'status' => $this->status,
+            'is_seen' => $this->is_seen,
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
+            'last_contacted_at' => $this->last_contacted_at
         ];
     }
 }

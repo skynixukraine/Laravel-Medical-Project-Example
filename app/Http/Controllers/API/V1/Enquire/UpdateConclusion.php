@@ -126,7 +126,7 @@ class UpdateConclusion extends ApiController
     {
         $enquire->update([
             'conclusion' => $request->conclusion,
-            'status' => Enquire::STATUS_ARCHIVED,
+            'status' => Enquire::STATUS_RESOLVED,
             'conclusion_created_at' => $enquire->conclusion === null ? now() : $enquire->conclusion_created_at
         ]);
 
