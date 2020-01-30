@@ -19,7 +19,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\Textarea;
 
 class Doctor extends Resource
 {
@@ -83,7 +83,7 @@ class Doctor extends Resource
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
 
-            Trix::make(__('Description'), 'description')->hideFromIndex(),
+            Textarea::make(__('Description'), 'description')->hideFromIndex(),
 
             Select::make(__('Status'), 'status')
                 ->hideWhenCreating()
