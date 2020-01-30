@@ -108,9 +108,7 @@ class Show extends ApiController
 {
     public function __invoke(Enquire $enquire): EnquireResource
     {
-        if ($enquire->status === Enquire::STATUS_UNREAD) {
-            $enquire->update(['status' => Enquire::STATUS_READ]);
-        }
+        $enquire->update(['is_seen' => true]);
 
         return EnquireResource::make($enquire->load('answers'));
     }

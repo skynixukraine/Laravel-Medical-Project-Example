@@ -540,9 +540,9 @@
                     {
                         "name": "status",
                         "in": "query",
-                        "description": "Filter enquires by status. Possible values: UNREAD, READ, ARCHIVED",
+                        "description": "Filter enquires by status. Possible values: NEW, AWAITING_PATIENT_RESPONSE, AWAITING_DOCTOR_RESPONSE, RESOLVED, ARCHIVED",
                         "required": false,
-                        "example": "UNREAD"
+                        "example": "NEW"
                     },
                     {
                         "name": "page",
@@ -566,16 +566,9 @@
                         "example": "John"
                     },
                     {
-                        "name": "search_field",
-                        "in": "query",
-                        "description": "Search field. Possible values: id, first_name, last_name, phone_number, email",
-                        "required": false,
-                        "example": "first_name"
-                    },
-                    {
                         "name": "order_field",
                         "in": "query",
-                        "description": "Order field. Possible values: id, first_name, last_name, phone_number, email, status, conclusion, created_at",
+                        "description": "Order field. Possible values: id, first_name, last_name, status, last_contacted_at, created_at",
                         "required": false,
                         "example": "first_name"
                     },
@@ -585,6 +578,34 @@
                         "description": "Order direction. Possible values: asc, desc",
                         "required": false,
                         "example": "asc"
+                    },
+                    {
+                        "name": "created_at_from",
+                        "in": "query",
+                        "description": "Enquires must be newer then this value",
+                        "required": false,
+                        "example": "2020-01-15"
+                    },
+                    {
+                        "name": "created_at_to",
+                        "in": "query",
+                        "description": "Enquires must be older then this value",
+                        "required": false,
+                        "example": "2020-01-20"
+                    },
+                    {
+                        "name": "last_contacted_at_from",
+                        "in": "query",
+                        "description": "Last contact must be later this value",
+                        "required": false,
+                        "example": "2020-01-15"
+                    },
+                    {
+                        "name": "last_contacted_at_to",
+                        "in": "query",
+                        "description": "Last contact must be before this value",
+                        "required": false,
+                        "example": "2020-01-20"
                     }
                 ],
                 "responses": {
@@ -4008,6 +4029,13 @@
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
                     },
+                    "last_contacted_at": {
+                        "schema": "Enquire",
+                        "title": "Last contacted at",
+                        "description": "Last contacted datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
                     "phone_number": {
                         "schema": "Enquire",
                         "title": "Phone number",
@@ -4047,6 +4075,13 @@
                         "schema": "Enquire",
                         "title": "Is paid",
                         "description": "Is an enquire paid",
+                        "format": "boolean",
+                        "example": "true"
+                    },
+                    "is_seen": {
+                        "schema": "Enquire",
+                        "title": "Is seen",
+                        "description": "Is an enquire seen",
                         "format": "boolean",
                         "example": "true"
                     },

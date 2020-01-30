@@ -81,6 +81,14 @@ class Enquire extends Resource
                 \App\Models\Enquire::GENDER_FEMALE => __('Female'),
             ]),
 
+            Select::make(__('Status'), 'status')->sortable()->displayUsingLabels()->options([
+                \App\Models\Enquire::STATUS_NEW => __('New'),
+                \App\Models\Enquire::STATUS_WAIT_PATIENT_RESPONSE => __('Awaiting for patient response'),
+                \App\Models\Enquire::STATUS_WAIT_DOCTOR_RESPONSE => __('Awaiting for doctor response'),
+                \App\Models\Enquire::STATUS_RESOLVED => __('Resolved'),
+                \App\Models\Enquire::STATUS_ARCHIVED => __('Archived'),
+            ]),
+
             BelongsTo::make(__('Doctor'), 'doctor', Doctor::class),
 
             Date::make(__('Date of birth'), 'date_of_birth'),
