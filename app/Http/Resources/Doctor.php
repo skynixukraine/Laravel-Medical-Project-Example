@@ -154,9 +154,9 @@ class Doctor extends JsonResource
     {
         return [
             'id' => $this->id,
-            'photo' => $this->photo,
-            'board_certification' => $this->board_certification,
-            'medical_degree' => $this->medical_degree,
+            'photo' => $this->photo ? asset($this->photo) : null,
+            'board_certification' => $this->board_certification ? asset($this->board_certification) : null,
+            'medical_degree' => $this->medical_degree ? asset($this->medical_degree) : null,
             'title' => $this->title,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,

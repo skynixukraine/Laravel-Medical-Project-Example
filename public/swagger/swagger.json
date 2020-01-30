@@ -4177,6 +4177,38 @@
                         "description": "Last updated datetime representation",
                         "format": "object",
                         "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "attachments": {
+                        "schema": "EnquireMessage",
+                        "title": "Attachments",
+                        "description": "Message's attachments",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/EnquireMessageAttachment"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "EnquireMessageAttachment": {
+                "title": "EnquireMessageAttachment resource",
+                "description": "Resource for an enquire message attachment representation",
+                "properties": {
+                    "id": {
+                        "format": "integer",
+                        "example": "1"
+                    },
+                    "url": {
+                        "format": "string",
+                        "example": "http://ohn/storage/enquire_messages/attachments/2020/01/28/lyspbnkojm0vvigl0fmf1hdnwu51mm8jimzf6jvegif.gif"
+                    },
+                    "craeted_at": {
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "updated_at": {
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
                     }
                 },
                 "type": "object"

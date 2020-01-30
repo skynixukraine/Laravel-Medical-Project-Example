@@ -56,6 +56,15 @@ use OpenApi\Annotations as OA;
  *     property="updated_at",
  *     ref="#/components/schemas/CarbonResource",
  * ),
+ * @OA\Property(
+ *     @OA\Items(
+ *         type="object",
+ *         ref="#/components/schemas/EnquireMessageAttachment"
+ *     ),
+ *     title="Attachments",
+ *     description="Message's attachments",
+ *     property="attachments",
+ * ),
  */
 class EnquireMessage extends JsonResource
 {
@@ -74,6 +83,7 @@ class EnquireMessage extends JsonResource
             'enquire_id' => $this->enquire_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'attachments' => EnquireMessageAttachment::collection($this->attachments)
         ];
     }
 }
