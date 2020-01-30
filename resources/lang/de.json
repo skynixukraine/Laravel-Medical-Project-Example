@@ -119,5 +119,6 @@
   "Awaiting for patient response" : "Awaiting for patient response",
   "Awaiting for doctor response" : "Awaiting for doctor response",
   "Resolved" : "Resolved",
-  "Archived" : "Archived"
+  "Archived" : "Archived",
+  "Short description": "Short description"
 }

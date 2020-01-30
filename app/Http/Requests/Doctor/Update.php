@@ -36,6 +36,7 @@ class Update extends FormRequest
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
             'email' => ['email', Rule::unique('doctors')->ignore(Auth::id())],
+            'short_description' => 'string|max:176',
             'description' => 'string|max:3000',
             'region_id' => 'exists:regions,id',
             'specialization_id' => 'exists:specializations,id',

@@ -83,7 +83,11 @@ class Doctor extends Resource
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
 
-            Textarea::make(__('Description'), 'description')->hideFromIndex(),
+            Textarea::make(__('Short description'), 'short_description')->hideFromIndex()
+                ->rules('max:176'),
+
+            Textarea::make(__('Description'), 'description')->hideFromIndex()
+                ->rules('max:3000'),
 
             Select::make(__('Status'), 'status')
                 ->hideWhenCreating()

@@ -36,6 +36,7 @@ use App\Facades\Storage;
  * @property string|null first_name
  * @property string|null last_name
  * @property string|null description
+ * @property string|null short_description
  * @property string phone_number
  * @property string email
  * @property string status
@@ -67,7 +68,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = [
         'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
-        'first_name', 'last_name', 'description', 'email', 'status', 'password',
+        'first_name', 'last_name', 'description', 'short_description', 'email', 'status', 'password',
         'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at'
     ];
 
