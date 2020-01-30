@@ -92,6 +92,13 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
+ *              title="Short description",
+ *              description="A doctor's short description",
+ *              property="short_description",
+ *              example="I am a good doctor"
+ *          ),
+ *          @OA\Property(
+ *              format="string",
  *              title="Status",
  *              description="A doctor's status",
  *              property="status",
@@ -163,6 +170,7 @@ class Doctor extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'description' => $this->description,
+            'short_description' => $this->short_description,
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

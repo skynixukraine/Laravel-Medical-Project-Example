@@ -3911,6 +3911,12 @@
                         "format": "string",
                         "example": "I am a good doctor"
                     },
+                    "short_description": {
+                        "title": "Short description",
+                        "description": "A doctor's short description",
+                        "format": "string",
+                        "example": "I am a good doctor"
+                    },
                     "status": {
                         "title": "Status",
                         "description": "A doctor's status",
