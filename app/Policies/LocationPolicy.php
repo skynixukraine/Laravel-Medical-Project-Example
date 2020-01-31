@@ -6,6 +6,7 @@ namespace App\Policies;
 
 use App\Models\Enquire;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LocationPolicy
@@ -20,5 +21,10 @@ class LocationPolicy
     public function view($user, Location $location): bool
     {
         return true;
+    }
+
+    public function create($user): bool
+    {
+        return $user instanceof User;
     }
 }
