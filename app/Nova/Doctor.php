@@ -22,6 +22,8 @@ use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\PasswordConfirmation;
 
 class Doctor extends Resource
 {
@@ -87,6 +89,17 @@ class Doctor extends Resource
                 ->rules('required', 'string', 'max:255')
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
+
+            Password::make('Password')
+                ->hideWhenUpdating()
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed'),
+
+            PasswordConfirmation::make(__('Password confirmation'))
+                ->hideWhenUpdating()
+                ->hideFromIndex()
+                ->hideFromDetail(),
 
             Textarea::make(__('Short description'), 'short_description')->hideFromIndex()
                 ->rules('max:176'),
