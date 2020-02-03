@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\CantSaveFileException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,12 +15,10 @@ class EncryptStorageService extends StorageService
     public function saveEncryptedFile(UploadedFile $file, string $path, string $name): string
     {
         $path = Str::lower(trim($path));
-        $name = $this->getUniqueFileName($path, Str::slug($name), $file->extension());
+        $name = $this->getUniqueFileName($path, Str::slug($name), 'dat');
         $path .= '/' . $name . '.dat';
 
-        if (!Storage::put($path, encrypt($file->get()))) {
-            throw new \Exception();
-        }
+        throw_if(!Storage::put($path, encrypt($file->get())), new CantSaveFileException($path));
 
         return $path;
     }
@@ -58,5 +57,26 @@ class EncryptStorageService extends StorageService
     public function getDecryptedContent(string $file): string
     {
         return decrypt(Storage::get($file));
+    }
+
+    public function saveEncryptedBinaryFile(string $file, string $path, string $name)
+    {
+        $path = Str::lower(trim($path));
+        $name = $this->getUniqueFileName($path, Str::slug($name), 'dat');
+
+        $path .= '/' . $name . '.dat';
+
+        throw_if(!Storage::put($path, encrypt($file)), new CantSaveFileException($path));
+
+        return $path;
+    }
+
+    public function saveMessageEnquiryAttachment(string $attachment, string $name, string $extension = null): string
+    {
+        return $this->saveEncryptedBinaryFile(
+            $attachment,
+            self::ENQUIRE_MESSAGE_ATTACHMENTS_DIR . date('/Y/m/d'),
+            $name
+        );
     }
 }

@@ -66,7 +66,7 @@ class StorageService
         );
     }
 
-    public function saveMessageEnquiryAttachment(string $name, string $extension, string $attachment): string
+    public function saveMessageEnquiryAttachment(string $attachment, string $name, string $extension): string
     {
         return $this->saveBinaryFile(
             $attachment,

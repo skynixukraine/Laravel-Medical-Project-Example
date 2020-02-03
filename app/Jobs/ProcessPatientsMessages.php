@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Facades\Storage;
 use App\Models\Enquire;
 use App\Models\EnquireMessage;
 use App\Notifications\EnquireMessageCanNotBeCreated;
-use App\Services\StorageService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,12 +20,10 @@ use Webklex\IMAP\Support\Masks\MessageMask;
 
 class ProcessPatientsMessages implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    /**
-     * @var StorageService
-     */
-    private $storage;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var \Webklex\IMAP\Client
@@ -52,11 +50,6 @@ class ProcessPatientsMessages implements ShouldQueue
         $this->client->connect();
     }
 
-    public function getStorageService(): StorageService
-    {
-        return $this->storage ?? $this->storage = new StorageService();
-    }
-
     public function handle(): void
     {
         $messages = $this->client->getFolder('INBOX')->query()->unseen()->get();
@@ -79,24 +72,15 @@ class ProcessPatientsMessages implements ShouldQueue
             $message->setMask(MessageMask::class);
             $enquireMessage = $enquire->messages()->create([
                 'sender' => EnquireMessage::SENDER_PATIENT,
-                'content' => $message->hasHTMLBody()
-                    ? $message->mask()->getCustomHTMLBody(function ($body, Attachment $attachment) {
-                        if ($attachment->type === 'image' && $attachment->id && $attachment->getImgSrc() !== null) {
-                            $imageUrl = asset(StorageService::ENQUIRE_MESSAGE_ATTACHMENTS_DIR . date('/Y/m/d/') . $attachment->getName());
-                            $body = str_replace('cid:'.$attachment->id, $imageUrl, $body);
-                        }
-                        return $body;
-                    })
-                    : $message->getTextBody(),
+                'content' => $message->hasHTMLBody() ? $message->mask()->getHTMLBody() : $message->getTextBody(),
             ]);
 
             $message->getAttachments()->each(function (Attachment $attachment) use ($enquireMessage) {
                 if ($attachment->type === 'image' && $attachment->id && $attachment->getImgSrc()) {
                     $enquireMessage->attachments()->create([
-                        'path' => $this->getStorageService()->saveMessageEnquiryAttachment(
-                            pathinfo($attachment->getName(), PATHINFO_FILENAME),
-                            pathinfo($attachment->getName(), PATHINFO_EXTENSION),
-                            $attachment->getContent())
+                        'path' => Storage::saveMessageEnquiryAttachment(
+                            $attachment->getContent(),
+                            pathinfo($attachment->getName(), PATHINFO_FILENAME))
                     ]);
                 }
             });
