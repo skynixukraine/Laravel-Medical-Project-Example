@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Nova;
 
+use App\Facades\Storage;
 use App\Models\Doctor as DoctorModel;
 use App\Nova\Actions\ActivateDoctor;
 use App\Nova\Actions\ApproveDoctor;
 use App\Nova\Actions\DeactivateDoctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -57,17 +59,20 @@ class Doctor extends Resource
         return [
             ID::make()->sortable(),
 
-            Avatar::make(__('Photo'), 'photo')->store(function (Request $request) {
-                return ['photo' => $request->photo];
-            })->rules('mimes:jpg,png,jpeg', 'max:50000'),
+            Avatar::make(
+                __('Photo'),
+                'photo',
+                config('filesystems.default'),
+                function (Request $request) {
+                    return ['photo' => $request->photo];
+                }
+            )->rules('mimes:jpg,png,jpeg', 'max:50000'),
 
-            File::make('Board certification', 'board_certification')->store(function (Request $request) {
-                return ['board_certification' => $request->board_certification];
-            })->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
+            $this->encryptedFileField(__('Board certification'), 'board_certification')
+                ->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
-            File::make('Medical degree', 'medical_degree')->store(function (Request $request) {
-                return ['medical_degree' => $request->medical_degree];
-            })->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
+            $this->encryptedFileField(__('Medical degree'), 'medical_degree')
+                ->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
             BelongsTo::make(__('Title'), 'title', DoctorTitle::class)->hideFromIndex()->nullable(),
 
@@ -118,6 +123,33 @@ class Doctor extends Resource
 
             BelongsToMany::make(__('Languages'), 'languages', Language::class)->hideFromIndex(),
         ];
+    }
+
+    public function encryptedFileField(string $name, string $attribute)
+    {
+        $content = $this->{$attribute} ? Storage::getDecryptedContent($this->{$attribute}) : null;
+        $fileName = $this->{$attribute} ? $attribute . '.' . Storage::guessContentExtension($content) : null;
+
+        return File::make(
+            $name,
+            $attribute,
+            config('filesystems.default'),
+            function (Request $request) use ($attribute) {
+                return [$attribute => $request->{$attribute}];
+            }
+        )->download(
+            function ($request, $doctor) use ($content, $fileName) {
+                return response()->streamDownload(function () use ($content) {echo $content;}, $fileName);
+            }
+        )->resolveUsing(
+            function ($value, $resource) use ($fileName, $attribute) {
+                return $this->{$attribute} ? Str::replaceLast(
+                    basename($this->{$attribute}),
+                    $fileName,
+                    $this->{$attribute}
+                ) : null;
+            }
+        );
     }
 
     public function actions(Request $request): array
