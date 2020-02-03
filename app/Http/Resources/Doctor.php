@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Facades\Storage;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
 
 /**
@@ -151,6 +153,19 @@ use OpenApi\Annotations as OA;
  */
 class Doctor extends JsonResource
 {
+    private $withMedicalDegree = false;
+    private $withBoardCertification = false;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+
+        if (Auth::id() === $this->id) {
+            $this->withMedicalDegree = true;
+            $this->withBoardCertification = true;
+        }
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -162,8 +177,10 @@ class Doctor extends JsonResource
         return [
             'id' => $this->id,
             'photo' => $this->photo ? asset($this->photo) : null,
-            'board_certification' => $this->board_certification ? asset($this->board_certification) : null,
-            'medical_degree' => $this->medical_degree ? asset($this->medical_degree) : null,
+            'board_certification' => $this->mergeWhen($this->withMedicalDegree,
+                $this->board_certification ? Storage::getDecryptedBase64Uri($this->board_certification) : null),
+            'medical_degree' => $this->mergeWhen($this->withBoardCertification,
+                $this->medical_degree ? Storage::getDecryptedBase64Uri($this->medical_degree) : null),
             'title' => $this->title,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
