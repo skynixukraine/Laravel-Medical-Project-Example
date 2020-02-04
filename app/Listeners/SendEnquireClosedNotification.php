@@ -13,7 +13,7 @@ class SendEnquireClosedNotification
     {
         $enquire = $event->getEnquire();
 
-        if ($enquire->getOriginal('conclusion') === null) {
+        if ($enquire->getOriginal('conclusion') === null && $enquire->conclusion !== null) {
             $enquire->notify(new EnquireClosedNotification());
         }
     }

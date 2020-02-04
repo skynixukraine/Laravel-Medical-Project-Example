@@ -120,5 +120,7 @@
   "Awaiting for doctor response" : "Awaiting for doctor response",
   "Resolved" : "Resolved",
   "Archived" : "Archived",
-  "Short description": "Short description"
+  "Short description": "Short description",
+  "Board certification": "Board certification",
+  "Medical degree": "Medical degree"
 }

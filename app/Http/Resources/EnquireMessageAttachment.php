@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Annotations as OA;
@@ -49,7 +50,7 @@ class EnquireMessageAttachment extends JsonResource
     {
         return [
             'id' => $this->id,
-            'url' => $this->path ? asset($this->path) : null,
+            'url' => Storage::getDecryptedBase64Uri($this->path),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

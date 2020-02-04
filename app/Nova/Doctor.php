@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Nova;
 
+use App\Facades\Storage;
 use App\Models\Doctor as DoctorModel;
 use App\Nova\Actions\ActivateDoctor;
 use App\Nova\Actions\ApproveDoctor;
 use App\Nova\Actions\DeactivateDoctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage as BaseStorage;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -20,6 +23,8 @@ use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\PasswordConfirmation;
 
 class Doctor extends Resource
 {
@@ -57,17 +62,28 @@ class Doctor extends Resource
         return [
             ID::make()->sortable(),
 
-            Avatar::make(__('Photo'), 'photo')->store(function (Request $request) {
-                return ['photo' => $request->photo];
-            })->rules('mimes:jpg,png,jpeg', 'max:50000'),
+            Avatar::make(
+                __('Photo'),
+                'photo',
+                config('filesystems.default'),
+                function (Request $request) {
+                    return ['photo' => $request->photo];
+                }
+            )->thumbnail(
+                function ($value, $disk) {
+                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
+                }
+            )->preview(
+                function ($value, $disk) {
+                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
+                }
+            )->rules('mimes:jpg,png,jpeg', 'max:50000'),
 
-            File::make('Board certification', 'board_certification')->store(function (Request $request) {
-                return ['board_certification' => $request->board_certification];
-            })->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
+            $this->encryptedFileField(__('Board certification'), 'board_certification')
+                ->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
-            File::make('Medical degree', 'medical_degree')->store(function (Request $request) {
-                return ['medical_degree' => $request->medical_degree];
-            })->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
+            $this->encryptedFileField(__('Medical degree'), 'medical_degree')
+                ->rules('mimes:pdf,jpg,png,jpeg', 'max:50000'),
 
             BelongsTo::make(__('Title'), 'title', DoctorTitle::class)->hideFromIndex()->nullable(),
 
@@ -82,6 +98,17 @@ class Doctor extends Resource
                 ->rules('required', 'string', 'max:255')
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
+
+            Password::make('Password')
+                ->hideWhenUpdating()
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed'),
+
+            PasswordConfirmation::make(__('Password confirmation'))
+                ->hideWhenUpdating()
+                ->hideFromIndex()
+                ->hideFromDetail(),
 
             Textarea::make(__('Short description'), 'short_description')->hideFromIndex()
                 ->rules('max:176'),
@@ -118,6 +145,33 @@ class Doctor extends Resource
 
             BelongsToMany::make(__('Languages'), 'languages', Language::class)->hideFromIndex(),
         ];
+    }
+
+    public function encryptedFileField(string $name, string $attribute)
+    {
+        $content = $this->{$attribute} ? Storage::getDecryptedContent($this->{$attribute}) : null;
+        $fileName = $this->{$attribute} ? $attribute . '.' . Storage::guessContentExtension($content) : null;
+
+        return File::make(
+            $name,
+            $attribute,
+            config('filesystems.default'),
+            function (Request $request) use ($attribute) {
+                return [$attribute => $request->{$attribute}];
+            }
+        )->download(
+            function ($request, $doctor) use ($content, $fileName) {
+                return response()->streamDownload(function () use ($content) {echo $content;}, $fileName);
+            }
+        )->resolveUsing(
+            function ($value, $resource) use ($fileName, $attribute) {
+                return $this->{$attribute} ? Str::replaceLast(
+                    basename($this->{$attribute}),
+                    $fileName,
+                    $this->{$attribute}
+                ) : null;
+            }
+        );
     }
 
     public function actions(Request $request): array

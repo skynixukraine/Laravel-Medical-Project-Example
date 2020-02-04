@@ -38,6 +38,27 @@ use OpenApi\Annotations as OA;
  *          in="query",
  *          example="15"
  *     ),
+ *     @OA\Parameter(
+ *          name="search",
+ *          required=false,
+ *          description="Search string",
+ *          in="query",
+ *          example="John"
+ *     ),
+ *     @OA\Parameter(
+ *          name="order_field",
+ *          required=false,
+ *          description="Order field. Possible values: id, enquire_id, created_at",
+ *          in="query",
+ *          example="created_at"
+ *     ),
+ *     @OA\Parameter(
+ *          name="order_direction",
+ *          required=false,
+ *          description="Order direction. Possible values: asc, desc",
+ *          in="query",
+ *          example="asc"
+ *     ),
  *     @OA\Response(
  *         response=200,
  *         description="Billings has been succesfully received",
@@ -48,10 +69,10 @@ use OpenApi\Annotations as OA;
  *                      @OA\Property(
  *                          @OA\Items(
  *                              type="object",
- *                              ref="#/components/schemas/EnquireResource"
+ *                              ref="#/components/schemas/BillingResource"
  *                          ),
- *                          title="Enquires",
- *                          description="Enquires list",
+ *                          title="Billings",
+ *                          description="Billings list",
  *                          property="data",
  *                      ),
  *                      @OA\Property(
@@ -59,19 +80,19 @@ use OpenApi\Annotations as OA;
  *                              properties={
  *                                  @OA\Property(
  *                                      property="first",
- *                                      example="http://online-hautarzt.com/api/v1/enquires?page=1"
+ *                                      example="http://online-hautarzt.com/api/v1/billings?page=1"
  *                                  ),
  *                                  @OA\Property(
  *                                      property="last",
- *                                      example="http://online-hautarzt.com/api/v1/enquires?page=10"
+ *                                      example="http://online-hautarzt.com/api/v1/billings?page=10"
  *                                  ),
  *                                  @OA\Property(
  *                                      property="prev",
- *                                      example="http://online-hautarzt.com/api/v1/enquires?page=4"
+ *                                      example="http://online-hautarzt.com/api/v1/billings?page=4"
  *                                  ),
  *                                  @OA\Property(
  *                                      property="next",
- *                                      example="http://online-hautarzt.com/api/v1/enquires?page=6"
+ *                                      example="http://online-hautarzt.com/api/v1/billings?page=6"
  *                                  )
  *                              },
  *                          ),
@@ -94,7 +115,7 @@ use OpenApi\Annotations as OA;
  *                                  ),
  *                                  @OA\Property(
  *                                      property="path",
- *                                      example="http://online-hautarzt.com/api/v1/enquires"
+ *                                      example="http://online-hautarzt.com/api/v1/billings"
  *                                  ),
  *                                  @OA\Property(
  *                                      property="per_page",
@@ -133,6 +154,22 @@ use OpenApi\Annotations as OA;
  *          )
  *      ),
  *     @OA\Response(
+ *         response=404,
+ *         description="Resource not found",
+ *         @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  properties={
+ *                      @OA\Property(
+ *                          format="string",
+ *                          property="message",
+ *                          example="No query results for model [App\Models\Doctor]."
+ *                      ),
+ *                  }
+ *              )
+ *          )
+ *      ),
+ *     @OA\Response(
  *         response=500,
  *         description="Internal technical error was happened",
  *         @OA\MediaType(
@@ -154,10 +191,21 @@ class Billings extends ApiController
 {
     public function __invoke(Request $request, Doctor $doctor)
     {
-        return Billing::collection(
-            $doctor->billings()
-                ->orderBy('created_at', 'desc')
-                ->paginate($request->query('per_page', 50))
-        );
+        $billings = $doctor->billings();
+
+        if ($request->has('search')) {
+            $billings->where(function ($query) use ($request) {
+                $query->where('enquires.first_name', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('enquires.last_name', 'LIKE', '%' . $request->search . '%');
+            });
+        }
+
+        $sortableFields = collect(['id', 'enquire_id', 'created_at']);
+
+        $request->has('order_field') && $sortableFields->contains($request->order_field)
+            ? $billings->orderBy($request->order_field, $request->query('order_direction', 'asc'))
+            : $billings->orderByDesc('created_at');
+
+        return Billing::collection($billings->paginate($request->query('per_page', 50)));
     }
 }

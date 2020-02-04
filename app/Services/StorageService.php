@@ -7,12 +7,13 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Symfony\Component\Mime\MimeTypes;
 
 class StorageService
 {
     public const DOCTORS_PHOTO_DIR = 'doctors/photos';
     public const DOCTORS_MEDICAL_DEGREES_DIR = 'doctors/medical_degrees';
-    public const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certification';
+    public const DOCTORS_BOARD_CERTIFICATION_DIR = 'doctors/board_certifications';
 
     public const ENQUIRE_IMAGES_DIR = 'enquires/images';
     public const ENQUIRE_MESSAGE_ATTACHMENTS_DIR = 'enquires_messages/attachments';
@@ -65,7 +66,7 @@ class StorageService
         );
     }
 
-    public function saveMessageEnquiryAttachment(string $name, string $extension, string $attachment): string
+    public function saveMessageEnquiryAttachment(string $attachment, string $name, string $extension): string
     {
         return $this->saveBinaryFile(
             $attachment,
@@ -89,9 +90,9 @@ class StorageService
      * @param UploadedFile $file
      * @param string $path
      * @param string $name
-     * @return string
+     * @return string|false
      */
-    public function saveFile(UploadedFile $file, string $path, string $name): string
+    public function saveFile(UploadedFile $file, string $path, string $name)
     {
         $path = Str::lower(trim($path));
         $name = $this->getUniqueFileName($path, Str::slug($name), $file->extension());
@@ -120,5 +121,21 @@ class StorageService
         }
 
         return $numbered;
+    }
+
+    public function guessContentExtension(string $file): string
+    {
+        return MimeTypes::getDefault()->getExtensions($this->guessContentMimeType($file))[0];
+    }
+
+    public function guessContentMimeType(string $file): string
+    {
+        $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->buffer($file);
+
+        if ($pos = strpos($mimeType, ';')) {
+            return substr($mimeType, 0, $pos - 1);
+        }
+
+        return $mimeType;
     }
 }
