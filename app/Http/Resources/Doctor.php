@@ -9,6 +9,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage as BaseStorage;
 use OpenApi\Annotations as OA;
 
 /**
@@ -176,7 +177,7 @@ class Doctor extends JsonResource
     {
         return [
             'id' => $this->id,
-            'photo' => $this->photo ? asset($this->photo) : null,
+            'photo' => $this->photo ? BaseStorage::temporaryUrl($this->photo, now()->addMinutes(5)) : null,
             'board_certification' => $this->mergeWhen($this->withMedicalDegree,
                 $this->board_certification ? Storage::getDecryptedBase64Uri($this->board_certification) : null),
             'medical_degree' => $this->mergeWhen($this->withBoardCertification,
