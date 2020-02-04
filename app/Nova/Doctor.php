@@ -10,6 +10,7 @@ use App\Nova\Actions\ActivateDoctor;
 use App\Nova\Actions\ApproveDoctor;
 use App\Nova\Actions\DeactivateDoctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage as BaseStorage;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\BelongsTo;
@@ -67,6 +68,14 @@ class Doctor extends Resource
                 config('filesystems.default'),
                 function (Request $request) {
                     return ['photo' => $request->photo];
+                }
+            )->thumbnail(
+                function ($value, $disk) {
+                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
+                }
+            )->preview(
+                function ($value, $disk) {
+                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
                 }
             )->rules('mimes:jpg,png,jpeg', 'max:50000'),
 
