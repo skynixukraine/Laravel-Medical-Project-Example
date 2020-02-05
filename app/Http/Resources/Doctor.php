@@ -74,20 +74,6 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
- *              title="E-mail",
- *              description="A doctor's e-mail",
- *              property="email",
- *              example="test@gmail.com"
- *          ),
- *          @OA\Property(
- *              format="string",
- *              title="Phone number",
- *              description="An doctor's phone number",
- *              property="phone_number",
- *              example="+38 024-548-58-55"
- *          ),
- *          @OA\Property(
- *              format="string",
  *              title="Desctiption",
  *              description="A doctor's description",
  *              property="description",
@@ -185,8 +171,6 @@ class Doctor extends JsonResource
             'title' => $this->title,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'email' => $this->email,
-            'phone_number' => $this->phone_number,
             'description' => $this->description,
             'short_description' => $this->short_description,
             'status' => $this->status,

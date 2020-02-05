@@ -814,7 +814,7 @@
                                             "description": "Doctors list",
                                             "items": {
                                                 "type": "object",
-                                                "$ref": "#/components/schemas/DoctorResource"
+                                                "$ref": "#/components/schemas/DoctorFetchResource"
                                             }
                                         },
                                         "links": {
@@ -3895,6 +3895,93 @@
                     "timezone": {
                         "format": "string",
                         "example": "Europe/Berlin"
+                    }
+                },
+                "type": "object"
+            },
+            "DoctorFetchResource": {
+                "title": "Doctor resource",
+                "description": "Resource for a doctor representation",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "A doctors's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "photo": {
+                        "title": "Photo",
+                        "description": "Photo",
+                        "format": "string",
+                        "example": "public/doctors/2019-12/john-sanchess89.jpeg"
+                    },
+                    "title": {
+                        "$ref": "#/components/schemas/DoctorTitleResource"
+                    },
+                    "first_name": {
+                        "title": "First name",
+                        "description": "A doctor's first name",
+                        "format": "string",
+                        "example": "Davide"
+                    },
+                    "last_name": {
+                        "title": "Last name",
+                        "description": "A doctor's last name",
+                        "format": "string",
+                        "example": "Donghi"
+                    },
+                    "description": {
+                        "title": "Desctiption",
+                        "description": "A doctor's description",
+                        "format": "string",
+                        "example": "I am a good doctor"
+                    },
+                    "short_description": {
+                        "title": "Short description",
+                        "description": "A doctor's short description",
+                        "format": "string",
+                        "example": "I am a good doctor"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "description": "A doctor's status",
+                        "format": "string",
+                        "example": "CREATED"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Last updated datetime representation",
+                        "format": "object",
+                        "$ref": "#/components/schemas/CarbonResource"
+                    },
+                    "region": {
+                        "$ref": "#/components/schemas/RegionResource"
+                    },
+                    "specialization": {
+                        "$ref": "#/components/schemas/SpecializationResource"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/LocationResource"
+                    },
+                    "languages": {
+                        "title": "Languages",
+                        "description": "Doctor's languages",
+                        "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/LanguageResource"
+                        }
+                    },
+                    "can_be_approved": {
+                        "title": "Can be approved",
+                        "description": "Determine if a doctor can be approved. The property available only if status property equals 'CREATED'",
+                        "format": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
