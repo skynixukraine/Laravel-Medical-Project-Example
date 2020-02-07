@@ -2759,15 +2759,29 @@
                                         "format": "string",
                                         "example": "5"
                                     },
-                                    "answers": {
+                                    "answers[1]": {
+                                        "type": "string",
                                         "description": "An enquire's answers",
-                                        "format": "array"
+                                        "format": "string",
+                                        "example": 1
                                     },
                                     "country": {
                                         "title": "A location's country",
                                         "description": "A location's country",
                                         "format": "string",
                                         "example": "USA"
+                                    },
+                                    "country_code": {
+                                      "title": "A country number from phone",
+                                      "description": "A country number from phone",
+                                      "format": "string",
+                                      "example": "380"
+                                    },
+                                    "code": {
+                                      "title": "A payment method code",
+                                      "description": "A payment method code",
+                                      "format": "string",
+                                      "example": "tok_visa"
                                     },
                                     "city": {
                                         "title": "A location's city",
@@ -3677,7 +3691,7 @@
                 "parameters": [
                     {
                         "name": "id",
-                        "in": "query",
+                        "in": "path",
                         "description": "A message's identificator",
                         "required": true,
                         "example": "1"
