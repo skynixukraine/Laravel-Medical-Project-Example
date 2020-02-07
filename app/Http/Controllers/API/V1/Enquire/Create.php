@@ -12,6 +12,7 @@ use App\Models\Enquire;
 use App\Models\EnquireAnswer;
 use App\Models\Message;
 use App\Models\Setting;
+use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -219,7 +220,7 @@ class Create extends ApiController
                 'city', 'state', 'postal_code', 'country'
             ));
 
-            $this->processAnswers($enquire, $request->answers);
+            $this->processAnswers($enquire, $request->answers, $request->image);
             $this->payForEnquire($enquire, $request->code);
 
         }, 2);
@@ -264,7 +265,7 @@ class Create extends ApiController
         ]);
     }
 
-    private function processAnswers(Enquire $enquire, $answers): void
+    private function processAnswers(Enquire $enquire, $answers, $image): void
     {
         foreach ($answers as $messageId => $answer) {
             $message = Message::query()->findOrFail($messageId);
@@ -273,7 +274,7 @@ class Create extends ApiController
                 $this->$processMethod(EnquireAnswer::create([
                     'message_id' => $message->id,
                     'enquire_id' => $enquire->id
-                ]), $answer);
+                ]), $answer, $image);
             }
         }
     }
@@ -312,14 +313,13 @@ class Create extends ApiController
         }
     }
 
-    private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers): void
+    private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers, $image): void
     {
-        $image = is_array($answers) ? ($answers[0] ?? null) : $answers;
 
         Validator::make(['image' => $image], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
 
 //        FIXME: storage variable not exists here
-        $enquireAnswer->value = $this->storage->saveEnquireImage($image);
+        $enquireAnswer->value = app(StorageService::class)->saveEnquireImage($image);
         $enquireAnswer->saveOrFail();
     }
 }
