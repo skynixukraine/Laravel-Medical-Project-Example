@@ -175,7 +175,7 @@ class Index extends ApiController
     {
         $doctorsQuery = Doctor::query()
             ->whereStatus(Doctor::STATUS_ACTIVATED)
-            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name']))
+            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name', 'id']))
             ->orderBy(
                 $request->query('order_by', 'first_name'),
                 $request->query('direction', 'asc'));
