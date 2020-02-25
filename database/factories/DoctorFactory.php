@@ -17,7 +17,7 @@ $factory->define(App\Models\Doctor::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'phone_number' => $faker->unique()->phoneNumber,
         'password' => 'secret',
-        'status' => Doctor::STATUS_ACTIVATED,
+        'status' => Doctor::STATUS_APPROVED,
         'email_verified_at' => now(),
         'description' => $faker->realText(1000)
     ];

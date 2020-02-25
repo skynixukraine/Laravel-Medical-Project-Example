@@ -174,7 +174,7 @@ class Index extends ApiController
     public function __invoke(Request $request): ResourceCollection
     {
         $doctorsQuery = Doctor::query()
-            ->whereStatus(Doctor::STATUS_ACTIVATED)
+            ->whereStatus(Doctor::STATUS_APPROVED)
             ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name', 'id']))
             ->orderBy(
                 $request->query('order_by', 'first_name'),

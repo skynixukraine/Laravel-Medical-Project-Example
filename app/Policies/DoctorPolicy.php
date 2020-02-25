@@ -13,7 +13,7 @@ class DoctorPolicy
 
     public function view(Doctor $user, Doctor $doctor): bool
     {
-        return $doctor->status === Doctor::STATUS_ACTIVATED || $user->is($doctor);
+        return $doctor->status === Doctor::STATUS_APPROVED || $user->is($doctor);
     }
 
     public function update(Doctor $user, Doctor $doctor): bool
@@ -24,7 +24,7 @@ class DoctorPolicy
     public function requestActivation(Doctor $user, Doctor $doctor): bool
     {
         return $user->is($doctor) && $doctor->canBeApproved()
-            && ($doctor->status === Doctor::STATUS_CREATED || $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED);
+            && ($doctor->status === Doctor::STATUS_ACTIVATED || $doctor->status === Doctor::STATUS_ACTIVATION_REQUESTED);
     }
 
     public function close(Doctor $user, Doctor $doctor): bool

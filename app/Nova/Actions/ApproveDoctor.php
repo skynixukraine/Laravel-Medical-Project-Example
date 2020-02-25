@@ -21,9 +21,10 @@ class ApproveDoctor extends Action
 
     public function handle(ActionFields $fields, Collection $doctors): void
     {
+
         foreach ($doctors as $doctor) {
             if ($doctor->getOriginal('status') === Doctor::STATUS_ACTIVATION_REQUESTED) {
-                $doctor->update(['status' => Doctor::STATUS_ACTIVATED]);
+                $doctor->update(['status' => Doctor::STATUS_APPROVED]);
                 event(new DoctorApproved($doctor));
             }
         }

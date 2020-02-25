@@ -124,6 +124,7 @@ class Doctor extends Resource
                 ->options([
                     DoctorModel::STATUS_CREATED => __('Created'),
                     DoctorModel::STATUS_ACTIVATION_REQUESTED => __('Activation requested'),
+                    DoctorModel::STATUS_APPROVED => __('Approved'),
                     DoctorModel::STATUS_ACTIVATED => __('Activated'),
                     DoctorModel::STATUS_DEACTIVATED => __('Deactivated'),
                     DoctorModel::STATUS_CLOSED => __('Closed'),
