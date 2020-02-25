@@ -58,6 +58,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_ACTIVATION_REQUESTED = 'ACTIVATION_REQUESTED';
     public const STATUS_ACTIVATED = 'ACTIVATED';
+    public const STATUS_APPROVED = 'APPROVED';
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
@@ -139,6 +140,11 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
+    }
+
+    public function activeted(): bool
+    {
+        return $this->forceFill(['status' => self::STATUS_ACTIVATED])->saveOrFail();
     }
 
     public function saveToken(): PersonalAccessTokenResult
