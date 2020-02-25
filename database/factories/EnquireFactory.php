@@ -20,7 +20,7 @@ $factory->define(App\Models\Enquire::class, function (Faker $faker) {
         'last_name' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'phone_number' => $faker->phoneNumber,
-        'doctor_id' => \App\Models\Doctor::where('status', '=', \App\Models\Doctor::STATUS_APPROVED)->firstOrFail(),
+        'doctor_id' => \App\Models\Doctor::where('status', '=', \App\Models\Doctor::STATUS_APPROVED)->firstOrFail()->id,
         'date_of_birth' => now(),
     ];
 });
