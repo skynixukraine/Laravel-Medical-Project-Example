@@ -31,7 +31,7 @@ class Update extends FormRequest
         return [
             'photo.*' => 'mimes:jpg,png,jpeg|max:50000',
             'medical_degree.*' => 'mimes:pdf,jpg,png,jpeg|max:50000',
-            'board_certification.*' => 'nullable|mimes:pdf,jpg,png,jpeg|max:50000',
+            'board_certification.*' => 'mimes:pdf,jpg,png,jpeg|max:50000',
             'prefix' => 'string|max:255',
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
