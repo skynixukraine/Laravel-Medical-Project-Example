@@ -29,9 +29,9 @@ class Update extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => 'mimes:jpg,png,jpeg|max:50000',
-            'medical_degree' => 'mimes:pdf,jpg,png,jpeg|max:50000',
-            'board_certification' => 'mimes:pdf,jpg,png,jpeg|max:50000',
+            'photo.*' => 'mimes:jpg,png,jpeg|max:50000',
+            'medical_degree.*' => 'mimes:pdf,jpg,png,jpeg|max:50000',
+            'board_certification.*' => 'mimes:pdf,jpg,png,jpeg|max:50000',
             'prefix' => 'string|max:255',
             'first_name' => 'string|max:255',
             'last_name' => 'string|max:255',
@@ -51,6 +51,7 @@ class Update extends FormRequest
             'longitude' => 'numeric',
             'language_ids' => 'array',
             'language_ids.*' => 'distinct|exists:languages,id',
+            'phone_number' => ['string', Rule::unique('doctors')->ignore(Auth::id())],
         ];
     }
 
