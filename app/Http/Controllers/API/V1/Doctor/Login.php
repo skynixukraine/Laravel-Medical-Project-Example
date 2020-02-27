@@ -155,7 +155,7 @@ class Login extends ApiController
         ]));
 
         throw_if(!Hash::check($request->password, $doctor->password), ValidationException::withMessages([
-            'password' => __('The given data was invalid.'),
+            'password' => __('The password is invalid.'),
         ]));
 
         return AuthToken::make($doctor->saveToken());
