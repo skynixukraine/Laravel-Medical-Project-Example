@@ -52,7 +52,7 @@ class Location extends Resource
      */
     public function title()
     {
-        return $this->country . ', ' . $this->state . ', ' . $this->address . ', ' . $this->postal_code;
+        return $this->country . ', ' . $this->city . ', ' . $this->state . ', ' . $this->address . ', ' . $this->postal_code;
     }
 
     /**
