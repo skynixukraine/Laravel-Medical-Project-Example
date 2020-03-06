@@ -52,7 +52,7 @@ class Location extends Resource
      */
     public function title()
     {
-        return $this->country . ', ' . $this->city . ', ' . $this->state . ', ' . $this->address . ', ' . $this->postal_code;
+        return $this->country . ', ' . $this->state . ', ' . $this->address . ', ' . $this->postal_code;
     }
 
     /**
@@ -66,8 +66,8 @@ class Location extends Resource
         return [
             ID::make()->sortable(),
 
-            Country::make(__('Country'), 'country')->sortable()
-                ->rules('nullable', 'string', 'max:255'),
+            Place::make(__('Address'), 'address')->sortable()->countries(['DE'])
+                 ->rules('nullable', 'string', 'max:255'),
 
             Place::make(__('City'), 'city')->sortable()->onlyCities()
                 ->rules('nullable', 'string', 'max:255'),
@@ -75,8 +75,8 @@ class Location extends Resource
             Text::make(__('State'), 'state')->sortable()
                 ->rules('nullable', 'string', 'max:255'),
 
-            Place::make(__('Address'), 'address')->sortable()->countries(['DE'])
-                ->rules('nullable', 'string', 'max:255'),
+            Country::make(__('Country'), 'country')->sortable()
+                   ->rules('nullable', 'string', 'max:255'),
 
             Text::make(__('Postal code'), 'postal_code')->sortable()
                 ->rules('nullable', 'string'),
