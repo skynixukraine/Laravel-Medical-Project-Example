@@ -48,7 +48,7 @@ class Doctor extends Resource
     public static $model = DoctorModel::class;
 
     public static $search = [
-        'id', 'title', 'first_name', 'last_name',
+        'id', 'first_name', 'last_name',
         'email', 'phone_number',
     ];
 
