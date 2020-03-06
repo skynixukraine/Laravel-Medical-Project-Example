@@ -39,6 +39,7 @@ class Update extends FormRequest
             'short_description' => 'string|max:176',
             'description' => 'string|max:3000',
             'region_id' => 'exists:regions,id',
+            'title_id' => 'exists:doctor_titles,id',
             'specialization_id' => 'exists:specializations,id',
             'old_password' => 'string|min:6|max:255|required_with:password',
             'password' => 'string|min:6|max:255|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.]).*$/|confirmed|required_with:old_password',
