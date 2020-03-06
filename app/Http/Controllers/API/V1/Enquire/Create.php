@@ -281,18 +281,24 @@ class Create extends ApiController
 
     private function createTextAnswer(EnquireAnswer $enquireAnswer, $answers): void
     {
-        $enquireAnswer->value = is_array($answers) ? ($answers[0] ?? null) : $answers;
+        $answers = is_array($answers) ? ($answers[0] ?? null) : $answers;
+
+        Validator::make(['answers' => $answers], ['answers' => 'string|max:255'])->validate();
+
+        $enquireAnswer->value = $answers;
         $enquireAnswer->saveOrFail();
     }
 
     private function createSelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
     {
-        $answers = is_array($answers) ? $answers : [$answers];
+        $answers = json_decode($answers);
+
+        Validator::make(['answers' => $answers], ['answers' => 'distinct|exists:message_options,id'])->validate();
 
         foreach ($answers as $answer) {
-            $currentEnquireAnswer = clone $enquireAnswer;
+            $currentEnquireAnswer = $enquireAnswer->replicate();
             $currentEnquireAnswer->message_option_id = (int) $answer;
-            $currentEnquireAnswer->saveOrFail();
+            $currentEnquireAnswer->save();
         }
     }
 
@@ -307,9 +313,10 @@ class Create extends ApiController
         $answers = is_array($answers) ? $answers : [$answers];
 
         foreach ($answers as $answer) {
-            $currentEnquireAnswer = clone $enquireAnswer;
+            $currentEnquireAnswer = $enquireAnswer->replicate();
             $currentEnquireAnswer->value = $answer;
-            $currentEnquireAnswer->saveOrFail();
+
+            $currentEnquireAnswer->save();
         }
     }
 
