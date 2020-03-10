@@ -17,7 +17,8 @@ class ChangeEmail extends FormRequest
     {
         return [
             'token' => 'required|string|size:100',
-            'id' => 'required|exists:doctors,id'
+            'id' => 'required|exists:doctors,id',
+            'password' => 'required|string',
         ];
     }
 }
