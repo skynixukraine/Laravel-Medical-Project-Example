@@ -95,6 +95,11 @@ class Enquire extends Model
         return $this->hasMany(EnquireMessage::class);
     }
 
+    public function token(): HasOne
+    {
+        return $this->hasOne(EnquireToken::class);
+    }
+
     public function isConclusionExpired(): bool
     {
         return $this->conclusion_created_at->addWeek(6)->lessThanOrEqualTo(now());
