@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Events\DoctorCreated;
 use App\Events\DoctorUpdated;
+use App\Facades\Image;
+use App\Facades\ImageIntervention;
 use App\Notifications\DoctorVerifyEmail;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -61,6 +63,9 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public const STATUS_APPROVED = 'APPROVED';
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
+
+    const WIDTH_PHOTO = 285;
+    const WIDTH_CERTS = 235;
 
     protected $dispatchesEvents = [
         'updated' => DoctorUpdated::class,
@@ -190,7 +195,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['photo'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsPhoto($value)
+            ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value, self::WIDTH_PHOTO))
             : $value;
     }
 
@@ -201,7 +206,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['medical_degree'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsMedicalDegree($value)
+            ? Storage::saveDoctorsMedicalDegree(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
             : $value;
     }
 
@@ -212,7 +217,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['board_certification'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsBoardCertification($value)
+            ? Storage::saveDoctorsBoardCertification(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
             : $value;
     }
 }
