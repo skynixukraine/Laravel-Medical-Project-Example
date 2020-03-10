@@ -19,7 +19,7 @@ class ImageService
     public function makeThumb(UploadedFile $file, string $width, $height = null) : UploadedFile
     {
 
-        if (!$this->is_image($file)) {
+        if (!$this->isImage($file)) {
             return $file;
         }
 
@@ -45,7 +45,7 @@ class ImageService
      * @param UploadedFile $file
      * @return bool
      */
-    public function is_image(UploadedFile $file) : bool
+    public function isImage(UploadedFile $file) : bool
     {
         return in_array($file->getMimeType(), ['image/png', 'image/jpeg', 'image/jpg']);
     }
