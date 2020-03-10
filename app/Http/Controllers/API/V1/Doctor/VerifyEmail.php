@@ -8,6 +8,7 @@ use App\Events\DoctorVerifiedEmail;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as OA;
 
 /**
@@ -72,7 +73,9 @@ class VerifyEmail extends ApiController
 {
     public function __invoke(Request $request)
     {
-        abort_if(!$request->hasValidSignature(), 401);
+        throw_if(!$request->hasValidSignature(), ValidationException::withMessages([
+            'signature' => __('The signature : ' . $request->signature . ' is invalid.'),
+        ]));
 
         $doctor = Doctor::findOrFail($request->query('id'));
 
