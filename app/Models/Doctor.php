@@ -64,6 +64,9 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
 
+    const WIDTH_PHOTO = 285;
+    const WIDTH_CERTS = 235;
+
     protected $dispatchesEvents = [
         'updated' => DoctorUpdated::class,
         'created' => DoctorCreated::class,
@@ -192,7 +195,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['photo'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value))
+            ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value, self::WIDTH_PHOTO))
             : $value;
     }
 
@@ -203,7 +206,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['medical_degree'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsMedicalDegree($value)
+            ? Storage::saveDoctorsMedicalDegree(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
             : $value;
     }
 
@@ -214,7 +217,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['board_certification'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsBoardCertification($value)
+            ? Storage::saveDoctorsBoardCertification(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
             : $value;
     }
 }
