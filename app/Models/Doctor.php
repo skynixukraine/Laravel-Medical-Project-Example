@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Events\DoctorCreated;
 use App\Events\DoctorUpdated;
+use App\Facades\Image;
+use App\Facades\ImageIntervention;
 use App\Notifications\DoctorVerifyEmail;
 use App\Notifications\DoctorRequestedResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -190,7 +192,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         }
 
         $this->attributes['photo'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsPhoto($value)
+            ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value))
             : $value;
     }
 

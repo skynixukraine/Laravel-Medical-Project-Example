@@ -103,7 +103,7 @@ class Doctor extends Resource
                 ->hideWhenUpdating()
                 ->hideFromIndex()
                 ->hideFromDetail()
-                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!$#%]).*$/', 'confirmed'),
+                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed'),
 
             PasswordConfirmation::make(__('Password confirmation'))
                 ->hideWhenUpdating()
