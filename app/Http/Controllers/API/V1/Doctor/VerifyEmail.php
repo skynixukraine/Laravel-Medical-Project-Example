@@ -7,7 +7,10 @@ namespace App\Http\Controllers\API\V1\Doctor;
 use App\Events\DoctorVerifiedEmail;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use OpenApi\Annotations as OA;
 
@@ -73,6 +76,13 @@ class VerifyEmail extends ApiController
 {
     public function __invoke(Request $request)
     {
+
+        $original = rtrim($request->url().'?'.Arr::query(
+                Arr::except($request->query(), 'signature')
+            ), '?');
+
+        Log::info('Start validate signature: signature - ' . $original . ' and url - ' . $request->url() . ' and path - ' . $request->path() . ' and date - ' . Carbon::now()->getTimestamp());
+
         throw_if(!$request->hasValidSignature(), ValidationException::withMessages([
             'signature' => __('The signature : ' . $request->signature . ' is invalid.'),
         ]));
