@@ -76,13 +76,6 @@ class VerifyEmail extends ApiController
 {
     public function __invoke(Request $request)
     {
-
-        $original = rtrim($request->url().'?'.Arr::query(
-                Arr::except($request->query(), 'signature')
-            ), '?');
-
-        Log::info('Start validate signature: signature - ' . $original . ' and url - ' . $request->url() . ' and path - ' . $request->path() . ' and date - ' . Carbon::now()->getTimestamp());
-
         throw_if(!$request->hasValidSignature(), ValidationException::withMessages([
             'signature' => __('The signature : ' . $request->signature . ' is invalid.'),
         ]));
