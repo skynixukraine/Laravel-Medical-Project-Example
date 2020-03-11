@@ -18,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendDoctorAccountClosedNotification::class,
         ],
 
+        \App\Events\DoctorDeleted::class => [
+            \App\Listeners\SendDoctorAccountDeletedNotification::class,
+        ],
+
         \App\Events\DoctorRequestedActivation::class => [
             \App\Listeners\SendDoctorRequestedActivationNotification::class,
         ],

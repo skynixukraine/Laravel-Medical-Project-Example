@@ -36,6 +36,7 @@ Route::prefix('v1')->group(function () {
             Route::get('{doctor}/billings', 'Doctor\Billings')->name('doctors.billings');
             Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
             Route::post('send-change-email-request-link', 'Doctor\SendChangeEmailRequestLink');
+            Route::delete('{doctor}/delete', 'Doctor\Delete')->middleware('can:delete,doctor');
         });
 
         Route::prefix('enquires')->group(function () {

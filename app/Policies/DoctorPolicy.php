@@ -32,6 +32,11 @@ class DoctorPolicy
         return $user->is($doctor);
     }
 
+    public function delete(Doctor $user, Doctor $doctor): bool
+    {
+        return $user->is($doctor);
+    }
+
     public function stripeConnect(Doctor $user, Doctor $doctor): bool
     {
         return $user->is($doctor);
