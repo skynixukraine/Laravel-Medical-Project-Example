@@ -39,6 +39,13 @@ use Illuminate\Validation\ValidationException;
  *                      property="token",
  *                      example="dfgdfgdfgdfg"
  *                  ),
+ *                  @OA\Property(
+ *                      format="string",
+ *                      title="Password",
+ *                      description="A doctor's password",
+ *                      property="password",
+ *                      example="12345678"
+ *                  ),
  *              )
  *          )
  *     ),
@@ -97,6 +104,10 @@ class ChangeEmail extends ApiController
 
         throw_if(!$doctor->emailVerify, ValidationException::withMessages([
             'token' => __('The verification token not exists')
+        ]));
+
+        throw_if(!Hash::check($request->password, $doctor->password), ValidationException::withMessages([
+            'password' => __('The password is invalid.'),
         ]));
 
         throw_if(!Hash::check($request->token, $doctor->emailVerify->token), ValidationException::withMessages([
