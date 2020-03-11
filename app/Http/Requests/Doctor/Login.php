@@ -32,7 +32,7 @@ class Login extends FormRequest
         return [
             'email' => 'required|string|email|exists:doctors,email',
             'password' => 'required|string',
-            'recaptcha' => ['required', 'string', new Recaptcha('login_doctor')],
+            //'recaptcha' => ['required', 'string', new Recaptcha('login_doctor')],
         ];
     }
 }
