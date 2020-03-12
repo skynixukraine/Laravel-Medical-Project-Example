@@ -7,7 +7,6 @@ namespace App\Http\Controllers\API\V1\Doctor;
 use App\Events\DoctorDeleted;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
-use App\Models\Enquire;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -163,12 +162,17 @@ class Delete extends ApiController
                 ]);
             }
 
+            $title = $doctor->title ? $doctor->title->name : '';
+            $firstName = $doctor->first_name;
+            $lastName = $doctor->last_name;
+
             $doctor->enquires()->update([
-                'doctor_info' => $doctor->title->name . ' ' . $doctor->first_name . ' ' . $doctor->last_name . ' (deleted)'
+                'doctor_info' => $title . ' ' . $firstName . ' ' . $lastName . ' (deleted)'
             ]);
 
-            event(new DoctorDeleted($doctor));
             $doctor->delete();
+
+            event(new DoctorDeleted(['title' => $title, 'first_name' => $firstName, 'last_name' => $lastName]));
         });
     }
 }
