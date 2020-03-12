@@ -1380,8 +1380,8 @@
                 "tags": [
                     "Doctors"
                 ],
-                "summary": "Create a request for activation a doctor",
-                "description": "Create a request for activation a doctor",
+                "summary": "Create a request for approve a doctor",
+                "description": "Create a request for approve a doctor",
                 "parameters": [
                     {
                         "name": "id",
