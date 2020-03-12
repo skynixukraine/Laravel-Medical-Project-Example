@@ -11,6 +11,7 @@ use App\Http\Requests\Doctor\ChangeEmail as ChangeEmailRequest;
 use App\Models\EmailVerifies;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Doctor as DoctorResource;
 
 /**
  * @OA\Post(
@@ -130,5 +131,7 @@ class ChangeEmail extends ApiController
         EmailVerifies::where(['model_id' => $doctor->id, 'model_type' => Doctor::class])->delete();
 
         event(new DoctorChangedEmail($doctor));
+
+        return DoctorResource::make($doctor);
     }
 }

@@ -190,9 +190,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
 
     public function setPhotoAttribute($value)
     {
-        if ($this->photo) {
-            Storage::removeFile($this->photo);
-        }
+        $this->removePhotoFile();
 
         $this->attributes['photo'] = $value instanceof UploadedFile
             ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value, self::WIDTH_PHOTO))
@@ -201,9 +199,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
 
     public function setMedicalDegreeAttribute($value)
     {
-        if ($this->medical_degree) {
-            Storage::removeFile($this->medical_degree);
-        }
+        $this->removeMedicalDegreeFile();
 
         $this->attributes['medical_degree'] = $value instanceof UploadedFile
             ? Storage::saveDoctorsMedicalDegree(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
@@ -212,12 +208,31 @@ class Doctor extends Authenticatable implements MustVerifyEmail
 
     public function setBoardCertificationAttribute($value)
     {
-        if ($this->board_certification) {
-            Storage::removeFile($this->board_certification);
-        }
+        $this->removeBoardCertificationFile();
 
         $this->attributes['board_certification'] = $value instanceof UploadedFile
             ? Storage::saveDoctorsBoardCertification(ImageIntervention::makeThumb($value, self::WIDTH_CERTS))
             : $value;
+    }
+
+    public function removeBoardCertificationFile()
+    {
+        if ($this->board_certification) {
+            Storage::removeFile($this->board_certification);
+        }
+    }
+
+    public function removeMedicalDegreeFile()
+    {
+        if ($this->medical_degree) {
+            Storage::removeFile($this->medical_degree);
+        }
+    }
+
+    public function removePhotoFile()
+    {
+        if ($this->photo) {
+            Storage::removeFile($this->photo);
+        }
     }
 }

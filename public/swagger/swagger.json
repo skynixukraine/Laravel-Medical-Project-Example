@@ -464,6 +464,148 @@
                 ]
             }
         },
+        "/api/v1/doctors/{id}/delete": {
+          "delete": {
+            "tags": [
+              "Doctors"
+            ],
+            "summary": "Delete a doctor's account",
+            "description": "Delete a doctor's account",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "A doctor's identificator",
+                "required": true,
+                "example": "1"
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "required": [
+                      "password"
+                    ],
+                    "properties": {
+                      "password": {
+                        "title": "Password",
+                        "description": "A doctor's password",
+                        "format": "string",
+                        "example": "12345678"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "An account has been succesfully deleted"
+              },
+              "401": {
+                "description": "Authorization failed",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Unauthenticated."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Current user has not permissions to do this action",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "This action is unauthorized."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Resource not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "No query results for model [App\\Models\\Doctor]."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Some validation errors was heppened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "title": "Validation error",
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "The given data was invalid."
+                        },
+                        "errors": {
+                          "properties": {
+                            "token": {
+                              "items": {
+                                "type": "string",
+                                "example": "The password is invalid."
+                              }
+                            }
+                          },
+                          "type": "object",
+                          "format": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal technical error was happened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Something went wrong, please try again later."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
         "/api/v1/doctors/{id}/deactivate": {
             "patch": {
                 "tags": [
