@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace App\Events;
 
-use App\Traits\DoctorInfo;
-use Illuminate\Queue\SerializesModels;
-
 class DoctorDeleted
 {
-    use DoctorInfo, SerializesModels;
+    /** @var array  */
+    private $doctor;
+
+    public function __construct(array $doctor)
+    {
+        $this->doctor = $doctor;
+    }
+
+    public function getDoctor(): array
+    {
+        return $this->doctor;
+    }
 }

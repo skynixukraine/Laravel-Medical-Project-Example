@@ -9,8 +9,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class DoctorDeleted extends QueueableNotification
 {
-    use DoctorInfo;
-
     /**
      * Doctors will always be notified by Email
      */
@@ -20,20 +18,15 @@ class DoctorDeleted extends QueueableNotification
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return MailMessage
+     * @param array $doctor
+     * @param $notifiable
+     * @return mixed
      */
-    public function toMail($notifiable)
+    public function toMail(array $doctor, $notifiable)
     {
         return $this->createMailMessage()
             ->subject(__('Online-Hautarzt.org Account Closed'))
-            ->greeting(__('Dear :title :first_name :last_name,', [
-                'title' => $this->doctor->title->name,
-                'first_name' => $this->doctor->first_name,
-                'last_name' => $this->doctor->last_name,
-            ]))
+            ->greeting(__('Dear :title :first_name :last_name,', $doctor))
             ->line(__('Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.'));
     }
 
