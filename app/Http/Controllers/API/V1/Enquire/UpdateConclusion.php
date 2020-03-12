@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Enquire;
 
+use App\Events\ConclusionUpdated;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\UpdateConclusion as UpdateConclusionRequest;
 use App\Http\Resources\Enquire as EnquireResource;
@@ -129,6 +130,8 @@ class UpdateConclusion extends ApiController
             'status' => Enquire::STATUS_RESOLVED,
             'conclusion_created_at' => $enquire->conclusion === null ? now() : $enquire->conclusion_created_at
         ]);
+
+        event(new ConclusionUpdated($enquire));
 
         return EnquireResource::make($enquire);
     }

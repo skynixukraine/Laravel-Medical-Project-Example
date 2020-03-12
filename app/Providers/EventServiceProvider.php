@@ -70,6 +70,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\EnquireUpdated::class => [
             \App\Listeners\SendEnquireClosedNotification::class
         ],
+
+        \App\Events\ConclusionUpdated::class => [
+            \App\Listeners\SendConclusionUpdatedNotification::class
+        ],
     ];
 
     /**
