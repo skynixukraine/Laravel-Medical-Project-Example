@@ -164,8 +164,9 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public function canBeApproved()
     {
         $requiredAttributes = [
-            'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree', 'location', 'languages',
-            'last_name', 'description', 'email', 'status', 'password', 'first_name', 'email_verified_at', 'specialization'
+            'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree', 'location',
+            'languages', 'last_name', 'description', 'email', 'status', 'password', 'first_name',
+            'email_verified_at', 'specialization', 'stripe_account_id'
         ];
 
         foreach ($requiredAttributes as $attribute) {
