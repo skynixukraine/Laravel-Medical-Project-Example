@@ -7,7 +7,7 @@ namespace App\Http\Controllers\API\V1\Doctor;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\Doctor as DoctorResource;
 use App\Models\Doctor;
-use Illuminate\Http\Request;
+use App\Http\Requests\Doctor\Index as Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use OpenApi\Annotations as OA;
 
@@ -42,6 +42,27 @@ use OpenApi\Annotations as OA;
  *          name="specialization_id",
  *          required=false,
  *          description="Filter doctors by specialization id",
+ *          in="query",
+ *          example="1"
+ *     ),
+ *     @OA\Parameter(
+ *          name="radius",
+ *          required=false,
+ *          description="Filter doctors by radius",
+ *          in="query",
+ *          example="1"
+ *     ),
+ *     @OA\Parameter(
+ *          name="lat",
+ *          required=false,
+ *          description="Filter doctors by radius",
+ *          in="query",
+ *          example="1"
+ *     ),
+ *     @OA\Parameter(
+ *          name="lng",
+ *          required=false,
+ *          description="Filter doctors by radius",
  *          in="query",
  *          example="1"
  *     ),
@@ -175,11 +196,25 @@ class Index extends ApiController
     {
         $doctorsQuery = Doctor::query()
             ->whereStatus(Doctor::STATUS_APPROVED)
-            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name', 'id']))
-            ->orderBy(
-                $request->query('order_by', 'first_name'),
-                $request->query('direction', 'asc'));
+            ->where($request->only(['region_id', 'specialization_id', 'first_name', 'last_name', 'id']));
+
+        if ($request->query('radius')) {
+
+            if ($request->query('lat') && $request->query('lng')) {
+
+                $doctorsQuery->whereHas('location', function ($location) use ($request) {
+                    $location->whereRaw("(6371*acos(cos(radians(?))*cos(radians(latitude))*cos(radians(longitude)-radians(?))+sin(radians(?))*sin(radians(latitude)))) <= ?",
+                        [$request->query('lat'), $request->query('lng'), $request->query('lat'), $request->query('radius')]);;
+                });
+            }
+
+        }
+
+        $doctorsQuery->orderBy(
+            $request->query('order_by', 'first_name'),
+            $request->query('direction', 'asc'));
 
         return DoctorResource::collection($doctorsQuery->paginate($request->query('per_page')));
     }
+
 }

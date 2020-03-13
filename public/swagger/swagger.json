@@ -923,6 +923,27 @@
                         "example": "1"
                     },
                     {
+                      "name": "radius",
+                      "in": "query",
+                      "description": "Filter doctors by radius",
+                      "required": false,
+                      "example": "100"
+                    },
+                    {
+                      "name": "lat",
+                      "in": "query",
+                      "description": "Filter doctors by radius (latitude)",
+                      "required": false,
+                      "example": "49.525208"
+                    },
+                    {
+                      "name": "lng",
+                      "in": "query",
+                      "description": "Filter doctors by radius (longitude)",
+                      "required": false,
+                      "example": "11.184082"
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Page number",
