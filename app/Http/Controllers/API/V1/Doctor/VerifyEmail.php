@@ -86,8 +86,6 @@ class VerifyEmail extends ApiController
 
         $doctor->markEmailAsVerified();
 
-        $doctor->activeted();
-
         event(new DoctorVerifiedEmail($doctor));
     }
 }
