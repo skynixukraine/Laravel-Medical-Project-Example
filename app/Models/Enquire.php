@@ -104,4 +104,14 @@ class Enquire extends Model
     {
         return $this->conclusion_created_at->addWeek(6)->lessThanOrEqualTo(now());
     }
+
+    public function hasVerifiedEmail(): bool
+    {
+        return $this->email_verified_at !== null;
+    }
+
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
+    }
 }

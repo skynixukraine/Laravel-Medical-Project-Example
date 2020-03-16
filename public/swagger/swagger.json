@@ -3068,6 +3068,71 @@
                 }
             }
         },
+        "/api/v1/enquires/verify-email": {
+          "get": {
+            "tags": [
+              "Enquires"
+            ],
+            "summary": "Verify enquire's email",
+            "description": "Verify enquire's email",
+            "responses": {
+              "200": {
+                "description": "An e-mail has been verified"
+              },
+              "304": {
+                "description": "An e-mail already verified"
+              },
+              "401": {
+                "description": "Invalid signature",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Unauthenticated."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Resource not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "No query results for model [App\\Models\\Enquire]."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal technical error was happened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Something went wrong, please try again later."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "/api/v1/enquires/{id}/download-conclusion": {
             "post": {
                 "tags": [

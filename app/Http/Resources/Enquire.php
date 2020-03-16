@@ -160,7 +160,8 @@ class Enquire extends JsonResource
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
-            'last_contacted_at' => $this->last_contacted_at
+            'last_contacted_at' => $this->last_contacted_a,
+            'is_verified_email' => $this->hasVerifiedEmail()
         ];
     }
 }
