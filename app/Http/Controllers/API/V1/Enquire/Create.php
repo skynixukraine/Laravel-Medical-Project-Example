@@ -212,7 +212,7 @@ class Create extends ApiController
         ));
 
         DB::transaction(function () use ($request, $enquire) {
-            $enquire->authy_id = $this->getAuthyId($request->email, $request->phone_number, $request->country_code);
+//            $enquire->authy_id = $this->getAuthyId($request->email, $request->phone_number, $request->country_code);
             $enquire->saveOrFail();
 
             $enquire->location()->create($request->only(
@@ -221,7 +221,7 @@ class Create extends ApiController
             ));
 
             $this->processAnswers($enquire, $request->answers, $request->image);
-            $this->payForEnquire($enquire, $request->code);
+//            $this->payForEnquire($enquire, $request->code);
 
         }, 2);
 

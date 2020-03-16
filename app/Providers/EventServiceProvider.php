@@ -56,7 +56,8 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         \App\Events\EnquireCreated::class => [
-            \App\Listeners\SendEnquireCreatedNotification::class
+            \App\Listeners\SendEnquireCreatedNotification::class,
+            \App\Listeners\SendEnquireVerifyEmailNotification::class
         ],
 
         \App\Events\DoctorChangedEmail::class => [
@@ -77,6 +78,10 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\ConclusionUpdated::class => [
             \App\Listeners\SendConclusionUpdatedNotification::class
+        ],
+
+        \App\Events\EnquireVerifiedEmail::class => [
+            \App\Listeners\SendEnquireVerifiedEmailNotification::class
         ],
     ];
 
