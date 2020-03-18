@@ -13,9 +13,12 @@ class DoctorVerifyChangedEmail extends QueueableNotification
 {
     private $token;
 
-    public function __construct(string $token)
+    private $email;
+
+    public function __construct(string $token, string $email)
     {
         $this->token = $token;
+        $this->email = $email;
     }
 
     public function via(Doctor $doctor): array
@@ -27,6 +30,7 @@ class DoctorVerifyChangedEmail extends QueueableNotification
     {
         return $this->createMailMessage()
             ->subject(__('Email address change request'))
+            ->replyTo($this->email)
             ->greeting(__('Dear :title :first_name :last_name,', [
                 'title' => $doctor->title->name,
                 'first_name' => $doctor->first_name,

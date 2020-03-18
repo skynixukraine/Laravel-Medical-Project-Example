@@ -12,12 +12,14 @@ use App\Models\Enquire;
 use App\Models\EnquireAnswer;
 use App\Models\Message;
 use App\Models\Setting;
+use App\Models\PaymentMethod;
 use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Stripe\Charge;
+use Stripe\Source;
 
 /**
  * @OA\Post(
@@ -221,7 +223,7 @@ class Create extends ApiController
             ));
 
             $this->processAnswers($enquire, $request->answers, $request->image);
-            $this->payForEnquire($enquire, $request->code);
+
 
         }, 2);
 

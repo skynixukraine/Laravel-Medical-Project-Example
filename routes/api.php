@@ -11,6 +11,7 @@ Route::prefix('v1')->group(function () {
         Route::get('{enquire}/download-conclusion', 'Enquire\DownloadConclusion');
         Route::get('verify-email', 'Enquire\VerifyEmail')->name('enquire.verify-email');
         Route::get('payment-methods', 'Enquire\PaymentMethods')->name('enquire.payment-methods');
+        Route::patch('{enquire}/charge', 'Enquire\Charge')->name('enquire.charge');
     });
 
     Route::prefix('doctors')->group(function () {

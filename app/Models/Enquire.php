@@ -49,6 +49,11 @@ class Enquire extends Model
     public const STATUS_RESOLVED = 'RESOLVED';
     public const STATUS_ARCHIVED = 'ARCHIVED';
 
+    public const PAYMENT_STATUS_PENDING = 'PENDING';
+    public const PAYMENT_STATUS_PAID = 'PAID';
+    public const PAYMENT_STATUS_FAIL = 'FAIL';
+
+
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
 
@@ -64,10 +69,6 @@ class Enquire extends Model
         'conclusion_created_at' => 'datetime',
         'date_of_birth' => 'date',
         'is_seen' => 'boolean'
-    ];
-
-    protected $dispatchesEvents = [
-        'updated' => EnquireUpdated::class
     ];
 
     public function location(): MorphOne

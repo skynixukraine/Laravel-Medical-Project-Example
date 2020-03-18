@@ -2696,6 +2696,106 @@
                 ]
             }
         },
+        "/api/v1/enquires/{id}/charge": {
+          "patch": {
+            "tags": [
+              "Enquires"
+            ],
+            "summary": "Pay an enquire",
+            "description": "Pay an enquire",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "A enquire's identificator",
+                "required": true,
+                "example": "1"
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "required": [
+                      "code"
+                    ],
+                    "properties": {
+                      "code": {
+                        "title": "Code",
+                        "description": "Code from stripe",
+                        "format": "string",
+                        "example": "ac_GW5JDW26mx3GRGimieN78KWUzG8wwcfg"
+                      }
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Pay has been succesfully"
+              },
+              "304": {
+                "description": "An enquire already paid"
+              },
+              "403": {
+                "description": "Current user has not permissions to do this action",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "This action is unauthorized."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Resource not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "No query results for model [App\\Models\\Doctor]."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal technical error was happened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Something went wrong, please try again later."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
         "/api/v1/enquires/{id}/close": {
             "patch": {
                 "tags": [

@@ -107,6 +107,6 @@ class SendChangeEmailRequestLink extends ApiController
             'token' => Hash::make($token = Str::random(100)),
         ]);
 
-        Auth::user()->notify(new DoctorVerifyChangedEmail($token));
+        Auth::user()->notify(new DoctorVerifyChangedEmail($token, $request->email));
     }
 }
