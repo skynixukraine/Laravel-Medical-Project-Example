@@ -3810,6 +3810,116 @@
                 }
             }
         },
+        "/api/v1/enquires/payment-methods": {
+          "get": {
+            "tags": [
+              "Enquires"
+            ],
+            "summary": "Get payment methods",
+            "description": "Get payment methods",
+            "responses": {
+              "200": {
+                "description": "Fetch all payment methods",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "data": {
+                          "title": "Payment methods",
+                          "description": "Payment methods list",
+                          "items": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/PaymentMethodResource"
+                          }
+                        },
+                        "links": {
+                          "items": {
+                            "properties": {
+                              "first": {
+                                "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=1"
+                              },
+                              "last": {
+                                "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=10"
+                              },
+                              "prev": {
+                                "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=4"
+                              },
+                              "next": {
+                                "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages?page=6"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        },
+                        "meta": {
+                          "items": {
+                            "properties": {
+                              "current_page": {
+                                "example": "5"
+                              },
+                              "from": {
+                                "example": "9"
+                              },
+                              "last_page": {
+                                "example": "10"
+                              },
+                              "path": {
+                                "example": "http://online-hautarzt.com/api/v1/enquire/{1}/messages"
+                              },
+                              "per_page": {
+                                "example": "2"
+                              },
+                              "to": {
+                                "example": "10"
+                              },
+                              "total": {
+                                "example": "19"
+                              }
+                            },
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Resource not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "No query results for model [App\\Models\\Enquire]."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal technical error was happened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Something went wrong, please try again later."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "/api/v1/languages": {
             "get": {
                 "tags": [
@@ -4823,7 +4933,42 @@
                     }
                 },
                 "type": "object"
-            }
+              },
+            "PaymentMethodResource": {
+                "title": "Payment method resource",
+                "description": "Resource for a payment method representation",
+                "properties": {
+                    "id": {
+                        "schema": "PaymentMethod",
+                        "title": "ID",
+                        "description": "A payment method's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "name": {
+                        "schema": "PaymentMethod",
+                        "title": "A payment method's name",
+                        "description": "A payment method's name",
+                        "format": "string",
+                        "example": "giropay"
+                    },
+                    "title": {
+                        "schema": "PaymentMethod",
+                        "title": "A payment method's title",
+                        "description": "A payment method's title",
+                        "format": "string",
+                        "example": "Giropay"
+                    },
+                    "country": {
+                        "schema": "PaymentMethod",
+                        "title": "A payment method's country",
+                        "description": "A payment method's country",
+                        "format": "string",
+                        "example": "DE"
+                    },
+                },
+                "type": "object"
+            },
         },
         "securitySchemes": {
             "bearerAuth": {
