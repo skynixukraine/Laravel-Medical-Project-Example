@@ -60,7 +60,7 @@ class Enquire extends Model
     protected $fillable = [
         'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'is_seen',
         'email', 'doctor_id', 'status', 'conclusion', 'authy_id', 'conclusion_created_at',
-        'last_contacted_at'
+        'last_contacted_at', 'payment_status'
     ];
 
     protected $casts = [

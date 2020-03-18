@@ -89,6 +89,12 @@ class Enquire extends Resource
                 \App\Models\Enquire::STATUS_ARCHIVED => __('Archived'),
             ]),
 
+            Select::make(__('Payment'), 'payment_status')->sortable()->displayUsingLabels()->options([
+                \App\Models\Enquire::PAYMENT_STATUS_PAID => __('Paid'),
+                \App\Models\Enquire::PAYMENT_STATUS_FAIL => __('Fail'),
+                \App\Models\Enquire::PAYMENT_STATUS_PENDING => __('Pending'),
+            ]),
+
             BelongsTo::make(__('Doctor'), 'doctor', Doctor::class)->withMeta($this->doctor_id ? [] : ['value' => $this->doctor_info]),
 
             Date::make(__('Date of birth'), 'date_of_birth'),
