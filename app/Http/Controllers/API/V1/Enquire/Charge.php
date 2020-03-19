@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API\V1\Enquire;
 
-use App\Events\EnquireUpdated;
+use App\Events\EnquireCharge;
 use App\Http\Controllers\API\V1\ApiController;
-use App\Http\Requests\Enquire\UpdateConclusion as UpdateConclusionRequest;
 use App\Http\Resources\Enquire as EnquireResource;
 use App\Models\Enquire;
+use App\Models\Setting;
+use App\Http\Requests\Enquire\Charge as Request;
+use Illuminate\Validation\ValidationException;
+use Stripe\Source;
 
 /**
  * @OA\Patch(
  *     tags={"Enquires"},
- *     path="/api/v1/enquires/{id}/close",
- *     summary="Close an enquire",
- *     description="Close an enquire",
- *     security={{"bearerAuth":{}}},
+ *     path="/api/v1/enquires/{id}/charge",
+ *     summary="Pay an enquire",
+ *     description="Pay an enquire",
  *     @OA\Parameter(
  *          name="id",
  *          required=true,
@@ -24,9 +26,26 @@ use App\Models\Enquire;
  *          in="path",
  *          example="1"
  *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *              mediaType="application/x-www-form-urlencoded",
+ *              @OA\Schema(
+ *                  type="object",
+ *                  required={"code"},
+ *                  @OA\Property(
+ *                      format="string",
+ *                      title="Code",
+ *                      description="Code from stripe",
+ *                      property="code",
+ *                      example="ac_GW5JDW26mx3GRGimieN78KWUzG8wwcfg"
+ *                  ),
+ *              )
+ *          )
+ *     ),
  *     @OA\Response(
  *         response=200,
- *         description="An enquire has been succesfully closed",
+ *         description="An enquire has been succesfully charge",
  *         @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
@@ -39,7 +58,7 @@ use App\Models\Enquire;
  *              )
  *          )
  *     ),
- *     @OA\Response(response=304, description="An enquire already closed"),
+ *     @OA\Response(response=304, description="An enquire already paid"),
  *     @OA\Response(
  *         response=401,
  *         description="Authorization failed",
@@ -106,15 +125,40 @@ use App\Models\Enquire;
  *      )
  * )
  */
-class Close extends ApiController
+class Charge extends ApiController
 {
-    public function __invoke(Enquire $enquire)
+    public function __invoke(Request $request, Enquire $enquire)
     {
-        abort_if($enquire->status === Enquire::STATUS_ARCHIVED, 304);
+        abort_if($enquire->status === Enquire::PAYMENT_STATUS_PAID, 304);
 
-        $enquire->update(['status' => Enquire::STATUS_ARCHIVED]);
+        $response = Source::retrieve($request->code);
 
-        event(new EnquireUpdated($enquire));
+        throw_if($response->status != 'chargeable', ValidationException::withMessages([
+            'status' => __('Your status is ' . $response->status),
+        ]));
+
+        $price = Setting::fetchValue('enquire_total_price', 0) * 100;
+        $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
+        $currency = Setting::fetchValue('enquire_price_currency', 'usd');
+
+        \Stripe\Charge::create([
+            'amount' => $price,
+            'currency' => $currency,
+            'application_fee_amount' => $fee,
+            'source' => $request->code,
+            'destination' => $enquire->doctor->stripe_account_id,
+            'transfer_group' => 'enquire_payment',
+            'description' => Setting::fetchValue('enquire_charge_description')
+        ]);
+
+        $enquire->billing()->create([
+            'amount' => $price,
+            'currency' => $currency,
+        ]);
+
+        $enquire->update(['payment_status' => Enquire::PAYMENT_STATUS_PAID]);
+
+        event(new EnquireCharge($enquire));
 
         return EnquireResource::make($enquire);
     }

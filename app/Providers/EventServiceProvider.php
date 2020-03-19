@@ -83,6 +83,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\EnquireVerifiedEmail::class => [
             \App\Listeners\SendEnquireVerifiedEmailNotification::class
         ],
+
+        \App\Events\EnquireCharge::class => [
+            \App\Listeners\SendEnquireChargeNotification::class
+        ],
     ];
 
     /**

@@ -49,13 +49,18 @@ class Enquire extends Model
     public const STATUS_RESOLVED = 'RESOLVED';
     public const STATUS_ARCHIVED = 'ARCHIVED';
 
+    public const PAYMENT_STATUS_PENDING = 'PENDING';
+    public const PAYMENT_STATUS_PAID = 'PAID';
+    public const PAYMENT_STATUS_FAIL = 'FAIL';
+
+
     public const GENDER_MALE = 'MALE';
     public const GENDER_FEMALE = 'FEMALE';
 
     protected $fillable = [
         'first_name', 'last_name', 'gender', 'date_of_birth', 'phone_number', 'is_seen',
         'email', 'doctor_id', 'status', 'conclusion', 'authy_id', 'conclusion_created_at',
-        'last_contacted_at'
+        'last_contacted_at', 'payment_status'
     ];
 
     protected $casts = [
@@ -64,10 +69,6 @@ class Enquire extends Model
         'conclusion_created_at' => 'datetime',
         'date_of_birth' => 'date',
         'is_seen' => 'boolean'
-    ];
-
-    protected $dispatchesEvents = [
-        'updated' => EnquireUpdated::class
     ];
 
     public function location(): MorphOne

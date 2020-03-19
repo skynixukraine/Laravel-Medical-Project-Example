@@ -161,7 +161,8 @@ class Enquire extends JsonResource
             'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
             'last_contacted_at' => $this->last_contacted_a,
-            'is_verified_email' => $this->hasVerifiedEmail()
+            'is_verified_email' => $this->hasVerifiedEmail(),
+            'payment_status' => $this->payment_status
         ];
     }
 }

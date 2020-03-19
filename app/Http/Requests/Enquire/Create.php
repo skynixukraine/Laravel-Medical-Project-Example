@@ -50,8 +50,6 @@ class Create extends FormRequest
             'latitude' => 'numeric',
             'longitude' => 'numeric',
             'answers' => 'required|array|min:1|max:1000',
-            'code' => 'required_without:type|string',
-            'type' => 'required_without:code|string',
         ];
     }
 }
