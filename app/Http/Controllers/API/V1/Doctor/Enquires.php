@@ -206,23 +206,23 @@ class Enquires extends ApiController
                            ->where('payment_status', Enquire::PAYMENT_STATUS_PAID)
                            ->orderBy('is_seen');
 
-        if ($request->has('created_at_from')) {
+        if ($request->created_at_from) {
             $enquires->whereDate('enquires.created_at', '>=', $request->created_at_from);
         }
 
-        if ($request->has('created_at_to')) {
+        if ($request->created_at_to) {
             $enquires->whereDate('enquires.created_at', '<=', $request->created_at_to);
         }
 
-        if ($request->has('last_contact_from')) {
+        if ($request->last_contact_from) {
             $enquires->whereDate('last_contacted_at', '<=', $request->last_contact_from);
         }
 
-        if ($request->has('last_contact_to')) {
+        if ($request->last_contact_to) {
             $enquires->whereDate('last_contacted_at', '>=', $request->last_contact_to);
         }
 
-        if ($request->has('status')) {
+        if ($request->status) {
             $enquires->where('status', $request->status);
         }
 
@@ -230,7 +230,7 @@ class Enquires extends ApiController
             $enquires->where('status', '!=', Enquire::STATUS_ARCHIVED);
         }
 
-        if ($request->has('search')) {
+        if ($request->search) {
             $enquires->where(function ($query) use ($request) {
                 $query->where('id', 'LIKE', '%' . $request->search . '%')
                     ->orWhere('first_name', 'LIKE', '%' . $request->search . '%')
