@@ -25,4 +25,18 @@ class Location extends Model
     {
         return $this->BelongsTo(Doctor::class);
     }
+
+    /**
+     * @return array
+     */
+    public function getRequiredFields()
+    {
+        return [
+            'address',
+            'latitude',
+            'longitude',
+            'city',
+            'country'
+        ];
+    }
 }
