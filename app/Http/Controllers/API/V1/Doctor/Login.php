@@ -158,6 +158,10 @@ class Login extends ApiController
             'password' => __('The password is invalid.'),
         ]));
 
+        throw_if($doctor->status === Doctor::STATUS_CREATED, ValidationException::withMessages([
+            'password' => __('Your account is not activated.'),
+        ]));
+
         return AuthToken::make($doctor->saveToken());
     }
 }
