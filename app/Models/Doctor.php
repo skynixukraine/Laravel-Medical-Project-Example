@@ -175,7 +175,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
             }
         }
 
-        foreach ($this->location->getFillable() as $attribute) {
+        foreach ($this->location->getRequiredFields() as $attribute) {
             if (blank($this->location->{$attribute})) {
                 return false;
             }
