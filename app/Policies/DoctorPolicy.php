@@ -49,7 +49,8 @@ class DoctorPolicy
 
     public function deactivate(Doctor $user, Doctor $doctor): bool
     {
-        return $user->is($doctor) && $doctor->status === Doctor::STATUS_ACTIVATED;
+        return $user->is($doctor)
+               && ($doctor->status === Doctor::STATUS_ACTIVATED || $doctor->status === Doctor::STATUS_APPROVED);
     }
 
     public function activate(Doctor $user, Doctor $doctor): bool
