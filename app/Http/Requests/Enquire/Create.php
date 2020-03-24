@@ -35,7 +35,7 @@ class Create extends FormRequest
             'email' => 'required|email|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'gender' => 'required', Rule::in([Enquire::GENDER_MALE, Enquire::GENDER_FEMALE]),
+            'gender' => ['required', Rule::in([Enquire::GENDER_MALE, Enquire::GENDER_FEMALE])],
             'date_of_birth' => 'required|date',
             'doctor_id' => 'required',
             Rule::exists('doctors', 'id')->where(static function (Builder $query) {
