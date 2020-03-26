@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Facades\Storage;
+use App\Services\StorageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Annotations as OA;
@@ -53,7 +55,8 @@ class EnquireAnswer extends JsonResource
             'id' => $this->id,
             'message' => Message::make($this->message),
             'message_option' => MessageOption::make($this->message_option),
-            'value' => $this->value
+            'value' => $this->message->type == \App\Models\Message::TYPE_IMAGE ?
+                Storage::getEnquireImageBase64($this->value) : $this->value
         ];
     }
 }

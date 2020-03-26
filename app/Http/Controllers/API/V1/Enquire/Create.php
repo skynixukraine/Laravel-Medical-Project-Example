@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Events\EnquireCreated;
+use App\Facades\Storage;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\Create as CreateRequest;
 use App\Http\Resources\Enquire as EnquireResource;
@@ -327,8 +328,7 @@ class Create extends ApiController
 
         Validator::make(['image' => $image], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
 
-//        FIXME: storage variable not exists here
-        $enquireAnswer->value = app(StorageService::class)->saveEnquireImage($image);
+        $enquireAnswer->value = Storage::saveEnquireImage($image);
         $enquireAnswer->saveOrFail();
     }
 }
