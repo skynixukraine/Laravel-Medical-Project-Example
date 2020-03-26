@@ -66,6 +66,25 @@ class StorageService
         );
     }
 
+    public function getEnquireImageBase64(string $image): string
+    {
+        $image = $this->getContent($image);
+        $tmpFilePath = sys_get_temp_dir() . '/' . Str::uuid()->toString();
+
+        file_put_contents($tmpFilePath, $image);
+
+        $type = MimeTypes::getDefault()->guessMimeType($tmpFilePath);
+
+        unlink($tmpFilePath);
+
+        return 'data:' . $type . ';base64,' . base64_encode($image);
+    }
+
+    public function getContent(string $file): string
+    {
+        return Storage::get($file);
+    }
+
     public function saveMessageEnquiryAttachment(string $attachment, string $name, string $extension): string
     {
         return $this->saveBinaryFile(
