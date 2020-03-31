@@ -24,7 +24,6 @@ class ConclusionUpdated extends QueueableNotification
 
     public function toMail(Doctor $doctor): MailMessage
     {
-        die(var_dump($this->conclusionUrl()));
         return $this->createMailMessage()
             ->subject(__('New conclusion'))
             ->greeting(__('New conclusion'))
