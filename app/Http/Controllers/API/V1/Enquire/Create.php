@@ -231,8 +231,6 @@ class Create extends ApiController
         $enquire = $enquire->fresh();
         $enquire->wasRecentlyCreated = true;
 
-        event(new EnquireCreated($enquire));
-
         return EnquireResource::make($enquire);
     }
 

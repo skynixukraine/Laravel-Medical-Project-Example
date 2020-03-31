@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Events\EnquireCharge;
+use App\Events\EnquireCreated;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\Enquire as EnquireResource;
 use App\Models\Enquire;
+use App\Models\PaymentMethod;
 use App\Models\Setting;
 use App\Http\Requests\Enquire\Charge as Request;
 use Illuminate\Validation\ValidationException;
@@ -131,11 +133,14 @@ class Charge extends ApiController
     {
         abort_if($enquire->status === Enquire::PAYMENT_STATUS_PAID, 304);
 
-        $response = Source::retrieve($request->code);
+        if ($request->type != PaymentMethod::CREDIT_CARD_METHOD) {
 
-        throw_if($response->status != 'chargeable', ValidationException::withMessages([
-            'status' => __('Your status is ' . $response->status),
-        ]));
+            $response = Source::retrieve($request->code);
+
+            throw_if($response->status != 'chargeable', ValidationException::withMessages([
+                'status' => __('Your status is ' . $response->status),
+            ]));
+        }
 
         $price = Setting::fetchValue('enquire_total_price', 0) * 100;
         $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
@@ -158,7 +163,7 @@ class Charge extends ApiController
 
         $enquire->update(['payment_status' => Enquire::PAYMENT_STATUS_PAID]);
 
-        event(new EnquireCharge($enquire));
+        event(new EnquireCreated($enquire));
 
         return EnquireResource::make($enquire);
     }

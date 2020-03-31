@@ -203,8 +203,7 @@ class Enquires extends ApiController
     public function __invoke(Request $request, Doctor $doctor)
     {
         $enquires = $doctor->enquires()
-                           ->where('payment_status', Enquire::PAYMENT_STATUS_PAID)
-                           ->orderBy('is_seen');
+                           ->where('payment_status', Enquire::PAYMENT_STATUS_PAID);
 
         if ($request->created_at_from) {
             $enquires->whereDate('enquires.created_at', '>=', $request->created_at_from);

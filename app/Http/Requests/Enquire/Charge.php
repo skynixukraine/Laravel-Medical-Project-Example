@@ -27,6 +27,7 @@ class Charge extends FormRequest
     {
         return [
             'code' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
         ];
     }
 }

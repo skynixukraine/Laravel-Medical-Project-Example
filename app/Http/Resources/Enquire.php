@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Annotations as OA;
@@ -162,7 +163,9 @@ class Enquire extends JsonResource
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
             'last_contacted_at' => $this->last_contacted_a,
             'is_verified_email' => $this->hasVerifiedEmail(),
-            'payment_status' => $this->payment_status
+            'payment_status' => $this->payment_status,
+            'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
+            'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
         ];
     }
 }

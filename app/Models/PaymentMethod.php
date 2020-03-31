@@ -10,6 +10,8 @@ class PaymentMethod extends Model
 
     public $timestamps = false;
 
+    const CREDIT_CARD_METHOD = 'credit_card';
+
     protected $fillable = ['name', 'title', 'country'];
 
     public function __get($key)
