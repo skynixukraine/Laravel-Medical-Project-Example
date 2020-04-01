@@ -28,9 +28,9 @@ class DoctorActivated extends QueueableNotification
     public function toMail($notifiable)
     {
         return $this->createMailMessage()
-            ->subject(__('Konto wieder aktiv'))
-            ->greeting(__('Hallo,'))
-            ->line(__('der Pausenmodus Ihres Kontos wurde beendet und Sie können nun wieder Anfragen von Patienten erhalten.'));
+            ->subject(__('Account unpaused'))
+            ->greeting(__('Hello,'))
+            ->line(__('Your account was successfully unpaused and may now receive patients requests.'));
     }
 
     /**
