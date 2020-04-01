@@ -184,6 +184,8 @@ class Doctor extends JsonResource
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
             'enquire_price' => Setting::fetchValue('display_enquire_price'),
+            'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
+            'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
     }
