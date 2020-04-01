@@ -28,16 +28,16 @@ class DoctorClosed extends QueueableNotification
     public function toMail($notifiable)
     {
         return $this->createMailMessage()
-            ->subject(__('Online-Hautarzt.de Konto gelöscht'))
-            ->greeting(__('Sehr geehrter :title :first_name :last_name,', [
+            ->subject(__('Online-Hautarzt.de Account Closed'))
+            ->greeting(__('Dear :title :first_name :last_name,', [
                 'title' => $this->doctor->title->name,
                 'first_name' => $this->doctor->first_name,
                 'last_name' => $this->doctor->last_name,
             ]))
-            ->line(__('Ihr Online Hautarzt Konto wurde erfolgreich gelöscht.'));
-            ->line(__('Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.'));
-            ->line(__('Wir würden uns freuen, falls Sie uns mitteilen, warum Sie Ihr Konto gelöscht haben. Schicken Sie einfach eine E-Mail an hilfe@online-hautarzt.de'));
-      		->line(__('Vielen Dank'));
+            ->line(__('Your online dermatologist account was successfully deleted.'));
+            ->line(__('Thank you for trying online dermatologist.'));
+            ->line(__('We would be happy if you let us know why you deleted your account. Just send an email to hilfe@online-hautarzt.de'));
+      		->line(__('Many Thanks'));
     }
 
     /**
