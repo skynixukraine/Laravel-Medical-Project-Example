@@ -14,7 +14,7 @@ class SendDoctorAccountDeletedNotification
     {
         $doctor = $event->getDoctor();
 
-        Notification::route('mail', 'alexey.vnu+test@gmail.com')
+        Notification::route('mail', $doctor->email)
                     ->notify(new DoctorDeletedNotification($doctor));
     }
 }

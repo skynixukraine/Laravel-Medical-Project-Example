@@ -22,13 +22,15 @@ class ConclusionUpdated extends QueueableNotification
         return ['mail'];
     }
 
-    public function toMail(Doctor $doctor): MailMessage
+    public function toMail(Enquire $enquire): MailMessage
     {
         return $this->createMailMessage()
-            ->subject(__('New conclusion'))
-            ->greeting(__('New conclusion'))
-            ->line(__('The conclusion is ready and will be available within 6 weeks.'))
-            ->action(__('Conclusion'), $this->conclusionUrl());
+            ->subject(__('Your Online Hautarzt case was answered'))
+            ->greeting(__('Dear patient,'))
+            ->line(__('Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist\'s answer.', [
+                'link' => $this->conclusionUrl(),
+            ]))
+            ->line(__('Get well!'));
     }
 
     /**
