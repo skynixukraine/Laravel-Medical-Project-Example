@@ -28,9 +28,9 @@ class DoctorApproved extends QueueableNotification
     public function toMail($notifiable)
     {
         return $this->createMailMessage()
-            ->subject(__('Ihr Ärzteprofil wurde freigegeben und ist auf online-hautarzt.org abrufbar'))
-            ->greeting(__('Hallo,'))
-            ->line(__('Ihr Profil wurde freigegeben und kann auf online-hautarzt.de eingesehen werden.'));
+            ->subject(__('Your Doctor Profile is approved and is now visible on Online-Hautarzt.de site'))
+            ->greeting(__('Hello,'))
+            ->line(__('Your profile was approved and is accessible via online-hautarzt.de'));
     }
 
     /**
