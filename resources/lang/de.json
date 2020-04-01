@@ -148,5 +148,6 @@
   "Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist's answer." : "Ihr Fall wurde bearbeitet und die Beurteilung durch den von Ihnen ausgewählten Hautarzt ist abgeschlossen. Bitte öffnen Sie diesen Link: :link um auf die Antwort des Hautarztes zuzugreifen.",
   "Dear patient," : "Sehr geehrter Patient, sehr geehrte Patientin,",
   "Get well!" : "Gute Besserung!",
-  "Your Online Hautarzt case was answered" : "Betreff: Ihr Fall wurde beantwortet"
+  "Your Online Hautarzt case was answered" : "Betreff: Ihr Fall wurde beantwortet",
+  "Regards" : "Beste Grüße,"
 }

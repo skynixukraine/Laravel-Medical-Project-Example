@@ -22,7 +22,7 @@ class ConclusionUpdated extends QueueableNotification
         return ['mail'];
     }
 
-    public function toMail(Enquire $enquire): MailMessage
+    public function toMail(): MailMessage
     {
         return $this->createMailMessage()
             ->subject(__('Your Online Hautarzt case was answered'))
