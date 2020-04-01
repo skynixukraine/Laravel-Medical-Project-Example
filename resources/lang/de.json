@@ -5,7 +5,6 @@
   "Last name": "Nachname",
   "Phone": "Telefone",
   "E-mail": "E-mail",
-  "Password": "Passwort",
   "Prefix": "Prefix",
   "Slug": "Slug",
   "Password confirmation": "Passwort Bestätigung",
@@ -66,7 +65,6 @@
   "Login to the doctors portal to answer it: :link": "Zum Ärzteportal: :link",
   
   "Please verify your e-mail address to login": "Please verify your e-mail address to login",
-  "Dear :title :first_name :last_name,": "Hallo :title :first_name :last_name,",
   "Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.": "Ihr Online Hautarzt Konto wurde erfolgreich gelöscht. Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.",
   "All rights reserved.": "Alle Rechte vorbehalten.",
   "Your account has been closed": "Ihr Konto wurde geschlossen",
@@ -84,23 +82,16 @@
   
   "Please confirm your email address by clicking the following link:": "Bitte bestätigen Sie Ihre E-Mail Adresse durch einen Klick auf den folgenden Link:",
   "Please Confirm Your E-Mail Address": "Bitte bestätigen Sie Ihre E-Mail Adresse",
-  "Verify Email Address": "Bestätigungs-E-Mail",
   
   "Your application is under review": "Ihre Bewerbung wird begutachtet",
   "Dear Colleague,": "Liebe Kollegin, lieber Kollege,",
   "Thank you, your application is now being reviewed. We will notify you as soon as your account has been activated and is available on the website.": "Vielen Dank, Ihre Bewerbung wird nun erneut begutachtet. Wir benachrichtigen Sie, sobald Ihr Konto freigeschaltet wurde und auf der Webseite abrufbar ist",
-  
-  "You have made a request to change your e-mail address. To complete this process, please click here:": "Sie haben eine Anfrage gestartet um Ihre E-Mail Adresse zu ändern. Um die Anfrage zu vervollständigen, klicken Sie bitte auf diesen Link:",
-  "Your account information has been changed": "Ihre Kontoinformationen wurden geändert",
-  "Hi,": "Hi,",
-  "You recently made changes to your Online Hautarzt account. Our records indicate that you changed the following information:": "Sie haben kürzlich Ihre Kontoinformationen geändert. Unsere Aufzeichnungen zeigen, dass Sie die folgenden Informationen geändert haben:",
-  "If this wasn't you:": "Falls Sie das nicht waren:",
+
   "Your account may have been compromised. Please <u>change your password now.</u>": "Jemand könnte Zugriff auf Ihr Konto haben. Bitte <u>ändern Sie jetzt Ihr Passwort.</u>",
   "The verification token not exists": "Das Bestätigungstoken ist nicht vorhanden",
   "The verification token is invalid": "Das Bestätigungstoken ist ungültig",
   "The verification token was expired": "Das Bestätigungstoken ist abgelaufen",
   "The doctor with requested email already exists": "Ein Arzt mit angeforderter E-Mail existiert bereits",
-  "Please contact support immediately.": "Kontaktieren Sie bitte sofort unseren Support.",
   "The patient sent you a message": "Der Patient hat eine Nachricht geschickt",
   "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:": "A new message regarding case no :num is accessible in the doctors portal. Click here to access it:",
   "Your case was answered": "Your case was answered",
@@ -153,5 +144,9 @@
   "If this wasn't you:": "Falls Sie das nicht waren:",  
   "Your account may have been compromised. Please change your password now.": "Jemand könnte Zugriff auf Ihr Konto haben. Bitte ändern Sie jetzt Ihr Passwort.",  
   "Please contact support immediately.": "Falls Sie das nicht waren: Kontaktieren Sie bitte sofort unseren Support.",
-  "Password": "Passwort"
+  "Password": "Passwort",
+  "Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist's answer." : "Ihr Fall wurde bearbeitet und die Beurteilung durch den von Ihnen ausgewählten Hautarzt ist abgeschlossen. Bitte öffnen Sie diesen Link: :link um auf die Antwort des Hautarztes zuzugreifen.",
+  "Dear patient," : "Sehr geehrter Patient, sehr geehrte Patientin,",
+  "Get well!" : "Gute Besserung!",
+  "Your Online Hautarzt case was answered" : "Betreff: Ihr Fall wurde beantwortet"
 }
