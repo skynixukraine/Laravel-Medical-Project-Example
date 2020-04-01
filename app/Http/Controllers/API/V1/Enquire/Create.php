@@ -244,28 +244,6 @@ class Create extends ApiController
         return $id;
     }
 
-    private function payForEnquire(Enquire $enquire, string $code): void
-    {
-        $price = Setting::fetchValue('enquire_total_price', 0) * 100;
-        $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
-        $currency = Setting::fetchValue('enquire_price_currency', 'usd');
-
-        Charge::create([
-            'amount' => $price,
-            'currency' => $currency,
-            'application_fee_amount' => $fee,
-            'source' => $code,
-            'destination' => $enquire->doctor->stripe_account_id,
-            'transfer_group' => 'enquire_payment',
-            'description' => Setting::fetchValue('enquire_charge_description')
-        ]);
-
-        $enquire->billing()->create([
-            'amount' => $price,
-            'currency' => $currency,
-        ]);
-    }
-
     private function processAnswers(Enquire $enquire, $answers, $image): void
     {
         foreach ($answers as $messageId => $answer) {
@@ -324,9 +302,9 @@ class Create extends ApiController
     private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers, $image): void
     {
 
-        Validator::make(['image' => $image], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
+        Validator::make(['image' => $answers], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
 
-        $enquireAnswer->value = Storage::saveEnquireImage($image);
+        $enquireAnswer->value = Storage::saveEnquireImage($answers);
         $enquireAnswer->saveOrFail();
     }
 }
