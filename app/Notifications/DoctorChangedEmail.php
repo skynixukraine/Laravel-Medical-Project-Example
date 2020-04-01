@@ -18,11 +18,11 @@ class DoctorChangedEmail extends QueueableNotification
     public function toMail(Doctor $doctor): MailMessage
     {
         return $this->createMailMessage()
-            ->subject(__('Ihre Kontoinformationen wurden geändert'))
+            ->subject(__('Your account information has been changed'))
             ->greeting(__('Hi,'))
-            ->line(__('Sie haben kürzlich Ihre Kontoinformationen geändert. Unsere Aufzeichnungen zeigen, dass Sie die folgenden Informationen geändert haben:'))
+            ->line(__('You recently made changes to your Online Hautarzt account. Our records indicate that you changed the following information:'))
             ->line(new HtmlString('<ul><li><b>' . __('E-mail') . '</b></li></ul>'))
-            ->line(__("Falls Sie das nicht waren:"))
-            ->line(new HtmlString(__('Jemand könnte Zugriff auf Ihr Konto haben. Bitte <u>ändern Sie jetzt Ihr Passwort</u>.')));
+            ->line(__("If this wasn't you:"))
+            ->line(new HtmlString(__('Your account may have been compromised. Please change your password now.')));
     }
 }
