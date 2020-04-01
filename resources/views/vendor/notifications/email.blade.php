@@ -45,6 +45,6 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-Regards,<br>{{ config('app.name') }}
+{{ __('Regards') }}<br>{{ config('mail.email_signature') }}
 @endif
 @endcomponent

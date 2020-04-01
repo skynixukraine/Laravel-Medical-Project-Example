@@ -125,6 +125,8 @@ return [
 
     'current' => env('CURRENT_MAIL', 'system'),
 
+    'email_signature' => env('EMAIL_SIGNATURE'),
+
     'extra' => [
         'doctor' => [
             'driver' => env('DOCTOR_MAIL_DRIVER', 'smtp'),
