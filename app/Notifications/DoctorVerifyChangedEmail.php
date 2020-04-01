@@ -38,6 +38,9 @@ class DoctorVerifyChangedEmail extends QueueableNotification
             ]))
             ->line(__('You have made a request to change your e-mail address. To complete this process, please click here:'))
             ->action(__('Verify Email Address'), $this->verificationUrl($doctor));
+            ->line(__('If you have previously requested to change your e-mail address, only the link contained in this e-mail is valid.'))
+            ->line(__('If this was not you:'))
+            ->line(__('Your Online Hautarzt account may have been compromised and you should take steps to make sure it is secure. Please reset your password now.'));
     }
 
     protected function verificationUrl(Doctor $doctor): string
