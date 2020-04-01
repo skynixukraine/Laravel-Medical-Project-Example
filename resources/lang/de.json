@@ -86,7 +86,7 @@
   "Your application is under review": "Ihre Bewerbung wird begutachtet",
   "Dear Colleague,": "Liebe Kollegin, lieber Kollege,",
   "Thank you, your application is now being reviewed. We will notify you as soon as your account has been activated and is available on the website.": "Vielen Dank, Ihre Bewerbung wird nun erneut begutachtet. Wir benachrichtigen Sie, sobald Ihr Konto freigeschaltet wurde und auf der Webseite abrufbar ist",
-
+  "Hi,": "Hi,",
   "Your account may have been compromised. Please <u>change your password now.</u>": "Jemand könnte Zugriff auf Ihr Konto haben. Bitte <u>ändern Sie jetzt Ihr Passwort.</u>",
   "The verification token not exists": "Das Bestätigungstoken ist nicht vorhanden",
   "The verification token is invalid": "Das Bestätigungstoken ist ungültig",
