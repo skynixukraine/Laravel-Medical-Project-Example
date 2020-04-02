@@ -5,51 +5,34 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Http\Controllers\API\V1\ApiController;
-use App\Http\Requests\Enquire\VerifySMS as VerifySMSRequest;
+use App\Http\Requests\Enquire\ValidateHash as ValidateHashRequest;
 use App\Models\Enquire;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
 
 /**
  * @OA\Post(
  *     tags={"Enquires"},
- *     path="/api/v1/enquires/{id}/verify-sms",
- *     summary="Verify SMS verification code",
- *     description="Verify SMS verification code",
- *     @OA\Parameter(
- *          name="id",
- *          required=true,
- *          description="An enquire's identificator",
- *          in="path",
- *          example="1"
- *     ),
+ *     path="/api/v1/enquires/validate-hash",
+ *     summary="Validate enquires hash",
+ *     description="Validate enquires hash",
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\MediaType(
  *              mediaType="application/x-www-form-urlencoded",
  *              @OA\Schema(
- *                  type="object",
- *                  required={"verification_code", "recaptcha"},
  *                  @OA\Property(
  *                      format="string",
- *                      title="Verification code",
- *                      description="Verification code",
- *                      property="verification_code",
- *                      example="95843565"
+ *                      title="hash",
+ *                      description="Hash",
+ *                      property="hash",
+ *                      example="sdsjkncnccl23cn2l23lnd23d"
  *                  ),
- *                  @OA\Property(
- *                      format="string",
- *                      title="Recaptcha",
- *                      description="A recaptcha token. The action must be 'verify_sms'",
- *                      property="recaptcha"
- *                  )
  *              )
  *          )
  *     ),
  *     @OA\Response(
  *          response=200,
- *          description="Verification code has been verified and an access token created",
+ *          description="Hash code has been verified",
  *          @OA\MediaType(
  *              mediaType="application/json",
  *              @OA\Schema(
@@ -58,17 +41,7 @@ use Illuminate\Validation\ValidationException;
  *                          format="integer",
  *                          property="id",
  *                          example="1"
- *                      ),
- *                      @OA\Property(
- *                          format="string",
- *                          property="access_token",
- *                          example="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ3ZGY5ZDdkYmY4ZmM1Mz",
- *                      ),
- *                      @OA\Property(
- *                          ref="#/components/schemas/CarbonResource",
- *                          format="object",
- *                          property="expires_at",
- *                      ),
+ *                      )
  *                  }
  *              )
  *          )
@@ -90,10 +63,10 @@ use Illuminate\Validation\ValidationException;
  *                          property="errors",
  *                          format="object",
  *                          @OA\Property(
- *                              property="validation_code",
+ *                              property="hash",
  *                              @OA\Items(
  *                                  type="string",
- *                                  example="Verification code is invalid."
+ *                                  example="Hash code is invalid."
  *                              ),
  *                          ),
  *                      ),
@@ -135,27 +108,16 @@ use Illuminate\Validation\ValidationException;
  *      )
  * )
  */
-class VerifySMS extends ApiController
+class ValidateHash extends ApiController
 {
-    public function __invoke(VerifySMSRequest $request, Enquire $enquire)
+    public function __invoke(ValidateHashRequest $request)
     {
-        $response = app('authy')->verifyToken($enquire->authy_id, $request->verification_code);
+        $enquire = Enquire::query()->where('hash', $request->hash)->first();
 
-        throw_if(!$response->bodyvar('success'), ValidationException::withMessages([
-            'verification_code' => __('Verification code is invalid'),
-        ]));
-
-        $accessToken = Str::random(100);
-
-        $token = $enquire->token()->updateOrCreate(['enquire_id' => $enquire->id],[
-            'access_token' => Hash::make($accessToken),
-            'expires_at' => now()->addHour(),
-        ]);
+        throw_if(!$enquire, AuthorizationException::class);
 
         return [
-            'id' => $token->id,
-            'access_token' => $accessToken,
-            'expires_at' => $token->expires_at
+            'id' => $enquire->id,
         ];
     }
 }
