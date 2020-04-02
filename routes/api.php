@@ -1,54 +1,60 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::prefix('v1')->group(function () {
+    Route::prefix('enquires')->group(function () {
+        Route::post('', 'Enquire\Create')->name('enquire.create');
+        Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
+        Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
+        Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
+        Route::get('{enquire}/download-conclusion', 'Enquire\DownloadConclusion');
+        Route::get('verify-email', 'Enquire\VerifyEmail')->name('enquire.verify-email');
+        Route::get('payment-methods', 'Enquire\PaymentMethods')->name('enquire.payment-methods');
+        Route::patch('{enquire}/charge', 'Enquire\Charge')->name('enquire.charge');
+    });
 
-// for logged-in doctors
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('user/profile',               'UserController@profile');
-    Route::put('user/password',              'UserController@updatePassword');
-    Route::post('user/photo',                'UserController@updatePhoto');
-    Route::put('user',                       'UserController@update');
-    Route::put('password',                   'UserController@updatePassword');
-    Route::get('logout',                     'UserController@logout');
-    Route::get('submissions/open',           'SubmissionController@indexOpen'); // open submissions
-    Route::get('submissions/answered-by-me', 'SubmissionController@indexAnsweredByMe'); // answered by me
-    Route::get('submission/{id}/assign',     'SubmissionController@assign');
-    Route::get('submission/{id}/release',    'SubmissionController@release');
-    Route::post('submission/{id}/answer',    'SubmissionController@answer');
-    Route::post('submission/{id}/question',  'SubmissionController@question'); // Rückfrage
-    Route::get('submission/{id}',            'SubmissionController@showById');
-    Route::get('user/stats',                 'SubmissionController@statsByUser');
+    Route::prefix('doctors')->group(function () {
+        Route::post('register', 'Doctor\Register')->name('doctors.register');
+        Route::post('login', 'Doctor\Login')->name('doctors.login');
+        Route::post('send-reset-password-link', 'Doctor\SendResetPasswordLink')->name('doctors.send-reset-password-link');
+        Route::patch('reset-password', 'Doctor\ResetPassword')->name('doctors.reset-password');
+        Route::get('', 'Doctor\Index')->name('doctors.index');
+        Route::get('verify-email', 'Doctor\VerifyEmail')->name('doctors.verify-email');
+        Route::post('send-email-verification-link', 'Doctor\SendEmailVerificationLink')->name('doctors.send-email-verification-link');
+        Route::post('change-email', 'Doctor\ChangeEmail');
+    });
+
+    Route::middleware(['auth:api'])->group(function () {
+        Route::prefix('doctors')->group(function () {
+            Route::patch('logout', 'Doctor\Logout')->name('doctors.logout');
+            Route::get('{doctor}', 'Doctor\Show')->middleware('can:view,doctor');
+            Route::patch('{doctor}', 'Doctor\Update')->middleware(['can:update,doctor']);
+            Route::patch('{doctor}/request-activation', 'Doctor\RequestActivation')->middleware('can:request-activation,doctor');
+            Route::patch('{doctor}/close', 'Doctor\Close')->middleware('can:close,doctor');
+            Route::patch('{doctor}/activate', 'Doctor\Activate')->middleware('can:activate,doctor');
+            Route::patch('{doctor}/deactivate', 'Doctor\Deactivate')->middleware('can:deactivate,doctor');
+            Route::get('{doctor}/stripe-connect', 'Doctor\StripeConnect')->middleware('can:stripe-connect,doctor');
+            Route::patch('{doctor}/stripe-token', 'Doctor\StripeToken')->middleware('can:stripe-token,doctor');
+            Route::get('{doctor}/billings', 'Doctor\Billings')->name('doctors.billings');
+            Route::get('{doctor}/enquires', 'Doctor\Enquires')->name('doctors.enquires');
+            Route::post('send-change-email-request-link', 'Doctor\SendChangeEmailRequestLink');
+            Route::delete('{doctor}/delete', 'Doctor\Delete')->middleware('can:delete,doctor');
+        });
+
+        Route::prefix('enquires')->group(function () {
+            Route::get('{enquire}', 'Enquire\Show')->middleware('can:view,enquire');
+            Route::patch('{enquire}/update-conclusion', 'Enquire\UpdateConclusion')->middleware('can:update-conclusion,enquire');
+            Route::patch('{enquire}/close', 'Enquire\Close')->middleware('can:close,enquire');
+            Route::post('{enquire}/add-message', 'Enquire\AddMessage')->middleware('can:add-message,enquire');
+            Route::get('{enquire}/messages', 'Enquire\Messages')->middleware('can:messages,enquire');
+        });
+    });
+
+    Route::get('regions', 'RegionController@index')->name('regions.index');
+    Route::get('doctor-titles', 'DoctorTitleController@index')->name('doctor-titles.index');
+    Route::get('specializations', 'SpecializationController@index')->name('specializations.index');
+    Route::get('languages', 'LanguageController@index')->name('languages.index');
+    Route::get('messages/first', 'MessageController@first')->name('messages.first');
+    Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
 });
-
-// without Authentication
-Route::get('pricingtable',                                       'SubmissionController@getPricingTable');
-Route::get('submissions/{submission}/photo/{image_id}/{width?}', 'SubmissionController@showPhoto')->name('submissions.showPhoto'); // for clients
-Route::get('submission/{id}/photo/{image_id}/{width?}',          'SubmissionController@showPhotoBySubmissionId'); // for doctors (users)
-Route::post('submission/{submission}/evaluate',                  'SubmissionController@evaluate'); // for clients
-Route::post('submission/{submission}/question/{question}/answer','SubmissionController@answerQuestion'); // Rückfrage beantworten
-Route::get('submissions/{submission}',                           'SubmissionController@show')->name('submissions.show');
-Route::post('submissions/photoupload',                           'SubmissionController@uploadPhoto')->name('submissions.uploadPhoto');
-Route::delete('submissions/photoupload/{identifier?}',           'SubmissionController@fakeUploadPhotoDelete');
-Route::post('submissions',                                       'SubmissionController@store')->name('submissions.store');
-Route::post('stripe/createCheckoutSession',                      'StripeController@createCheckoutSession');
-Route::post('stripe/payment',                                    'StripeController@creditcardPayment');
-Route::get('stripe/authorizesofort',                             'StripeController@authorizeSofort');       // returns view or json
-Route::get('stripe/checkcreditcardstate',                        'StripeController@checkcreditcardstate')->name('checkcreditcardstate');  // returns view or json
-Route::get('stripe/app-checkout',                                'StripeController@appCheckout');  // creditcard payment for apps
-Route::post('stripe/webhook',                                    'StripeController@webhook');
-Route::post('register',                                          'UserController@store');
-
-//Route::middleware('auth:api')->get('/submission/open', function (Request $request) {
-//    return "hello ";
-//});

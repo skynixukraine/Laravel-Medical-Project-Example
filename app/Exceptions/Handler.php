@@ -3,9 +3,9 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -33,8 +33,9 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param Exception $exception
      * @return void
+     * @throws Exception
      */
     public function report(Exception $exception)
     {
@@ -44,32 +45,12 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Exception $exception
+     * @return Response
      */
     public function render($request, Exception $exception)
     {
-
-        // show errors as json for /api requests
-        if ($request->route() && $request->route()->getPrefix() == "api") {
-            // POST /api/submissions uses "class SubmissionPostRequest extends FormRequest"
-            // Because FormRequest is made for webforms it only returns errors as json if it finds
-            // X-Requested-With: XMLHttpRequest in the header.
-            // Otherwise it will redirect.
-            // But we want a json response without setting this header
-            if ($exception instanceof ValidationException) {
-                return response(["errors" => $exception->errors()], '400');
-            }
-
-            // Same problem for Route-Model-Binding
-            if ($exception instanceof ModelNotFoundException) {
-                // remove the namespace (e.g. App\Submission -> Submission)
-                $modelName = basename(str_replace("\\", "/", $exception->getModel()));
-                return response(['errors' => [$modelName => ['not found']]], '404');
-            }
-        }
-
         return parent::render($request, $exception);
     }
 }

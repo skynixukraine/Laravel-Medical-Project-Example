@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,27 +14,79 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\SubmissionCreatedEvent' => [
-            'App\Listeners\SubmissionCreatedListener',
+        \App\Events\DoctorClosed::class => [
+            \App\Listeners\SendDoctorAccountClosedNotification::class,
         ],
-        'App\Events\SubmissionAnsweredEvent' => [
-            'App\Listeners\SubmissionAnsweredListener',
+
+        \App\Events\DoctorDeleted::class => [
+            \App\Listeners\SendDoctorAccountDeletedNotification::class,
         ],
-        'App\Events\SubmissionEvaluatedEvent' => [
-            'App\Listeners\SubmissionEvaluatedListener',
+
+        \App\Events\DoctorRequestedActivation::class => [
+            \App\Listeners\SendDoctorRequestedActivationNotification::class,
         ],
-        'App\Events\UserRegisteredEvent' => [
-            'App\Listeners\UserRegisteredListener'
+
+        \App\Events\DoctorApproved::class => [
+            \App\Listeners\SendDoctorApprovedNotification::class,
         ],
-        'App\Events\QuestionAskedEvent' => [
-            'App\Listeners\QuestionAskedListener'
+
+        \App\Events\DoctorActivated::class => [
+            \App\Listeners\SendDoctorActivatedNotification::class,
         ],
-        'App\Events\QuestionAnsweredEvent' => [
-            'App\Listeners\QuestionAnsweredListener'
+
+        \App\Events\DoctorDeactivated::class => [
+            \App\Listeners\SendDoctorDeactivatedNotification::class,
         ],
-        'Laravel\Passport\Events\AccessTokenCreated' => [
-            'App\Listeners\DeleteOldTokens',
-        ]
+
+        \App\Events\MessageSaved::class => [
+            \App\Listeners\SetSingleFirstMessage::class
+        ],
+
+        \App\Events\DoctorResettedPassword::class => [
+            \App\Listeners\SendDoctorResettedPasswordNotification::class
+        ],
+
+        \App\Events\DoctorVerifiedEmail::class => [
+            \App\Listeners\SendDoctorVerifiedEmailNotification::class
+        ],
+
+        \App\Events\EnquireMessageCreated::class => [
+            \App\Listeners\UpdateLastContactedAtAndStatus::class,
+            \App\Listeners\SendEnquireMessageCreatedNotification::class
+        ],
+
+        \App\Events\EnquireCreated::class => [
+            \App\Listeners\SendEnquireCreatedNotification::class,
+            \App\Listeners\SendEnquireVerifyEmailNotification::class
+        ],
+
+        \App\Events\DoctorChangedEmail::class => [
+            \App\Listeners\SendDoctorChangedEmailNotification::class
+        ],
+
+        \App\Events\DoctorUpdated::class => [
+            \App\Listeners\SendDoctorPasswordChangedNotification::class
+        ],
+
+        \App\Events\DoctorCreated::class => [
+            \App\Listeners\SendDoctorVerifyEmailNotification::class
+        ],
+
+        \App\Events\EnquireUpdated::class => [
+            \App\Listeners\SendEnquireClosedNotification::class
+        ],
+
+        \App\Events\ConclusionUpdated::class => [
+            \App\Listeners\SendConclusionUpdatedNotification::class
+        ],
+
+        \App\Events\EnquireVerifiedEmail::class => [
+            \App\Listeners\SendEnquireVerifiedEmailNotification::class
+        ],
+
+        \App\Events\EnquireCharge::class => [
+            \App\Listeners\SendEnquireChargeNotification::class
+        ],
     ];
 
     /**

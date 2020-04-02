@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('SYSTEM_MAIL_DRIVER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('SYSTEM_MAIL_HOST', 'smtp.mailgun.org'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('SYSTEM_MAIL_PORT', 587),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,12 +56,12 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'info@online-hautarzt.net'),
-        'name' => env('MAIL_FROM_NAME', 'Online Hautarzt - Appdoc'),
+        'address' => env('SYSTEM_MAIL_FROM_ADDRESS', 'info@online-hautarzt.net'),
+        'name' => env('SYSTEM_MAIL_FROM_NAME', 'Online Hautarzt - Systemnachricht'),
     ],
 
     'cc' => [
-        'address' => env('MAIL_CC_ADDRESS', 'info@online-hautarzt.net'),
+        'address' => env('SYSTEM_MAIL_CC_ADDRESS', 'info@online-hautarzt.net'),
     ],
 
     /*
@@ -75,7 +75,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('SYSTEM_MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -88,8 +88,8 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
-    'password' => env('MAIL_PASSWORD'),
+    'username' => env('SYSTEM_MAIL_USERNAME'),
+    'password' => env('SYSTEM_MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -123,4 +123,46 @@ return [
         ],
     ],
 
+    'current' => env('CURRENT_MAIL', 'system'),
+
+    'email_signature' => env('EMAIL_SIGNATURE'),
+
+    'extra' => [
+        'doctor' => [
+            'driver' => env('DOCTOR_MAIL_DRIVER', 'smtp'),
+            'host' => env('DOCTOR_MAIL_HOST'),
+            'port' => env('DOCTOR_MAIL_PORT'),
+            'encryption' => env('DOCTOR_MAIL_ENCRYPTION'),
+            'username' => env('DOCTOR_MAIL_USERNAME'),
+            'password' => env('DOCTOR_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('DOCTOR_MAIL_FROM_ADDRESS'),
+                'name' => env('DOCTOR_MAIL_FROM_NAME'),
+            ]
+        ],
+        'support' => [
+            'driver' => env('SUPPORT_MAIL_DRIVER', 'smtp'),
+            'host' => env('SUPPORT_MAIL_HOST'),
+            'port' => env('SUPPORT_MAIL_PORT'),
+            'encryption' => env('SUPPORT_MAIL_ENCRYPTION'),
+            'username' => env('SUPPORT_MAIL_USERNAME'),
+            'password' => env('SUPPORT_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('SUPPORT_MAIL_FROM_ADDRESS'),
+                'name' => env('SUPPORT_MAIL_FROM_NAME'),
+            ]
+        ],
+        'admin' => [
+            'driver' => env('ADMIN_MAIL_DRIVER', 'smtp'),
+            'host' => env('ADMIN_MAIL_HOST'),
+            'port' => env('ADMIN_MAIL_PORT'),
+            'encryption' => env('ADMIN_MAIL_ENCRYPTION'),
+            'username' => env('ADMIN_MAIL_USERNAME'),
+            'password' => env('ADMIN_MAIL_PASSWORD'),
+            'from' => [
+                'email' => env('ADMIN_MAIL_FROM_ADDRESS'),
+                'name' => env('ADMIN_MAIL_FROM_NAME'),
+            ]
+        ]
+    ]
 ];

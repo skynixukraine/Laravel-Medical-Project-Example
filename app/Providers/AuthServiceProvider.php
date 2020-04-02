@@ -2,12 +2,17 @@
 
 namespace App\Providers;
 
-use App\Policies\SubmissionPolicy;
-use App\Policies\UserPolicy;
-use App\Submission;
-use App\User;
+use App\Models\Billing;
+use App\Models\Doctor;
+use App\Models\Enquire;
+use App\Models\Location;
+use App\Models\Setting;
+use App\Policies\BillingPolicy;
+use App\Policies\DoctorPolicy;
+use App\Policies\EnquirePolicy;
+use App\Policies\LocationPolicy;
+use App\Policies\SettingPolicy;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -19,9 +24,11 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
-        Submission::class => SubmissionPolicy::class,
-        User::class => UserPolicy::class
+        Doctor::class => DoctorPolicy::class,
+        Enquire::class => EnquirePolicy::class,
+        Billing::class => BillingPolicy::class,
+        Location::class => LocationPolicy::class,
+        Setting::class => SettingPolicy::class,
     ];
 
     /**
@@ -35,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
 
-        Passport::tokensExpireIn(Carbon::now()->addMinutes(20));
-        Passport::refreshTokensExpireIn(Carbon::now()->addMinutes(21));
+        Passport::tokensExpireIn(Carbon::now()->addWeek(2));
+        Passport::refreshTokensExpireIn(Carbon::now()->addMonth(3));
     }
 }

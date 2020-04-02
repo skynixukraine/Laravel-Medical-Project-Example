@@ -54,6 +54,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'asset_url' => env('ASSET_URL', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -179,7 +181,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -194,7 +196,7 @@ return [
     */
 
     'aliases' => [
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -234,24 +236,11 @@ return [
 
     'faker_locale' => 'de_DE',
 
-    'MIX_API_URL' => env('MIX_API_URL'),
-    'MIX_WEB_URL' => env('MIX_WEB_URL'),
-    'MIX_PORTAL_URL' => env('MIX_PORTAL_URL'),
-    'MIX_PORTAL_DOMAIN' => env('MIX_PORTAL_DOMAIN'),
-    'MIX_AERZTEPHOTOS_FOLDER' => env('MIX_AERZTEPHOTOS_FOLDER'),
+    'recaptcha_site_key' => env('RECAPTCHA_SITE_KEY'),
+    'recaptcha_secret_key' => env('RECAPTCHA_SECRET_KEY'),
 
-    'HOSTNAME_MASTER_SERVER' => env('HOSTNAME_MASTER_SERVER'),
+    'authy_secret' => env('AUTHY_SECRET'),
 
-    'ohn' => [
-        'name' => env('APP_NAME'),
-        'MIX_WEB_URL' => env('MIX_WEB_URL'),
-    ],
-    'ita' => [
-        'name' => env('APP_NAME_ITA'),
-        'MIX_WEB_URL' => env('MIX_WEB_URL_ITA'),
-    ],
-    'sna' => [
-        'name' => env('APP_NAME_SNA'),
-        'MIX_WEB_URL' => env('MIX_WEB_URL_SNA'),
-    ],
+    'stripe_client_id' => env('STRIPE_CLIENT_ID'),
+    'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
 ];

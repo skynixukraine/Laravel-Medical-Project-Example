@@ -2,16 +2,11 @@
 
 namespace App\Providers;
 
-use App\Nova\Metrics\CancelledSubmissions;
-use App\Nova\Metrics\NewSubmissions;
-use App\Nova\Metrics\SubmissionsPerDay;
-use App\Nova\Metrics\SubmissionsPerOS;
-use App\Nova\Metrics\SubsequentSubmissions;
-use App\Observers\SubmissionObserver;
-use App\Submission;
+use App\Nova\Metrics\EnquiresPerDay;
+use App\Nova\Metrics\EnquiresPerMonth;
+use App\Nova\Metrics\NewDoctors;
+use App\Nova\Metrics\NewEnquires;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Cards\Help;
-use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -24,10 +19,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
-
-        Nova::serving(function () {
-            Submission::observe(SubmissionObserver::class);
-        });
     }
 
     /**
@@ -52,13 +43,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function gate()
     {
-        Gate::define('viewNova', function ($user) {
-            return in_array($user->id, [
-                2, // eisenfaust
-                11, // matz
-                14, // brinker
-            ]);
-        });
+
     }
 
     /**
@@ -69,11 +54,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function cards()
     {
         return [
-            new NewSubmissions,
-            new SubmissionsPerDay,
-            new CancelledSubmissions,
-            new SubmissionsPerOS,
-            new SubsequentSubmissions
+            new NewEnquires(),
+            new NewDoctors(),
+            new EnquiresPerDay(),
+            new EnquiresPerMonth(),
         ];
     }
 

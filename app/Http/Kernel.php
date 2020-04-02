@@ -47,14 +47,14 @@ class Kernel extends HttpKernel
 //            \App\Http\Middleware\VerifyCsrfToken::class,
 //            \App\Http\Middleware\SecureHeaders::class,
 //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'secureheaders',
+//            'secureheaders',
             'bindings'
         ],
 
         'api' => [
-            'security',
+//            'security',
             'throttle:40,1',
-            'secureheaders',
+//            'secureheaders',
             'bindings',
         ],
     ];
@@ -67,13 +67,14 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
+        'base64file' => \App\Http\Middleware\DecodeBase64Files::class,
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'security' => \App\Http\Middleware\SecurityMiddleware::class,
-        'secureheaders' => \App\Http\Middleware\SecureHeaders::class,
+//        'security' => \App\Http\Middleware\SecurityMiddleware::class,
+//        'secureheaders' => \App\Http\Middleware\SecureHeaders::class,
     ];
 }
