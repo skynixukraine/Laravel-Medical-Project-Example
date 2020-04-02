@@ -38,6 +38,6 @@ class ConclusionUpdated extends QueueableNotification
      */
     protected function conclusionUrl(): string
     {
-        return config('app.url') . '/conclusions';
+        return config('app.url') . '/conclusions/' . base64_encode($this->enquire->hash);
     }
 }

@@ -12,6 +12,6 @@ class SendConclusionUpdatedNotification
     public function handle(ConclusionUpdated $event): void
     {
         $enquire = $event->getEnquire();
-        $enquire->doctor->notify(new ConclusionUpdatedNotification($enquire));
+        $enquire->notify(new ConclusionUpdatedNotification($enquire));
     }
 }

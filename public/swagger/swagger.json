@@ -3910,6 +3910,115 @@
                 }
             }
         },
+        "/api/v1/enquires/validate-hash": {
+          "post": {
+            "tags": [
+              "Enquires"
+            ],
+            "summary": "Validate enquires hash",
+            "description": "Validate enquires hash",
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/x-www-form-urlencoded": {
+                  "schema": {
+                    "required": [
+                      "hash",
+                    ],
+                    "properties": {
+                      "hash": {
+                        "title": "Hash code",
+                        "description": "Hash code",
+                        "format": "string",
+                        "example": "sdfsddankcadksnclanln3cnqk43  c"
+                      },
+                    },
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Hash code has been verified",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "id": {
+                          "format": "integer",
+                          "example": "1"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "There are some validation errors",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "title": "Validation error",
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "The given data was invalid."
+                        },
+                        "errors": {
+                          "properties": {
+                            "validation_code": {
+                              "items": {
+                                "type": "string",
+                                "example": "Hash is invalid."
+                              }
+                            }
+                          },
+                          "type": "object",
+                          "format": "object"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Resource not found",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "No query results for model [App\\Models\\Enquire]."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal technical error was happened",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "format": "string",
+                          "example": "Something went wrong, please try again later."
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "/api/v1/enquires/payment-methods": {
           "get": {
             "tags": [
