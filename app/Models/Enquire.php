@@ -122,6 +122,7 @@ class Enquire extends Model
         $price = Setting::fetchValue('display_enquire_price', 0);
         $fee = Setting::fetchValue('enquire_admins_fee', 0);
         $currency = Setting::fetchValue('enquire_price_currency', 'usd');
+        $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
 
         $pdf = PDF::loadView('pdf.invoice',
             [
@@ -130,6 +131,7 @@ class Enquire extends Model
                 'price' => $price,
                 'fee' => $fee,
                 'currency' => $currency,
+                'logo' => $logo
             ]
         );
         return $pdf->output();
