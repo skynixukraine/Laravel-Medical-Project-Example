@@ -243,6 +243,6 @@ class Enquires extends ApiController
             ? $enquires->orderBy($request->order_field, $request->query('order_direction', 'asc'))
             : $enquires->orderBy('status')->orderByDesc('created_at');
 
-        return EnquireResource::collection($enquires->with('answers')->paginate($request->query('per_page', 50)));
+        return EnquireResource::collection($enquires->paginate($request->query('per_page', 50)));
     }
 }
