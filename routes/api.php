@@ -7,6 +7,7 @@ Route::prefix('v1')->group(function () {
         Route::post('', 'Enquire\Create')->name('enquire.create');
         Route::get('{enquire}/send-sms', 'Enquire\SendSMS');
         Route::post('{enquire}/verify-sms', 'Enquire\VerifySMS');
+        Route::post('validate-hash', 'Enquire\ValidateHash');
         Route::get('{enquire}/conclusion-status', 'Enquire\ConclusionStatus');
         Route::get('{enquire}/download-conclusion', 'Enquire\DownloadConclusion');
         Route::get('verify-email', 'Enquire\VerifyEmail')->name('enquire.verify-email');

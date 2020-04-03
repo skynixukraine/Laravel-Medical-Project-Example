@@ -12,6 +12,8 @@ use App\Models\Enquire;
 use App\Models\PaymentMethod;
 use App\Models\Setting;
 use App\Http\Requests\Enquire\Charge as Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Stripe\Source;
 
@@ -161,7 +163,10 @@ class Charge extends ApiController
             'currency' => $currency,
         ]);
 
-        $enquire->update(['payment_status' => Enquire::PAYMENT_STATUS_PAID]);
+        $enquire->update([
+            'payment_status' => Enquire::PAYMENT_STATUS_PAID,
+            'hash' => Hash::make(Str::random(100) . time()),
+        ]);
 
         event(new EnquireCreated($enquire));
 
