@@ -166,7 +166,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         $requiredAttributes = [
             'title_id', 'phone_number', 'board_certification', 'medical_degree',
             'languages', 'last_name', 'description', 'email', 'status', 'password', 'first_name',
-            'email_verified_at', 'specialization', 'stripe_account_id'
+            'email_verified_at', 'specialization'
         ];
 
         foreach ($requiredAttributes as $attribute) {

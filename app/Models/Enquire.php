@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 /**
  * Class Enquire
@@ -114,5 +115,30 @@ class Enquire extends Model
     public function markEmailAsVerified(): bool
     {
         return $this->forceFill(['email_verified_at' => $this->freshTimestamp()])->saveOrFail();
+    }
+
+    public function invoicePdf()
+    {
+        $price = Setting::fetchValue('display_enquire_price', 0);
+        $fee = Setting::fetchValue('enquire_admins_fee', 0);
+        $currency = Setting::fetchValue('enquire_price_currency', 'usd');
+        $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
+
+        $pdf = PDF::loadView('pdf.invoice',
+            [
+                'enquire' => $this,
+                'billing' => $this->billing,
+                'price' => $price,
+                'fee' => $fee,
+                'currency' => $currency,
+                'logo' => $logo
+            ]
+        );
+        return $pdf->output();
+    }
+
+    public function invoiceNamePDF()
+    {
+        return 'invoice_' . $this->first_name . '_' . $this->last_name . '.pdf';
     }
 }
