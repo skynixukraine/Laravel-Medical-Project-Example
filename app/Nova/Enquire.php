@@ -103,9 +103,9 @@ class Enquire extends Resource
 
             DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
 
-            HasOne::make(__('Billing'), 'billing')->onlyOnDetail(),
+            HasOne::make(__('Billing'), 'billing', Billing::class)->onlyOnDetail(),
 
-            MorphOne::make(__('Location'), 'location')->onlyOnDetail(),
+            MorphOne::make(__('Location'), 'location', Location::class)->onlyOnDetail(),
         ];
     }
 
