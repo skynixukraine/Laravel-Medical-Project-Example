@@ -160,7 +160,7 @@ class Charge extends ApiController
             $params['destination'] = $enquire->doctor->stripe_account_id;
             $params['application_fee_amount'] = $fee;
         }
-        die(var_dump($params));
+        
         \Stripe\Charge::create($params);
 
         $enquire->billing()->create([
