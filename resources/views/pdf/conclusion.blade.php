@@ -127,7 +127,7 @@
                 <div class="margin-bt-add with-answer">
                     <p class="p13 ft8 grey-add with-photo-answer">{{$answer->message->questioner}}</p>
                     <div>
-
+                        <IMG src="{{ 'data:' . 'image/png' . ';base64,' . $frontBody }}">
                     </div>
                 </div>
                 <hr>
