@@ -97,23 +97,21 @@ class DownloadConclusion extends ApiController
         throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
 
         $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
-        $frontBody = file_get_contents(public_path() . '/images/body-front.svg');
+        $doctorPhotoName = 'doctor-default-photo.png';
         
-        $im = new \Imagick();
+        if ($enquire->doctor->photo) {
+            $doctorPhotoName = $enquire->doctor->photo;
+        }
 
-        $im->setImageFormat('SVG');
-        $im->readImageBlob($frontBody);
-        $im->setImageFormat('png24');
-        $im->resizeImage(720, 445, \Imagick::FILTER_LANCZOS, 1);
-        
-        $im->writeImage(storage_path() . '/app/body-front.png');
-        $im->clear();
-        $im->destroy();
+        $doctorPhoto = base64_encode(file_get_contents(public_path() . '/images/' . $doctorPhotoName));
 
-        $frontBody = base64_encode(file_get_contents(storage_path() . '/app/body-front.png'));
-        unlink(storage_path() . '/app/body-front.png');
-
-        $pdf = PDF::loadView('pdf.conclusion', ['enquire' => $enquire, 'logo' => $logo, 'frontBody' => $frontBody]);
+        $pdf = PDF::loadView('pdf.conclusion',
+            [
+                'enquire' => $enquire, 
+                'logo' => $logo,
+                'doctorPhoto' => $doctorPhoto,
+            ]
+        );
         return ['conclusion' => base64_encode($pdf->output()), 'name' => 'conclusion_' . $enquire->first_name .  '_' . $enquire->last_name . '.pdf'];
     }
 }

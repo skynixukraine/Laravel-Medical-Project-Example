@@ -8,7 +8,7 @@
 
         body {margin-top: 0px;margin-left: 0px;}
 
-        #page_1 {position:relative; overflow: hidden;margin: 38px 0px 164px 56px;padding: 0px;border: none;}
+        #page_1 {position:relative; overflow: hidden;margin: 20px 0px 0px 0px;padding: 0px;border: none;}
 
         #page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:491px;height:373px;}
         #page_1 #p1dimg1 #p1img1 {width:566px;height:124px;}
@@ -17,10 +17,10 @@
 
 
 
-        #page_2 {position:relative; overflow: hidden;margin: 92px 0px 0px 0px;padding: 0px;border: none;}
+        #page_2 {position:relative; overflow: hidden;margin: 20px 0px 0px 0px;padding: 0px;border: none;}
 
-        #page_2 #p2dimg1 {position:absolute;top:0px;left:90px;z-index:-1;width:80%;height:361px;}
-        #page_2 #p2dimg1 #p2img1 {width:642px;height:361px;}
+        #page_2 #p2dimg1 {position:absolute;top:0px;left:90px;z-index:-1;width:491px;height:361px;}
+        #page_2 #p2dimg1 #p2img1 {width:566px;height:124px;}
         #page_2 #p2dimg1 .top-hr {
             height: 5px;
             background: #d9d9d9;
@@ -42,7 +42,7 @@
         .ft0{font-size: 28px;color: #407cde;line-height: 24px;font-weight: 600;}
         .ft1{font-size: 18px;color: #061848;line-height: 18px;}
         .ft2{font-size: 18px;color: #061848;line-height: 17px;}
-        .ft3{font-size: 19px;line-height: 17px; word-wrap: break-word;}
+        .ft3{font-size: 19px;line-height: 1.5; word-wrap: break-word;}
         .ft4{font-size: 19px;color: #222222;line-height: 17px;}
         .ft5{font-size: 19px;color: #222222;line-height: 21px;}
         .ft6{font-size: bold 15px;color: #6b3424;line-height: 28px;}
@@ -73,8 +73,8 @@
 <BODY>
 <DIV id="page_1">
     <DIV id="p1dimg1">
-        <IMG width="155" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1">
-        <IMG src="./doctor.png" id="p1img1-doctor">
+        <IMG width="145" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1">
+        <IMG width="200" height="200" src="{{ 'data:' . 'image/png' . ';base64,' . $doctorPhoto }}" id="p1img1-doctor">
     </DIV>
 
     <DIV class="dclr"></DIV>
@@ -93,13 +93,18 @@
 </style>
 <div class="page-break"></div>
 
-<DIV>
+<DIV id="page_1">
     <DIV id="p2dimg1">
+        <hr class="top-hr">
         @foreach($enquire->answers as $answer)
+
+            @if ($answer->value == null && $answer->next_message_id == null)
+                @continue
+            @endif
 
             @if ($answer->message->type == \App\Models\Message::TYPE_SELECT)
                 <div class="margin-bt-add width-answer">
-                    <p class="p13 ft8 grey-add">{{$answer->message->questioner}}</p>
+                    <p class="p13 ft8 grey-add">{!! $answer->message->content !!}</p>
                     <p class="p13 ft8 grey-add answer">{{$answer->value}}</p>
                 </div>
                 <hr>
@@ -107,7 +112,7 @@
 
             @if ($answer->message->type == \App\Models\Message::TYPE_TEXT)
                 <div class="margin-bt-add with-answer">
-                    <p class="p13 ft8 grey-add">{{$answer->message->questioner}}</p>
+                    <p class="p13 ft8 grey-add">{!! $answer->message->content !!}</p>
                     <p class="p13 ft8 grey-add answer">{{$answer->value}}</p>
                 </div>
                 <hr>
@@ -115,9 +120,9 @@
 
             @if ($answer->message->type == \App\Models\Message::TYPE_IMAGE)
                 <div class="margin-bt-add with-answer">
-                    <p class="p13 ft8 grey-add with-photo-answer">{{$answer->message->questioner}}</p>
+                    <p class="p13 ft8 grey-add with-photo-answer">{!! $answer->message->content !!}</p>
                     <div class="photo-answer">
-                        <IMG width="100" height="100" src="{{ 'data:' . 'image/png' . ';base64,' . base64_encode(file_get_contents(config('app.url') . $answer->value)) }}">
+                        <IMG width="150" height="150" src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Storage::getEnquireImageBase64($answer->value) }}">
                     </div>
                 </div>
                 <hr>
@@ -125,9 +130,10 @@
 
             @if ($answer->message->type == \App\Models\Message::TYPE_BODY_SELECT)
                 <div class="margin-bt-add with-answer">
-                    <p class="p13 ft8 grey-add with-photo-answer">{{$answer->message->questioner}}</p>
-                    <div>
-                        <IMG src="{{ 'data:' . 'image/png' . ';base64,' . $frontBody }}">
+                    <p class="p13 ft8 grey-add with-photo-answer">{!! $answer->message->content !!}</p>
+                    <div class="photo-answer">
+                        <IMG width="90" height="180" src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Svg::setColorFrontByIds(json_decode($answer->value)) }}">
+                        {{--<IMG width="150" height="300" src="{{ 'data:' . 'image/png' . ';base64,' . $backBody }}">--}}
                     </div>
                 </div>
                 <hr>
