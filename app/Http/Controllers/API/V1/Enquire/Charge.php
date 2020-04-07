@@ -148,15 +148,20 @@ class Charge extends ApiController
         $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
         $currency = Setting::fetchValue('enquire_price_currency', 'usd');
 
-        \Stripe\Charge::create([
+        $params = [
             'amount' => $price,
             'currency' => $currency,
-            'application_fee_amount' => $fee,
             'source' => $request->code,
-            'destination' => $enquire->doctor->stripe_account_id,
             'transfer_group' => 'enquire_payment',
             'description' => Setting::fetchValue('enquire_charge_description')
-        ]);
+        ];
+        
+        if ($enquire->doctor->stripe_account_id !== null) {
+            $params['destination'] = $enquire->doctor->stripe_account_id;
+            $params['application_fee_amount'] = $fee;
+        }
+        
+        \Stripe\Charge::create($params);
 
         $enquire->billing()->create([
             'amount' => $price,
