@@ -149,5 +149,15 @@
   "Dear patient," : "Sehr geehrter Patient, sehr geehrte Patientin,",
   "Get well!" : "Gute Besserung!",
   "Your Online Hautarzt case was answered" : "Betreff: Ihr Fall wurde beantwortet",
-  "Regards" : "Beste Grüße,"
+  "Regards" : "Beste Grüße,",
+  "NEW" : "Neu",
+  "AWATING_DOCTOR_RESPONSE" : "ERWARTUNG_DER_ARZTANTWORT",
+  "RESOLVED" : "AUFGELÖST",
+  "ARCHIVED" : "ARCHIVIERT",
+  "CREATED" : "ERSTELLT",
+  "ACTIVATED" : "AKTIVIERT",
+  "APPROVED" : "GENEHMIGT",
+  "ACTIVATION_REQUEST" : "AKTIVIERUNGSANFRAGE",
+  "CLOSED" : "GESCHLOSSEN",
+  "DEACTIVATION" : "DEAKTIVIERUNG"
 }

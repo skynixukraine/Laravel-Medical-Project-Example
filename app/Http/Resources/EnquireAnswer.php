@@ -55,8 +55,7 @@ class EnquireAnswer extends JsonResource
             'id' => $this->id,
             'message' => Message::make($this->message),
             'message_option' => MessageOption::make($this->message_option),
-            'value' => $this->message->type == \App\Models\Message::TYPE_IMAGE ?
-                Storage::getEnquireImageBase64($this->value) : $this->value
+            'value' => $this->prepareValue()
         ];
     }
 }

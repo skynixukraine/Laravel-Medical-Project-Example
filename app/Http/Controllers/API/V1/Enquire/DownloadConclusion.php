@@ -96,7 +96,22 @@ class DownloadConclusion extends ApiController
     {
         throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
 
-        $pdf = PDF::loadView('pdf.conclusion', ['enquire' => $enquire]);
+        $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
+        $doctorPhotoName = 'doctor-default-photo.png';
+        
+        if ($enquire->doctor->photo) {
+            $doctorPhotoName = $enquire->doctor->photo;
+        }
+
+        $doctorPhoto = base64_encode(file_get_contents(public_path() . '/images/' . $doctorPhotoName));
+
+        $pdf = PDF::loadView('pdf.conclusion',
+            [
+                'enquire' => $enquire, 
+                'logo' => $logo,
+                'doctorPhoto' => $doctorPhoto,
+            ]
+        );
         return ['conclusion' => base64_encode($pdf->output()), 'name' => 'conclusion_' . $enquire->first_name .  '_' . $enquire->last_name . '.pdf'];
     }
 }

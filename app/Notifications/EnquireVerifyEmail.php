@@ -32,7 +32,7 @@ class EnquireVerifyEmail extends QueueableNotification
         return $this->createMailMessage()
             ->subject(__('Please Confirm Your E-Mail Address'))
             ->greeting(__('Hello,'))
-            ->line(__('Please confirm your email address by clicking on the following link:'))
+            ->line(__('Please confirm your email address by clicking the following link:'))
             ->action(__('Verify Email Address'), $this->verificationUrl($notifiable));
     }
 
