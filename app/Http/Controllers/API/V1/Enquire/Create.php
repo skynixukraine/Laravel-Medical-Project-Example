@@ -12,6 +12,7 @@ use App\Http\Resources\Enquire as EnquireResource;
 use App\Models\Enquire;
 use App\Models\EnquireAnswer;
 use App\Models\Message;
+use App\Models\MessageOption;
 use App\Models\Setting;
 use App\Models\PaymentMethod;
 use App\Services\StorageService;
@@ -273,17 +274,20 @@ class Create extends ApiController
         $answers = json_decode($answers);
 
         Validator::make(['answers' => $answers], ['answers' => 'distinct|exists:message_options,id'])->validate();
+        
+        $answerValue = MessageOption::whereIn('id', $answers)->pluck('value')->toArray();
 
-        foreach ($answers as $answer) {
-            $currentEnquireAnswer = $enquireAnswer->replicate();
-            $currentEnquireAnswer->message_option_id = (int) $answer;
-            $currentEnquireAnswer->save();
-        }
+        $enquireAnswer->value = json_encode($answerValue);
+        $enquireAnswer->save();
     }
 
     private function createRadioAnswer(EnquireAnswer $enquireAnswer, $answers): void
     {
-        $enquireAnswer->message_option_id = (int) is_array($answers) ? $answers[0] : $answers;
+        $answer = (int) is_array($answers) ? $answers[0] : $answers;
+        
+        $answerValue = MessageOption::where('id', $answer)->first();
+        $enquireAnswer->message_option_id = $answer;
+        $enquireAnswer->value = $answerValue->value;
         $enquireAnswer->saveOrFail();
     }
 
@@ -292,10 +296,9 @@ class Create extends ApiController
         $answers = is_array($answers) ? $answers : [$answers];
 
         foreach ($answers as $answer) {
-            $currentEnquireAnswer = $enquireAnswer->replicate();
-            $currentEnquireAnswer->value = $answer;
+            $enquireAnswer->value = $answer;
 
-            $currentEnquireAnswer->save();
+            $enquireAnswer->save();
         }
     }
 
