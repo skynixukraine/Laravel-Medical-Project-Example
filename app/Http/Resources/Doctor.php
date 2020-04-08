@@ -175,7 +175,7 @@ class Doctor extends JsonResource
             'phone_number' => $this->phone_number,
             'description' => $this->description,
             'short_description' => $this->short_description,
-            'status' => $this->status,
+            'status' => __($this->status),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'email_verified_at' => $this->email_verified_at,
