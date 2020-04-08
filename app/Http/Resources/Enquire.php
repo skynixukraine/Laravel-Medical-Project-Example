@@ -156,7 +156,7 @@ class Enquire extends JsonResource
             'email' => $this->email,
             'conclusion' => $this->conclusion,
             'conclusion_created_at' => $this->conclusion_created_at,
-            'status' => $this->status,
+            'status' => __($this->status),
             'is_seen' => $this->is_seen,
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),
