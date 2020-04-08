@@ -11,31 +11,16 @@
         #page_1 {position:relative; overflow: hidden;margin: 20px 0px 0px 0px;padding: 0px;border: none;}
 
         #page_1 #p1dimg1 {position:absolute;top:0px;left:0px;z-index:-1;width:491px;height:373px;}
-        #page_1 #p1dimg1 #p1img1 {width:566px;height:124px;}
+        #page_1 #p1dimg1 #p1img1 {width:566px;height:124px; margin-left: 20px;}
         #page_1 #p1dimg1 #p1img1-doctor {margin-top: 50px; margin-left: 20px;}
 
-
+        .photo-answer {margin-top: 20px}
 
 
         #page_2 {position:relative; overflow: hidden;margin: 20px 0px 0px 0px;padding: 0px;border: none;}
 
         #page_2 #p2dimg1 {position:absolute;top:0px;left:90px;z-index:-1;width:491px;height:361px;}
         #page_2 #p2dimg1 #p2img1 {width:566px;height:124px;}
-        #page_2 #p2dimg1 .top-hr {
-            height: 5px;
-            background: #d9d9d9;
-            border: none;
-        }
-
-        #page_2 #p2dimg1 .with-answer{
-            display: flex;
-            width: 100%;
-        }
-        #page_2 #p2dimg1 .photo-answer {
-            display: flex;
-            position: relative;
-            top: 10px;
-        }
 
         .dclr {clear:both;float:none;height:1px;margin:0px;padding:0px;overflow:hidden;}
 
@@ -65,7 +50,7 @@
         .p11{text-align: left;padding-left: 20px;margin-top: 140px;margin-bottom: 0px;}
         .p12{text-align: left;padding-left: 20px;margin-top: 23px;margin-bottom: 0px;}
         .p13{text-align: left;margin-top: 23px;margin-bottom: 0px;width:100%}
-        .with-photo-answer{width:50%;}
+        .with-photo-answer{width:80%;}
 
     </STYLE>
 </HEAD>
@@ -73,7 +58,7 @@
 <BODY>
 <DIV id="page_1">
     <DIV id="p1dimg1">
-        <IMG width="145" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1">
+        <IMG width="125" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1">
         <IMG width="200" height="200" src="{{ 'data:' . 'image/png' . ';base64,' . $doctorPhoto }}" id="p1img1-doctor">
     </DIV>
 
@@ -105,7 +90,15 @@
             @if ($answer->message->type == \App\Models\Message::TYPE_SELECT)
                 <div class="margin-bt-add width-answer">
                     <p class="p13 ft8 grey-add">{!! $answer->message->content !!}</p>
-                    <p class="p13 ft8 grey-add answer">{{$answer->value}}</p>
+                    <p class="p13 ft8 grey-add answer">{{$answer->prepareValue()}}</p>
+                </div>
+                <hr>
+            @endif
+
+            @if ($answer->message->type == \App\Models\Message::TYPE_RADIO)
+                <div class="margin-bt-add with-answer">
+                    <p class="p13 ft8 grey-add">{!! $answer->message->content !!}</p>
+                    <p class="p13 ft8 grey-add answer">{{$answer->prepareValue()}}</p>
                 </div>
                 <hr>
             @endif
@@ -113,7 +106,7 @@
             @if ($answer->message->type == \App\Models\Message::TYPE_TEXT)
                 <div class="margin-bt-add with-answer">
                     <p class="p13 ft8 grey-add">{!! $answer->message->content !!}</p>
-                    <p class="p13 ft8 grey-add answer">{{$answer->value}}</p>
+                    <p class="p13 ft8 grey-add answer">{{$answer->prepareValue()}}</p>
                 </div>
                 <hr>
             @endif
@@ -122,7 +115,7 @@
                 <div class="margin-bt-add with-answer">
                     <p class="p13 ft8 grey-add with-photo-answer">{!! $answer->message->content !!}</p>
                     <div class="photo-answer">
-                        <IMG width="150" height="150" src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Storage::getEnquireImageBase64($answer->value) }}">
+                        <IMG width="150" height="150" src="{{ $answer->prepareValue() }}">
                     </div>
                 </div>
                 <hr>
@@ -132,8 +125,8 @@
                 <div class="margin-bt-add with-answer">
                     <p class="p13 ft8 grey-add with-photo-answer">{!! $answer->message->content !!}</p>
                     <div class="photo-answer">
-                        <IMG width="90" height="180" src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Svg::setColorFrontByIds(json_decode($answer->value)) }}">
-                        {{--<IMG width="150" height="300" src="{{ 'data:' . 'image/png' . ';base64,' . $backBody }}">--}}
+                        <IMG width="75" height="150"  src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Svg::setColorByIds('body-front.svg', json_decode($answer->prepareValue())) }}">
+                        <IMG width="75" height="150" src="{{ 'data:' . 'image/png' . ';base64,' . \App\Facades\Svg::setColorByIds('body-back.svg', json_decode($answer->prepareValue())) }}">
                     </div>
                 </div>
                 <hr>

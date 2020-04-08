@@ -12,9 +12,9 @@ class SvgService
 
     public $color = 'red';
     
-    public function setColorFrontByIds(array $ids): string
+    public function setColorByIds(string $fileName, array $ids): string
     {
-        $frontBody = file_get_contents(public_path() . '/images/body-front.svg');
+        $frontBody = file_get_contents(public_path() . '/images/' . $fileName);
 
         $frontBody = str_replace($ids, '" fill="' . $this->color . '' , $frontBody);
         
