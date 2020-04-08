@@ -188,7 +188,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
         $this->removePhotoFile();
 
         $this->attributes['photo'] = $value instanceof UploadedFile
-            ? Storage::saveDoctorsPhoto(ImageIntervention::makeThumb($value, self::WIDTH_PHOTO))
+            ? Storage::saveDoctorsPhoto($value)
             : $value;
     }
 

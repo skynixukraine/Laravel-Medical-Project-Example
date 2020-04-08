@@ -1,7 +1,5 @@
 <tr>
     <td class="header">
-        <a href="{{ $url }}">
-            <img width="80" height="80" src="{{config('app.url')}} . '/images/favicondark.png'">
-        </a>
+        <h1 style="color: #0d5aa7; text-align: center"><b>Online Hautarzt vor Ort</b></h1>
     </td>
 </tr>
