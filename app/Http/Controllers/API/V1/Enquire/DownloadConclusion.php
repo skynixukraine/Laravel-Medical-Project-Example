@@ -10,6 +10,7 @@ use App\Models\Enquire;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage as BaseStorage;
 
 /**
  * @OA\Post(
@@ -101,7 +102,7 @@ class DownloadConclusion extends ApiController
         $doctorPhotoPath = public_path() . '/images/' . 'doctor-default-photo.png';
         
         if ($enquire->doctor->photo) {
-            $doctorPhotoPath = $enquire->doctor->photo;
+            $doctorPhotoPath = BaseStorage::temporaryUrl($enquire->doctor->photo, now()->addMinutes(5));
         }
 
         $doctorPhoto = base64_encode(file_get_contents($doctorPhotoPath));
