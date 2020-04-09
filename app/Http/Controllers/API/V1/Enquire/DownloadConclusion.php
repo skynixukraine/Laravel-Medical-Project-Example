@@ -10,6 +10,7 @@ use App\Models\Enquire;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage as BaseStorage;
 
 /**
  * @OA\Post(
@@ -97,13 +98,14 @@ class DownloadConclusion extends ApiController
         throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
 
         $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
-        $doctorPhotoName = 'doctor-default-photo.png';
+
+        $doctorPhotoPath = public_path() . '/images/' . 'doctor-default-photo.png';
         
         if ($enquire->doctor->photo) {
-            $doctorPhotoName = $enquire->doctor->photo;
+            $doctorPhotoPath = BaseStorage::temporaryUrl($enquire->doctor->photo, now()->addMinutes(5));
         }
 
-        $doctorPhoto = base64_encode(file_get_contents(public_path() . '/images/' . $doctorPhotoName));
+        $doctorPhoto = base64_encode(file_get_contents($doctorPhotoPath));
 
         $pdf = PDF::loadView('pdf.conclusion',
             [
