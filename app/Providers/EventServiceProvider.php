@@ -86,6 +86,11 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\EnquireCharge::class => [
             \App\Listeners\SendEnquireChargeNotification::class
         ],
+        
+        \App\Events\ContactCreated::class => [
+            \App\Listeners\SendContactAdminNotification::class,
+            \App\Listeners\SendContactUserNotification::class
+        ],
     ];
 
     /**

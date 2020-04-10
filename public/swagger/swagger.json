@@ -4393,7 +4393,117 @@
                     }
                 }
             }
-        }
+        },
+        "/api/v1/contact": {
+            "post": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Create Support request",
+                "description": "Create Support request",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "name",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "title": "Email",
+                                        "description": "Email",
+                                        "format": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "name": {
+                                        "title": "Name",
+                                        "description": "Name",
+                                        "format": "string",
+                                        "example": "John"
+                                    },
+                                    "body": {
+                                        "title": "Body",
+                                        "description": "Body",
+                                        "format": "string",
+                                        "example": "Test description"
+                                    },
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "An e-mail has been verified"
+                    },
+                    "422": {
+                        "description": "There are some validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Validation error",
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "validation_code": {
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "Email is invalid."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object",
+                                            "format": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "No query results for model [App\\Models\\Contact]."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
     },
     "components": {
         "schemas": {
