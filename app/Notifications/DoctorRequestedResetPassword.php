@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class DoctorRequestedResetPassword extends QueueableNotification
 {
-    private const RESET_PASSWORD_URL = '/reset-password';
+    private const RESET_PASSWORD_URL = '/new-password';
 
     /**
      * The password reset token.
