@@ -163,6 +163,10 @@ return [
                 'email' => env('ADMIN_MAIL_FROM_ADDRESS'),
                 'name' => env('ADMIN_MAIL_FROM_NAME'),
             ]
-        ]
+        ],
+        'contact' => [
+            'to' => env('CONTACT_MAIL_TO_ADDRESS'),    
+            'name' => env('CONTACT_MAIL_TO_NAME'),    
+        ],
     ]
 ];
