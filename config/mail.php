@@ -165,8 +165,8 @@ return [
             ]
         ],
         'contact' => [
-            'to' => env('CONTACT_MAIL_TO_ADDRESS'),    
-            'name' => env('CONTACT_MAIL_TO_NAME'),    
+            'to' => env('SUPPORT_MAIL_FROM_ADDRESS'),
+            'name' => env('SUPPORT_MAIL_FROM_NAME'),
         ],
     ]
 ];
