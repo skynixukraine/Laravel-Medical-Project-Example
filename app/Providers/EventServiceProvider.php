@@ -47,7 +47,8 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         \App\Events\DoctorVerifiedEmail::class => [
-            \App\Listeners\SendDoctorVerifiedEmailNotification::class
+            \App\Listeners\SendDoctorVerifiedEmailNotification::class,
+            \App\Listeners\SendAdminWhenDoctorVerifyEmailNotification::class
         ],
 
         \App\Events\EnquireMessageCreated::class => [

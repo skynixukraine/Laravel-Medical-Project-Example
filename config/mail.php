@@ -162,6 +162,9 @@ return [
             'from' => [
                 'email' => env('ADMIN_MAIL_FROM_ADDRESS'),
                 'name' => env('ADMIN_MAIL_FROM_NAME'),
+            ],
+            'to' => [
+                'email' => env('ADMIN_MAIL_TO')
             ]
         ],
         'contact' => [

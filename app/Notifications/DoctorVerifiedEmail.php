@@ -29,8 +29,15 @@ class DoctorVerifiedEmail extends QueueableNotification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject(Lang::getFromJson('E-mail verified'))
-            ->line(Lang::getFromJson('Your e-mail was successfully verified. Now you can login.'));
+            ->subject(__('Account successfully verified'))
+            ->line(__('Dear colleague,'))
+            ->line(__('We appreciate your interest!'))
+            ->line(__('Your registration has been successfully verified. Now you can log in at online-hautarzt.de/login.'))
+            ->line(__('Please complete the information in your :account, in particular the billing details and request approval from the administrator. You will enter the bank details with our payment provider Stripe, who will handle the automatic payment - so you will receive your remuneration automatically transferred to the bank account almost in real time. We cannot therefore activate this data before it is stored.',
+                ['line' => '<a href="' . config('app.url') . '/account/personal-information' . '">account</a>']))
+            ->line(__('Please fill in the details in your profile and at the end click on “Apply for activation” at the bottom of the page as soon as you are finished.'))
+            ->line(__('If you have any questions, simply send us an email to hilfe@online-hautarzt.de'))
+            ->line(__('Kind regards and thank you'));
     }
 
     /**
