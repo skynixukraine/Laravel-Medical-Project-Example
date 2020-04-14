@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
+use Illuminate\Support\Facades\Notification;
 use App\Events\DoctorRequestedActivation;
 use App\Notifications\AdminRequestedActivation as AdminRequestedActivationNotification;
 
