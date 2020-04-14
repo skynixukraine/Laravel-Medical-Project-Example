@@ -141,7 +141,7 @@ class ResetPassword extends ApiController
     {
         Password::broker('doctors')->reset($request->only('email', 'password', 'password_confirmation', 'token'),
             function (Doctor $doctor, string $password) {
-                $doctor->fill(['password' => Hash::make($password)])->saveOrFail();
+                $doctor->fill(['password' => $password])->saveOrFail();
                 event(new DoctorResettedPassword($doctor));
             });
     }
