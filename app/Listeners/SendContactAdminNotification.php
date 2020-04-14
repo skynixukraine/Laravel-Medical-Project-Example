@@ -13,8 +13,7 @@ class SendContactAdminNotification
     public function handle(ContactCreated $event): void
     {
         $contact = $event->getContact();
-        //config('mail.extra.contact.to')
-        Notification::route('mail', 'alexey.vnu+support@gmail.com')
+        Notification::route('mail', config('mail.extra.contact.to'))
             ->notify(new ContactAdminNotification($contact));
     }
 }
