@@ -86,7 +86,7 @@
   "Your application is under review": "Ihre Bewerbung wird begutachtet",
   "Dear Colleague,": "Liebe Kollegin, lieber Kollege,",
   "Thank you, your application is now being reviewed. We will notify you as soon as your account has been activated and is available on the website.": "Vielen Dank, Ihre Bewerbung wird nun erneut begutachtet. Wir benachrichtigen Sie, sobald Ihr Konto freigeschaltet wurde und auf der Webseite abrufbar ist",
-  "Hi,": "Hi,",
+  "Hi,": "Hallo,",
   "Your account may have been compromised. Please <u>change your password now.</u>": "Jemand könnte Zugriff auf Ihr Konto haben. Bitte <u>ändern Sie jetzt Ihr Passwort.</u>",
   "The verification token not exists": "Das Bestätigungstoken ist nicht vorhanden",
   "The verification token is invalid": "Das Bestätigungstoken ist ungültig",
@@ -159,5 +159,17 @@
   "APPROVED" : "GENEHMIGT",
   "ACTIVATION_REQUEST" : "AKTIVIERUNGSANFRAGE",
   "CLOSED" : "GESCHLOSSEN",
-  "DEACTIVATION" : "DEAKTIVIERUNG"
+  "DEACTIVATION" : "DEAKTIVIERUNG",
+  "New Support Request" : "Neue Support-Anfrage",
+  "You’ve received a new support request" : "Sie haben eine neue Supportanfrage erhalten",
+  "New Support Request was received": "Neue Support-Anfrage eingegangen",
+  "We’ve received your support request and will get in touch with you shortly" : "wir haben Ihre Support-Anfrage erhalten und antworten Ihnen in Kürze.",
+  "Thank you" : "Vielen Dank,",
+  "A doctor requested final approval, check in admin panel." : "Ein Arzt hat die endgültige Genehmigung beantragt. Überprüfen Sie dies im Admin-Bereich.",
+  "New request activation" : "Neue Anforderungsaktivierung",
+  "Your profile has been released and you can view it at online-hautarzt.de/hautarzt. Congratulations & welcome on board!" : "Ihr Profil wurde freigegeben und Sie können es auf online-hautarzt.de/hautarzt einsehen. Herzlichen Glückwunsch & Willkommen an Board!",
+  "What's next now? You should inform your patients that you can also be reached online for their medical problems if they cannot or do not want to come in - for example, because you are on vacation or your patients are not in town or because of a pandemic is in progress, or or or. How do you best do that? You can find out about this in the doctor portal under  : “More Patients” (bottom left), log in here and get started: https://online-hautarzt.de/login" : "Wie geht es jetzt weiter? Sie sollten Ihre Patienten informieren, dass Sie auch online für ihre medizinischen Probleme erreichbar sind, wenn diese grade nicht reinkommen können oder wollen - zum Beispiel, weil Sie im Urlaub sind, oder Ihre Patienten grade nicht in der Stadt sind, oder weil gerade eine Pandemie im Gange ist, oder oder oder. Wie machen Sie das am Besten? Dies erfahren Sie im Doktorportal unter “Mehr Patienten” (unten links), loggen Sie sich hier ein und legen Sie los: https://online-hautarzt.de/einloggen",
+  "Have fun with the online treatment and good luck!" : "Viel Spaß bei der Online Behandlung und viel Erfolg!",
+  "Your team of online dermatologist on site" : "Ihr Team von Online Hautarzt vor Ort",
+  "If you have any questions, please write to: hilfe@online-hautarzt.de" : "Bei Fragen schreiben Sie gerne an: hilfe@online-hautarzt.de"
 }

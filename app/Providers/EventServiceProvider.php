@@ -24,6 +24,7 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\DoctorRequestedActivation::class => [
             \App\Listeners\SendDoctorRequestedActivationNotification::class,
+            \App\Listeners\SendAdminRequestedActivationNotification::class,
         ],
 
         \App\Events\DoctorApproved::class => [
@@ -85,6 +86,11 @@ class EventServiceProvider extends ServiceProvider
 
         \App\Events\EnquireCharge::class => [
             \App\Listeners\SendEnquireChargeNotification::class
+        ],
+        
+        \App\Events\ContactCreated::class => [
+            \App\Listeners\SendContactAdminNotification::class,
+            \App\Listeners\SendContactUserNotification::class
         ],
     ];
 

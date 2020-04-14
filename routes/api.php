@@ -58,4 +58,5 @@ Route::prefix('v1')->group(function () {
     Route::get('languages', 'LanguageController@index')->name('languages.index');
     Route::get('messages/first', 'MessageController@first')->name('messages.first');
     Route::get('messages/{message}', 'MessageController@show')->name('messages.show');
+    Route::post('contact', 'ContactController@index')->name('contacts.index');
 });
