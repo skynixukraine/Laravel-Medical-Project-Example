@@ -4707,12 +4707,6 @@
                         "format": "string",
                         "example": "+38 024-548-58-55"
                     },
-                    "description": {
-                        "title": "Desctiption",
-                        "description": "A doctor's description",
-                        "format": "string",
-                        "example": "I am a good doctor"
-                    },
                     "short_description": {
                         "title": "Short description",
                         "description": "A doctor's short description",

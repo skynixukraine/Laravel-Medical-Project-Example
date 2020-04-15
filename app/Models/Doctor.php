@@ -165,7 +165,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     {
         $requiredAttributes = [
             'title_id', 'phone_number', 'location',
-            'languages', 'last_name', 'description', 'email', 'status', 'password', 'first_name',
+            'languages', 'last_name', 'short_description', 'email', 'status', 'password', 'first_name',
             'email_verified_at', 'specialization'
         ];
 
