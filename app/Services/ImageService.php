@@ -40,6 +40,13 @@ class ImageService
         return new UploadedFile($image_thumb->basePath(), $image_thumb->stream()->__toString());
 
     }
+    
+    public function orientate(UploadedFile $file)
+    {
+        $image = Image::make($file->getRealPath())->orientate();
+        $image->save($file->getRealPath());
+        return new UploadedFile($image->basePath(), $image->stream()->__toString());
+    }
 
     /**
      * @param UploadedFile $file
