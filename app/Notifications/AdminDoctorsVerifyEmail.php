@@ -39,9 +39,10 @@ class AdminDoctorsVerifyEmail extends QueueableNotification
     public function toMail($notifiable): MailMessage
     {
         return $this->createMailMessage()
-            ->subject(__('New doctor'))
-            ->greeting(__('Hello,'))
-            ->line(__('New doctor'))
+            ->subject('New doctor')
+            ->greeting('Hi Titus,')
+            ->line('New user has registered on online-hautarzt.de')
+            ->line($this->doctor->first_name . $this->doctor->last_name)
             ->line($this->doctor->email);
     }
     
