@@ -43,8 +43,17 @@ class ImageService
     
     public function orientate(UploadedFile $file)
     {
-        $image = Image::make($file->getRealPath())->orientate();
+        $image = Image::make($file->getRealPath());
+
+        $orientation = $image->exif('Orientation');
+
+        if (empty($orientation)) {
+            return $file;
+        }
+
+        $image = $image->orientate();
         $image->save($file->getRealPath());
+
         return new UploadedFile($image->basePath(), $image->stream()->__toString());
     }
 
