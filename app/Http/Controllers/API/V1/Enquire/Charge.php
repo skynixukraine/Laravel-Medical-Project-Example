@@ -144,9 +144,13 @@ class Charge extends ApiController
             ]));
         }
 
-        $price = Setting::fetchValue('enquire_total_price', 0) * 100;
-        $fee = Setting::fetchValue('enquire_admins_fee', 0) * 100;
-        $currency = Setting::fetchValue('enquire_price_currency', 'usd');
+        throw_if($enquire->doctor->pricePolicy == null, ValidationException::withMessages([
+            'price_policy_id' => __('Your price policy is undefined'),
+        ]));
+
+        $price = $enquire->doctor->pricePolicy->enquire_total_price;
+        $fee = $enquire->doctor->pricePolicy->enquire_admins_fee;
+        $currency = $enquire->doctor->pricePolicy->enquire_price_currency;
 
         $params = [
             'amount' => $price,

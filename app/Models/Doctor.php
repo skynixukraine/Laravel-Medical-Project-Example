@@ -109,7 +109,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
 
     public function pricePolicy(): BelongsTo
     {
-        return $this->belongsTo(Pricepolicy::class);
+        return $this->belongsTo(PricePolicy::class);
     }
 
     public function languages(): BelongsToMany
