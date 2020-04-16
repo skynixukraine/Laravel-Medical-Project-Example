@@ -2133,7 +2133,11 @@
                                     "longitude": {
                                         "description": "A doctor's longitude",
                                         "format": "number"
-                                    }
+                                    },
+                                    "price_policy_id": {
+                                        "description": "A price policy ID",
+                                        "format": "integer"
+                                    },
                                 },
                                 "type": "object"
                             }
