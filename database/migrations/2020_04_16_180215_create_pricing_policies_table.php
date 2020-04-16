@@ -17,8 +17,8 @@ class CreatePricingPoliciesTable extends Migration
             $table->increments('id');
             $table->integer('enquire_admins_fee');
             $table->integer('enquire_total_price');
-            $table->integer('enquire_display_price');
-            $table->integer('description');
+            $table->string('enquire_display_price');
+            $table->string('description');
             $table->string('currency', 20);
             
             $table->timestamps();
