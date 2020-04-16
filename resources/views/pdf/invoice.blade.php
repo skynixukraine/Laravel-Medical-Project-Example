@@ -10,7 +10,7 @@
 
         #page_1 {position:relative; overflow: hidden;margin: 15px 0px 15px 15px;padding: 0px;border: none;}
 
-        #page_1 #p1dimg1 {position:absolute;top:0px;left: 1px;z-index:-1;}
+        #page_1 #p1dimg1 {position:absolute;top:0px;left: 500px;z-index:-1;}
 
         #page_2 {position:relative; overflow: hidden;margin: 15px 0px 15px 15px;padding: 0px;border: none;}
 
@@ -25,7 +25,7 @@
         .ft6{font-size: 17px;color: #061848;line-height: 11px;}
         .ft7{font-size: 12px;color: #407cde;line-height: 10px;}
 
-        .p0{text-align: left;margin-top: 200px;margin-bottom: 0px;}
+        .p0{text-align: left;margin-top: 200px;margin-bottom: 0px;font-weight: bold;}
         .p1{text-align: left;margin-top: 49px;margin-bottom: 0px;}
         .p2{text-align: left;margin-top: 4px;margin-bottom: 0px;}
         .p3{text-align: left;margin-top: 5px;margin-bottom: 0px;}
@@ -88,8 +88,7 @@
             height: 0;
             border: none;
             border-top: 2px dotted #ddd;
-            bottom: -100px;
-            position: relative;
+            bottom: -50px;
         }
 
     </STYLE>
@@ -256,7 +255,6 @@
             <TD class="tr0 td20"><P class="p20 ft2">12,50</P></TD>
             <TD class="tr0 td21"><P class="p7 ft2">€</P></TD>
         </TR>
-        <hr class="hr-dotted">
         <TR>
             <TD class="tr2 td15"><P class="p6 ft2">Gezahlter Betrag</P></TD>
             <TD class="tr2 td16"><P class="p7 ft5">&nbsp;</P></TD>
