@@ -10,7 +10,7 @@
 
         #page_1 {position:relative; overflow: hidden;margin: 15px 0px 15px 15px;padding: 0px;border: none;}
 
-        #page_1 #p1dimg1 {position:absolute;top:0px;left: 500px;z-index:-1;}
+        #page_1 #p1dimg1 {position:absolute;top:0px;left: 350px;z-index:-1;}
 
         #page_2 {position:relative; overflow: hidden;margin: 15px 0px 15px 15px;padding: 0px;border: none;}
 
@@ -25,7 +25,7 @@
         .ft6{font-size: 17px;color: #061848;line-height: 11px;}
         .ft7{font-size: 12px;color: #407cde;line-height: 10px;}
 
-        .p0{text-align: left;margin-top: 200px;margin-bottom: 0px;font-weight: bold;}
+        .p0{text-align: left;margin-top: 160px;margin-bottom: 0px;font-weight: bold;}
         .p1{text-align: left;margin-top: 49px;margin-bottom: 0px;}
         .p2{text-align: left;margin-top: 4px;margin-bottom: 0px;}
         .p3{text-align: left;margin-top: 5px;margin-bottom: 0px;}
@@ -97,7 +97,7 @@
 <BODY>
 <DIV id="page_1">
     <DIV id="p1dimg1">
-        <IMG width="155" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1"></DIV>
+        <IMG width="320" height="110" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1"></DIV>
 
 
     <DIV class="dclr"></DIV>
@@ -265,6 +265,7 @@
             <TD class="tr2 td21"><P class="p7 ft2">€</P></TD>
         </TR>
     </TABLE>
+    <br>
     <P class="p21 ft7">*Umsatzsteuerfreie Heilbehandlung</P>
     <P class="p11 ft1">Vielen Dank für Ihr Vertrauen!</P>
     <P class="p11 ft1">Mit freundlichen Grüßen,</P>
