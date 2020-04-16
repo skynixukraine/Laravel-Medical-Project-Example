@@ -178,6 +178,7 @@ class Doctor extends JsonResource
             'enquire_price' => Setting::fetchValue('display_enquire_price'),
             'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
             'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
+            'price_policy_id' => $this->price_policy_id,
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
     }

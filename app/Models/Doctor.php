@@ -75,7 +75,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     protected $fillable = [
         'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
         'first_name', 'last_name', 'description', 'short_description', 'email', 'status', 'password',
-        'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at'
+        'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at, price_policy_id'
     ];
 
     protected $casts = [
@@ -169,7 +169,7 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public function canBeApproved()
     {
         $requiredAttributes = [
-            'title_id', 'phone_number', 'location',
+            'title_id', 'phone_number', 'location', 'price_policy_id',
             'languages', 'last_name', 'short_description', 'email', 'status', 'password', 'first_name',
             'email_verified_at', 'specialization'
         ];
