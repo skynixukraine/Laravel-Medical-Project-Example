@@ -7,8 +7,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Pricepolicy extends Model
+class PricePolicy extends Model
 {
+
+    protected $table = 'pricing_policies';
+
     protected $fillable = [
         'enquire_admins_fee',
         'enquire_total_price',
