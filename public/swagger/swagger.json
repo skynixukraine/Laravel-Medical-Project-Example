@@ -2133,7 +2133,11 @@
                                     "longitude": {
                                         "description": "A doctor's longitude",
                                         "format": "number"
-                                    }
+                                    },
+                                    "price_policy_id": {
+                                        "description": "A price policy ID",
+                                        "format": "integer"
+                                    },
                                 },
                                 "type": "object"
                             }
@@ -4504,6 +4508,52 @@
                 }
             }
         },
+        "/api/v1/pricing-policies": {
+            "get": {
+                "tags": [
+                    "PricePolicy"
+                ],
+                "summary": "Get all pricing policies",
+                "description": "Get all pricing policies",
+                "operationId": "App\\Http\\Controllers\\API\\V1\\PricePolicyController::index",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "items": {
+                                                "type": "object",
+                                                "$ref": "#/components/schemas/PricePolicyResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal technical error was happened",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "format": "string",
+                                            "example": "Something went wrong, please try again later."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
     },
     "components": {
         "schemas": {
@@ -5279,6 +5329,41 @@
                         "format": "string",
                         "example": "DE"
                     },
+                },
+                "type": "object"
+            },
+            "PricePolicyResource": {
+                "title": "Pricing policy resource",
+                "description": "Resource for a pricing policy representation",
+                "properties": {
+                    "id": {
+                        "schema": "PricePolicy",
+                        "title": "ID",
+                        "description": "A policy's identificator",
+                        "format": "int64",
+                        "example": "5"
+                    },
+                    "description": {
+                        "schema": "PricePolicy",
+                        "title": "A policy's description",
+                        "description": "A policy's description",
+                        "format": "string",
+                        "example": "First plan"
+                    },
+                    "enquire_display_price": {
+                        "schema": "PricePolicy",
+                        "title": "A policy's enquire display price",
+                        "description": "A policy's enquire display price",
+                        "format": "string",
+                        "example": "19.00$"
+                    },
+                    "enquire_total_price": {
+                        "schema": "PricePolicy",
+                        "title": "A policy's enquire total price",
+                        "description": "A policy's enquire total price",
+                        "format": "integer",
+                        "example": "1900"
+                    }
                 },
                 "type": "object"
             },

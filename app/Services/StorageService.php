@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\Mime\MimeTypes;
+use App\Facades\ImageIntervention;
 
 class StorageService
 {
@@ -24,6 +25,7 @@ class StorageService
      */
     public function saveDoctorsPhoto(UploadedFile $photo): string
     {
+        $photo = ImageIntervention::orientate($photo);
         return $this->saveFile(
             $photo,
             self::DOCTORS_PHOTO_DIR . '/' . date('Y/m/d'),
@@ -59,6 +61,7 @@ class StorageService
 
     public function saveEnquireImage(UploadedFile $image): string
     {
+        $image = ImageIntervention::orientate($image);
         return $this->saveFile(
             $image,
             self::ENQUIRE_IMAGES_DIR . '/' . date('Y/m/d'),

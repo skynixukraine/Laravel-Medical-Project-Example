@@ -22,7 +22,7 @@ class DeactivateDoctor extends Action
     public function handle(ActionFields $fields, Collection $doctors): void
     {
         foreach ($doctors as $doctor) {
-            if ($doctor->getOriginal('status') === Doctor::STATUS_ACTIVATED) {
+            if ($doctor->getOriginal('status') != Doctor::STATUS_DEACTIVATED) {
                 $doctor->update(['status' => Doctor::STATUS_DEACTIVATED]);
                 event(new DoctorActivated($doctor));
             }

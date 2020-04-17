@@ -125,10 +125,5 @@ class ContactController extends ApiController
         } catch (Exception $e) {
             return ['status' => $e->getMessage()];    
         }
-//        $result = Mail::send('mail.contact.create', ['user', $contact->name, 'content' => $contact->body], function ($m) use ($contact) {
-//            $m->from(config('mail.from.address'), config('mail.from.name'));
-//            
-//            $m->to(config('mail.extra.contact.to'), config('mail.extra.contact.name'))->suject(__('Contact'));
-//        });
     }
 }
