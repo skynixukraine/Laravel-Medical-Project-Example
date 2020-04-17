@@ -60,9 +60,15 @@ class PricePolicy extends Resource
                 ->rules('required', 'string'),
 
             Text::make(__('Enquire total price'), 'enquire_total_price')->sortable()
+                ->help('The price should be in cents!!!')
                 ->rules('required', 'numeric'),
 
+            Text::make(__('Enquire admins fee'), 'enquire_admins_fee')->sortable()
+                ->help('The price should be in cents!!!')
+                ->rules('required', 'numeric', 'lt:enquire_total_price'),
+
             Text::make(__('Currency'), 'currency')->sortable()
+                ->help('Currency is string with a currency code, e.g. eur')
                 ->rules('required', 'string'),
 
             Text::make(__('Description'), 'description')
