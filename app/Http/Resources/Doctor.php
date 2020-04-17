@@ -113,6 +113,10 @@ use OpenApi\Annotations as OA;
  *              property="location"
  *          ),
  *          @OA\Property(
+ *              ref="#/components/schemas/PricePolicyResource",
+ *              property="price_policy"
+ *          ),
+ *          @OA\Property(
  *              @OA\Items(
  *                  type="object",
  *                  ref="#/components/schemas/LanguageResource"
@@ -178,6 +182,7 @@ class Doctor extends JsonResource
             'enquire_price' => Setting::fetchValue('display_enquire_price'),
             'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
             'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
+            'price_policy' => new PricePolicy($this->pricePolicy),
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
     }
