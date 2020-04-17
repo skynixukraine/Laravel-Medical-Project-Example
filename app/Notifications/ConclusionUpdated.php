@@ -27,7 +27,7 @@ class ConclusionUpdated extends QueueableNotification
         $mail = $this->createMailMessage()
             ->subject(__('Your Online Hautarzt case was answered'))
             ->greeting(__('Dear patient,'))
-            ->line(__('Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist\'s answer.', [
+            ->line(__('Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist\'s answer. The bill is attached.', [
                 'link' => $this->conclusionUrl(),
             ]))
             ->line(__('Get well!'));
