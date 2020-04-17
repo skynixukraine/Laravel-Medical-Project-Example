@@ -51,6 +51,13 @@ class PricePolicy extends JsonResource
      *     description="A price policy enquire_total_price",
      *     property="enquire_total_price",
      *     example="1900"
+     * ),
+     * @OA\Property(
+     *     format="int64",
+     *     title="Enquire admins fee",
+     *     description="A price policy enquire admins fee",
+     *     property="enquire_admins_fee",
+     *     example="650"
      * )
      */
     public function toArray($request)
@@ -60,6 +67,7 @@ class PricePolicy extends JsonResource
             'description' => $this->description,
             'enquire_display_price' => $this->enquire_display_price,
             'enquire_total_price' => $this->enquire_total_price,
+            'enquire_admins_fee' => $this->enquire_admins_fee,
             'currency' => $this->currency,
         ];
     }
