@@ -100,15 +100,16 @@ class Doctor extends Resource
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
 
             Password::make('Password')
-                ->hideWhenUpdating()
                 ->hideFromIndex()
                 ->hideFromDetail()
-                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed'),
+                ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed')
+                ->updateRules('nullable', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed'),
 
             PasswordConfirmation::make(__('Password confirmation'))
-                ->hideWhenUpdating()
                 ->hideFromIndex()
-                ->hideFromDetail(),
+                ->hideFromDetail()
+                ->creationRules('required', 'required_with:password', 'string', 'min:6')
+                ->updateRules('nullable', 'required_with:password', 'string', 'min:6'),
 
             Textarea::make(__('Short description'), 'short_description')->hideFromIndex()
                 ->rules('max:176'),
