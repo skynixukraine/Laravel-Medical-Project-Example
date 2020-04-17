@@ -150,7 +150,7 @@ class Charge extends ApiController
 
         $price = $enquire->doctor->pricePolicy->enquire_total_price;
         $fee = $enquire->doctor->pricePolicy->enquire_admins_fee;
-        $currency = $enquire->doctor->pricePolicy->enquire_price_currency;
+        $currency = $enquire->doctor->pricePolicy->currency;
 
         $params = [
             'amount' => $price,
