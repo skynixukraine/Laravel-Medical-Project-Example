@@ -99,13 +99,13 @@ class Doctor extends Resource
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
 
-            Password::make('Password')
+            Password::make('Password', 'password')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed')
                 ->updateRules('nullable', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed'),
 
-            PasswordConfirmation::make(__('Password confirmation'))
+            PasswordConfirmation::make(__('Password confirmation'), 'password_confirmation')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->creationRules('required', 'required_with:password', 'string', 'min:6')
