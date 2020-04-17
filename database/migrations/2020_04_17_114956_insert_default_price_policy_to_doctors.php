@@ -13,7 +13,6 @@ class InsertDefaultPricePolicyToDoctors extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::table('pricing_policies')->truncate();
 
         $data = [
             'enquire_admins_fee' => '650',
@@ -25,7 +24,7 @@ class InsertDefaultPricePolicyToDoctors extends Migration
 
         $id = \Illuminate\Support\Facades\DB::table('pricing_policies')->insertGetId($data);
 
-        if (Schema::hasCOlumn('doctors', 'price_policy_id')) {
+        if (Schema::hasColumn('doctors', 'price_policy_id')) {
 
             Schema::table('doctors', function (Blueprint $table) {
                 $table->dropForeign('doctors_price_policy_id_foreign');
@@ -50,9 +49,11 @@ class InsertDefaultPricePolicyToDoctors extends Migration
      */
     public function down()
     {
-        Schema::table('doctors', function (Blueprint $table) {
-            $table->dropForeign('doctors_price_policy_id_foreign');
-            $table->dropColumn('price_policy_id');
-        });
+        if (Schema::hasColumn('doctors', 'price_policy_id')) {
+            Schema::table('doctors', function (Blueprint $table) {
+                $table->dropForeign('doctors_price_policy_id_foreign');
+                $table->dropColumn('price_policy_id');
+            });
+        }
     }
 }
