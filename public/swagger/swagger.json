@@ -5363,6 +5363,13 @@
                         "description": "A policy's enquire total price",
                         "format": "integer",
                         "example": "1900"
+                    },
+                    "enquire_admins_fee": {
+                        "schema": "PricePolicy",
+                        "title": "A policy's enquire admins fee",
+                        "description": "A policy's enquire admins fee",
+                        "format": "integer",
+                        "example": "650"
                     }
                 },
                 "type": "object"
