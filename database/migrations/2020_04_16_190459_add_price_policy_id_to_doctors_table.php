@@ -29,9 +29,11 @@ class AddPricePolicyIdToDoctorsTable extends Migration
      */
     public function down()
     {
-        Schema::table('doctors', function (Blueprint $table) {
-            $table->dropForeign('doctors_price_policy_id_foreign');
-            $table->dropColumn('price_policy_id');
-        });
+        if (Schema::hasColumn('doctors', 'price_policy_id')) {
+            Schema::table('doctors', function (Blueprint $table) {
+                $table->dropForeign('doctors_price_policy_id_foreign');
+                $table->dropColumn('price_policy_id');
+            });
+        }
     }
 }
