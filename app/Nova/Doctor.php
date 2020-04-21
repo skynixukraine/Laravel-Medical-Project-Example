@@ -24,6 +24,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Password;
+use App\Nova\Components\Fields\PasswordWithoutHash;
 use Laravel\Nova\Fields\PasswordConfirmation;
 
 class Doctor extends Resource
@@ -99,7 +100,7 @@ class Doctor extends Resource
                 ->creationRules('unique:doctors,phone_number')
                 ->updateRules('unique:doctors,phone_number,{{resourceId}}'),
 
-            Password::make('Password', 'password')
+            PasswordWithoutHash::make(__('Password'), 'password')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->creationRules('required', 'string', 'min:6', 'max:255', 'regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/', 'confirmed')
