@@ -66,8 +66,8 @@ class PricePolicy extends JsonResource
             'id' => $this->id,
             'description' => $this->description,
             'enquire_display_price' => $this->enquire_display_price,
-            'enquire_total_price' => $this->enquire_total_price,
-            'enquire_admins_fee' => $this->enquire_admins_fee,
+            'enquire_total_price' => sprintf('%.2f', $this->enquire_total_price / 100),
+            'enquire_admins_fee' => sprintf('%.2f', $this->enquire_admins_fee / 100),
             'currency' => $this->currency,
         ];
     }
