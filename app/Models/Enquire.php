@@ -119,17 +119,24 @@ class Enquire extends Model
 
     public function invoicePdf()
     {
-        $price = Setting::fetchValue('display_enquire_price', 0);
-        $fee = Setting::fetchValue('enquire_admins_fee', 0);
-        $currency = Setting::fetchValue('enquire_price_currency', 'usd');
         $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
+        
+        $price = $this->billing->amount ?: 0;
+        $fee = $this->billing->admin_fee ?: 0;
+        $currency = $this->billing->currency ?: 'usd';
+        
+        $userPrice = $price - $fee;
+        
+        $feeDisplay = sprintf('%.2f', $fee / 100);
+        $userPriceDisplay = sprintf('%.2f', $userPrice / 100);
 
         $pdf = PDF::loadView('pdf.invoice',
             [
                 'enquire' => $this,
                 'billing' => $this->billing,
                 'price' => $price,
-                'fee' => $fee,
+                'feeDisplay' => $feeDisplay,
+                'userPriceDisplay' => $userPriceDisplay,
                 'currency' => $currency,
                 'logo' => $logo
             ]
