@@ -17,7 +17,7 @@
         .photo-answer {margin-top: 20px}
 
 
-        #page_2 {position:relative; overflow: hidden;margin: 20px 0px 0px 0px;padding: 0px;border: none;}
+        #page_2 {position:relative; overflow: hidden;margin: 0px;padding: 0px;border: none;}
 
         #page_2 #p2dimg1 {position:absolute;top:0px;left:90px;z-index:-1;width:491px;height:361px;}
         #page_2 #p2dimg1 #p2img1 {width:566px;height:124px;}
@@ -37,7 +37,8 @@
         .margin-bt-add{margin-bottom:35px;position: relative;top: -15px;width: 50%;}
 
         .p0{text-align: left;padding-left: 320px;margin-top: 220px;margin-bottom: 0px;}
-        .p1{text-align: left;padding-left: 320px;margin-top: 21px;margin-bottom: 0px;}
+        .p1{text-align: left;padding-left: 320px;margin-top: 21px;margin-bottom: 0px;font-weight: bold;}
+        .p1 a{text-decoration: none;}
         .p2{text-align: left;padding-left: 320px;margin-top: 22px;margin-bottom: 0px;}
         .p3{text-align: left;padding-left: 320px;margin-top: 14px;margin-bottom: 0px;}
         .p4{text-align: left;padding-left: 20px;margin-top: 195px;margin-bottom: 0px;}
@@ -47,7 +48,7 @@
         .p8{text-align: left;padding-left: 20px;margin-top: 9px;margin-bottom: 0px;}
         .p9{text-align: left;padding-left: 20px;padding-right: 453px;margin-top: 9px;margin-bottom: 0px;width:335px;}
         .p10{text-align: left;padding-left: 20px;margin-top: 9px;margin-bottom: 0px;}
-        .p11{text-align: left;padding-left: 20px;margin-top: 140px;margin-bottom: 0px;}
+        .p11{text-align: left;padding-left: 0px;margin-top: 11px;margin-bottom: 0px;}
         .p12{text-align: left;padding-left: 20px;margin-top: 23px;margin-bottom: 0px;}
         .p13{text-align: left;margin-top: 23px;margin-bottom: 0px;width:100%}
         .with-photo-answer{width:80%;}
@@ -59,7 +60,7 @@
 <DIV id="page_1">
     <DIV id="p1dimg1">
         <IMG width="125" height="80" src="{{ 'data:' . 'image/png' . ';base64,' . $logo }}" id="p1img1">
-        <IMG width="200" height="200" src="{{ 'data:' . 'image/png' . ';base64,' . $doctorPhoto }}" id="p1img1-doctor">
+        <IMG width="280" height="300" src="{{ 'data:' . 'image/png' . ';base64,' . $doctorPhoto }}" id="p1img1-doctor">
     </DIV>
 
     <DIV class="dclr"></DIV>
@@ -77,6 +78,8 @@
     }
 </style>
 <div class="page-break"></div>
+
+<P class="p11 ft0">Ihre Angaben und Bilder:</P>
 
 <DIV id="page_1">
     <DIV id="p2dimg1">

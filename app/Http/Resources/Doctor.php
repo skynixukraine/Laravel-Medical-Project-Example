@@ -74,13 +74,6 @@ use OpenApi\Annotations as OA;
  *          ),
  *          @OA\Property(
  *              format="string",
- *              title="Desctiption",
- *              description="A doctor's description",
- *              property="description",
- *              example="I am a good doctor"
- *          ),
- *          @OA\Property(
- *              format="string",
  *              title="Short description",
  *              description="A doctor's short description",
  *              property="short_description",
@@ -118,6 +111,10 @@ use OpenApi\Annotations as OA;
  *          @OA\Property(
  *              ref="#/components/schemas/LocationResource",
  *              property="location"
+ *          ),
+ *          @OA\Property(
+ *              ref="#/components/schemas/PricePolicyResource",
+ *              property="price_policy"
  *          ),
  *          @OA\Property(
  *              @OA\Items(
@@ -173,7 +170,6 @@ class Doctor extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
-            'description' => $this->description,
             'short_description' => $this->short_description,
             'status' => __($this->status),
             'created_at' => $this->created_at,
@@ -183,9 +179,10 @@ class Doctor extends JsonResource
             'specialization' => new Specialization($this->specialization),
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
-            'enquire_price' => Setting::fetchValue('display_enquire_price'),
-            'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
-            'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
+            'enquire_price' => $this->pricePolicy->enquire_display_price,
+            'price' => $this->pricePolicy->enquire_total_price,
+            'currency' => $this->pricePolicy->currency,
+            'price_policy' => new PricePolicy($this->pricePolicy),
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
     }

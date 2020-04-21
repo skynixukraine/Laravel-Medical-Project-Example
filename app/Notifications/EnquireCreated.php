@@ -32,7 +32,7 @@ class EnquireCreated extends QueueableNotification
                 'age' => $this->enquire->date_of_birth->diffInYears(),
             ]))
             ->line(__('Login to the doctors portal to answer it: :link', [
-                'link' => config('app.url') . '/dashboard'
+                'link' => config('app.url') . '/einloggen'
             ]));
     }
 }

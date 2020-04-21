@@ -97,7 +97,7 @@ class DownloadConclusion extends ApiController
     {
         throw_if(!Hash::check($request->access_token, $enquire->token->access_token), AuthorizationException::class);
 
-        $logo = base64_encode(file_get_contents(public_path() . '/images/logo.png'));
+        $logo = base64_encode(file_get_contents(public_path() . '/images/dark_logo.png'));
 
         $doctorPhotoPath = public_path() . '/images/' . 'doctor-default-photo.png';
         
