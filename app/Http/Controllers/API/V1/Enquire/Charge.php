@@ -178,7 +178,7 @@ class Charge extends ApiController
         
         $response = \Stripe\Charge::create($params);
 
-        Log::info('Charge status: ' . print_r($enquire, true));
+        Log::info('Charge status: ' . print_r($response, true));
         
         $enquire->billing()->create([
             'amount' => $price,
