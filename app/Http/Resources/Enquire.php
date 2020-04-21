@@ -164,7 +164,7 @@ class Enquire extends JsonResource
             'last_contacted_at' => $this->last_contacted_a,
             'is_verified_email' => $this->hasVerifiedEmail(),
             'payment_status' => $this->payment_status,
-            'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
+            'price' => $this->billing()->exists() ? $this->billing->amount : $this->doctor->pricePolicy->enquire_total_price,
             'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
         ];
     }
