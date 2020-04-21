@@ -54,6 +54,7 @@ class Update extends FormRequest
             'language_ids.*' => 'distinct|exists:languages,id',
             'phone_number' => ['string', Rule::unique('doctors')->ignore(Auth::id())],
             'price_policy_id' => 'exists:pricing_policies,id',
+            'lanr' => 'string|max:255',
         ];
     }
 

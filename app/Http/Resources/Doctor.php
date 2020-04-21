@@ -184,6 +184,7 @@ class Doctor extends JsonResource
             'currency' => $this->pricePolicy->currency,
             'price_policy' => new PricePolicy($this->pricePolicy),
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
+            'lanr' => $this->lanr
         ];
     }
 }
