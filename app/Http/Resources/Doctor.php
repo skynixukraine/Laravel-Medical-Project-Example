@@ -179,9 +179,9 @@ class Doctor extends JsonResource
             'specialization' => new Specialization($this->specialization),
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
-            'enquire_price' => Setting::fetchValue('display_enquire_price'),
-            'price' => Setting::fetchValue('enquire_total_price', 0) * 100,
-            'currency' => Setting::fetchValue('enquire_price_currency', 'usd'),
+            'enquire_price' => $this->pricePolicy->enquire_display_price,
+            'price' => $this->pricePolicy->enquire_total_price,
+            'currency' => $this->pricePolicy->currency,
             'price_policy' => new PricePolicy($this->pricePolicy),
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
         ];
