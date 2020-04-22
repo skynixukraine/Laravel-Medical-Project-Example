@@ -120,8 +120,8 @@
         <TR>
             <TD class="tr1 td4"><P class="p6 ft2">{{$enquire->created_at}}</P></TD>
             <TD class="tr1 td5"><P class="p7 ft2">Vermittlung der <NOBR>Online-Beratung</NOBR> (u.a.</P></TD>
-            <TD class="tr1 td6"><P class="p8 ft2">6,50 €</P></TD>
-            <TD class="tr1 td7"><P class="p9 ft2">6,50 €</P></TD>
+            <TD class="tr1 td6"><P class="p8 ft2">{{$feeDisplay}} €</P></TD>
+            <TD class="tr1 td7"><P class="p9 ft2">{{$feeDisplay}} €</P></TD>
         </TR>
         <TR>
             <TD class="tr1 td4"><P class="p7 ft5">&nbsp;</P></TD>
@@ -133,13 +133,13 @@
             <TD class="tr0 td4"><P class="p6 ft2">Summe inkl. 19% USt.:</P></TD>
             <TD class="tr0 td5"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr0 td6"><P class="p7 ft5">&nbsp;</P></TD>
-            <TD class="tr0 td7"><P class="p9 ft2">6,50 €</P></TD>
+            <TD class="tr0 td7"><P class="p9 ft2">{{$feeDisplay}} €</P></TD>
         </TR>
         <TR>
             <TD class="tr2 td4"><P class="p6 ft2">Gezahlter Betrag</P></TD>
             <TD class="tr2 td5"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr2 td6"><P class="p7 ft5">&nbsp;</P></TD>
-            <TD class="tr2 td7"><P class="p9 ft2">6,50 €</P></TD>
+            <TD class="tr2 td7"><P class="p9 ft2">{{$feeDisplay}} €</P></TD>
         </TR>
     </TABLE>
     <P class="p10 ft1">Vielen Dank für Ihr Vertrauen!</P>
@@ -179,8 +179,8 @@
             <TD class="tr1 td16"><P class="p7 ft2">1A</P></TD>
             <TD class="tr1 td17"><P class="p19 ft2">1</P></TD>
             <TD class="tr1 td18"><P class="p7 ft2">Teledermatologische Beratung</P></TD>
-            <TD class="tr1 td19"><P class="p19 ft2">1</P></TD>
-            <TD class="tr1 td20"><P class="p20 ft2">4,66</P></TD>
+            <TD class="tr1 td19"><P class="p19 ft2">{{$billing->invoice_1A_factor}}</P></TD>
+            <TD class="tr1 td20"><P class="p20 ft2">{{$billing->invoice_1A_price}}</P></TD>
             <TD class="tr1 td21"><P class="p7 ft2">€</P></TD>
         </TR>
         <TR>
@@ -197,8 +197,8 @@
             <TD class="tr0 td16"><P class="p7 ft2">5A</P></TD>
             <TD class="tr0 td17"><P class="p19 ft2">1</P></TD>
             <TD class="tr0 td18"><P class="p7 ft2">Symptombezogene Untersuchung</P></TD>
-            <TD class="tr0 td19"><P class="p19 ft2">1</P></TD>
-            <TD class="tr0 td20"><P class="p20 ft2">4,66</P></TD>
+            <TD class="tr0 td19"><P class="p19 ft2">{{$billing->invoice_5A_factor}}</P></TD>
+            <TD class="tr0 td20"><P class="p20 ft2">{{$billing->invoice_5A_price}}</P></TD>
             <TD class="tr0 td21"><P class="p7 ft2">€</P></TD>
         </TR>
         <TR>
@@ -215,8 +215,8 @@
             <TD class="tr0 td16"><P class="p7 ft2">75A</P></TD>
             <TD class="tr0 td17"><P class="p19 ft2">1</P></TD>
             <TD class="tr0 td18"><P class="p7 ft2">Teledermatologischer Bericht</P></TD>
-            <TD class="tr0 td19"><P class="p19 ft2">0,42</P></TD>
-            <TD class="tr0 td20"><P class="p20 ft2">3,18</P></TD>
+            <TD class="tr0 td19"><P class="p19 ft2">{{$billing->invoice_75A_factor}}</P></TD>
+            <TD class="tr0 td20"><P class="p20 ft2">{{$billing->invoice_75A_price}}</P></TD>
             <TD class="tr0 td21"><P class="p7 ft2">€</P></TD>
         </TR>
         <TR>
@@ -252,7 +252,7 @@
             <TD class="tr0 td17"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr0 td18"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr0 td19"><P class="p7 ft5">&nbsp;</P></TD>
-            <TD class="tr0 td20"><P class="p20 ft2">12,50</P></TD>
+            <TD class="tr0 td20"><P class="p20 ft2">{{$userPriceDisplay}}</P></TD>
             <TD class="tr0 td21"><P class="p7 ft2">€</P></TD>
         </TR>
         <TR>
@@ -261,7 +261,7 @@
             <TD class="tr2 td17"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr2 td18"><P class="p7 ft5">&nbsp;</P></TD>
             <TD class="tr2 td19"><P class="p7 ft5">&nbsp;</P></TD>
-            <TD class="tr2 td20"><P class="p20 ft2">12,50</P></TD>
+            <TD class="tr2 td20"><P class="p20 ft2">{{$userPriceDisplay}}</P></TD>
             <TD class="tr2 td21"><P class="p7 ft2">€</P></TD>
         </TR>
     </TABLE>

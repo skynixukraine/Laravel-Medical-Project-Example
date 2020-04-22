@@ -182,7 +182,14 @@ class Charge extends ApiController
         
         $enquire->billing()->create([
             'amount' => $price,
+            'admin_fee' => $fee,
             'currency' => $currency,
+            'invoice_1A_factor' => $enquire->doctor->pricePolicy->invoice_1A_factor,
+            'invoice_1A_price' => $enquire->doctor->pricePolicy->invoice_1A_price,
+            'invoice_5A_factor' => $enquire->doctor->pricePolicy->invoice_5A_factor,
+            'invoice_5A_price' => $enquire->doctor->pricePolicy->invoice_5A_price,
+            'invoice_75A_factor' => $enquire->doctor->pricePolicy->invoice_75A_factor,
+            'invoice_75A_price' => $enquire->doctor->pricePolicy->invoice_75A_price,
         ]);
 
         Log::info('Update billing');

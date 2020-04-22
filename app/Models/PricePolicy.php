@@ -24,4 +24,9 @@ class PricePolicy extends Model
     {
         return $this->hasMany(Doctor::class);
     }
+
+    public function getEnquireDoctorFeeAttribute()
+    {
+        return $this->enquire_total_price - $this->enquire_admins_fee;
+    }
 }
