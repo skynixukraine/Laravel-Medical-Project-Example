@@ -13,6 +13,7 @@ use App\Models\PaymentMethod;
 use App\Models\Setting;
 use App\Http\Requests\Enquire\Charge as Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Stripe\Source;
@@ -135,15 +136,23 @@ class Charge extends ApiController
     {
         abort_if($enquire->status === Enquire::PAYMENT_STATUS_PAID, 304);
 
+        Log::info('Start pay');
+        
         if ($request->type != PaymentMethod::CREDIT_CARD_METHOD) {
 
+            Log::info('Payment by service: ' . $request->type);
+            
             $response = Source::retrieve($request->code);
 
+            Log::info('Payment stripe status: ' . $response->status);
+            
             throw_if($response->status != 'chargeable', ValidationException::withMessages([
                 'status' => __('Your status is ' . $response->status),
             ]));
         }
 
+        Log::info('Start charge');
+        
         throw_if($enquire->doctor->pricePolicy == null, ValidationException::withMessages([
             'price_policy_id' => __('Your price policy is undefined'),
         ]));
@@ -164,21 +173,31 @@ class Charge extends ApiController
             $params['destination'] = $enquire->doctor->stripe_account_id;
             $params['application_fee_amount'] = $fee;
         }
-        
-        \Stripe\Charge::create($params);
 
+        Log::info('Payment params: ' . json_encode($params));
+        
+        $response = \Stripe\Charge::create($params);
+
+        Log::info('Charge status: ' . print_r($response, true));
+        
         $enquire->billing()->create([
             'amount' => $price,
             'currency' => $currency,
         ]);
 
+        Log::info('Update billing');
+        
         $enquire->update([
             'payment_status' => Enquire::PAYMENT_STATUS_PAID,
             'hash' => Hash::make(Str::random(100) . time()),
         ]);
 
+        Log::info('Update status enquire');
+
         event(new EnquireCreated($enquire));
 
+        Log::info('Create event');
+        
         return EnquireResource::make($enquire);
     }
 }
