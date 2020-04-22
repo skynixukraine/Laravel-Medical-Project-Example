@@ -35,6 +35,10 @@ class EventServiceProvider extends ServiceProvider
             \App\Listeners\SendDoctorActivatedNotification::class,
         ],
 
+        \App\Events\DoctorUnpaused::class => [
+            \App\Listeners\SendDoctorUnpausedNotification::class,
+        ],
+
         \App\Events\DoctorDeactivated::class => [
             \App\Listeners\SendDoctorDeactivatedNotification::class,
         ],
