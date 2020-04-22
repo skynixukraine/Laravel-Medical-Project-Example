@@ -33,7 +33,7 @@ class Register extends FormRequest
             'board_certification' => 'mimes:pdf,jpg,png,jpeg|max:50000',
             'password' => 'required|string|min:6|max:100|regex:/^.*(?=.{6,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\X])(?=.*[!@#$%^&*.])(?=\\S+$).*$/|confirmed',
             'accepted' => 'required|accepted',
-            'lanr' => 'string|max:255',
+            'lanr' => 'integer|digits_between:1,9',
             'recaptcha' => ['required', 'string', new Recaptcha('register_doctor')],
         ];
     }
