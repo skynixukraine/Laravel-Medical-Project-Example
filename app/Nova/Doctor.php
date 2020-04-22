@@ -124,12 +124,12 @@ class Doctor extends Resource
                 ->displayUsingLabels()
                 ->sortable()
                 ->options([
-                    DoctorModel::STATUS_CREATED => __('Created'),
-                    DoctorModel::STATUS_ACTIVATION_REQUESTED => __('Activation requested'),
-                    DoctorModel::STATUS_APPROVED => __('Approved'),
-                    DoctorModel::STATUS_ACTIVATED => __('Activated'),
-                    DoctorModel::STATUS_DEACTIVATED => __('Deactivated'),
-                    DoctorModel::STATUS_CLOSED => __('Closed'),
+                    DoctorModel::STATUS_CREATED => ucfirst(strtolower(__(DoctorModel::STATUS_CREATED))),
+                    DoctorModel::STATUS_ACTIVATION_REQUESTED => ucfirst(strtolower(__(DoctorModel::STATUS_ACTIVATION_REQUESTED))),
+                    DoctorModel::STATUS_APPROVED => ucfirst(strtolower(__(DoctorModel::STATUS_APPROVED))),
+                    DoctorModel::STATUS_ACTIVATED => ucfirst(strtolower(__(DoctorModel::STATUS_ACTIVATED))),
+                    DoctorModel::STATUS_DEACTIVATED => ucfirst(strtolower(__(DoctorModel::STATUS_DEACTIVATED))),
+                    DoctorModel::STATUS_CLOSED => ucfirst(strtolower(__(DoctorModel::STATUS_CLOSED))),
                 ]),
 
             DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
