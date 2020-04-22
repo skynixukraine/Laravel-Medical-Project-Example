@@ -115,6 +115,9 @@ class Doctor extends Resource
             Textarea::make(__('Short description'), 'short_description')->hideFromIndex()
                 ->rules('max:176'),
 
+            Text::make(__('Lanr'), 'lanr')->hideFromIndex()
+                ->rules('max:255'),
+
             Select::make(__('Status'), 'status')
                 ->hideWhenCreating()
                 ->hideWhenUpdating()
