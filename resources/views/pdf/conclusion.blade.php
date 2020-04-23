@@ -69,7 +69,7 @@
     <P class="p2 ft2">{{$enquire->doctor->location->address}}</P>
     <P class="p3 ft2">{{$enquire->doctor->location->postal_code}} {{$enquire->doctor->location->city}}</P>
     <P class="p4 ft0">Professionelle Einschätzung Ihres Hautarztes:</P>
-    <P class="p5 ft3">{{$enquire->conclusion}}</P>
+    <P class="p5 ft3">{!! $conclusion !!}</P>
 </DIV>
 
 <style>

@@ -110,6 +110,7 @@ class DownloadConclusion extends ApiController
         $pdf = PDF::loadView('pdf.conclusion',
             [
                 'enquire' => $enquire, 
+                'conclusion' => nl2br($enquire->conclusion), 
                 'logo' => $logo,
                 'doctorPhoto' => $doctorPhoto,
             ]
