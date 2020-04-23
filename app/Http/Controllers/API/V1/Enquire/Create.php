@@ -13,10 +13,8 @@ use App\Models\Enquire;
 use App\Models\EnquireAnswer;
 use App\Models\Message;
 use App\Models\MessageOption;
-use App\Models\Setting;
-use App\Models\PaymentMethod;
-use App\Services\StorageService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -215,8 +213,11 @@ class Create extends ApiController
             'phone_number', 'email', 'doctor_id'
         ));
 
+        Log::info('Start create enqure for doctor id: ' . $enquire->doctor_id);
+        
         DB::transaction(function () use ($request, $enquire) {
             $enquire->authy_id = $this->getAuthyId($request->email, $request->phone_number, $request->country_code);
+            
             $enquire->saveOrFail();
 
             $enquire->location()->create($request->only(
@@ -232,6 +233,8 @@ class Create extends ApiController
         $enquire = $enquire->fresh();
         $enquire->wasRecentlyCreated = true;
 
+        Log::info('Save enquire success');
+        
         return EnquireResource::make($enquire);
     }
 
@@ -267,6 +270,8 @@ class Create extends ApiController
 
         $enquireAnswer->value = $answers;
         $enquireAnswer->saveOrFail();
+        
+        Log::info('Save answer text');
     }
 
     private function createSelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
@@ -279,6 +284,8 @@ class Create extends ApiController
 
         $enquireAnswer->value = json_encode($answerValue);
         $enquireAnswer->save();
+
+        Log::info('Save answer select');
     }
 
     private function createRadioAnswer(EnquireAnswer $enquireAnswer, $answers): void
@@ -289,6 +296,8 @@ class Create extends ApiController
         $enquireAnswer->message_option_id = $answer;
         $enquireAnswer->value = $answerValue->value;
         $enquireAnswer->saveOrFail();
+
+        Log::info('Save answer radio');
     }
 
     private function createBodySelectAnswer(EnquireAnswer $enquireAnswer, $answers): void
@@ -300,6 +309,8 @@ class Create extends ApiController
 
             $enquireAnswer->save();
         }
+
+        Log::info('Save answer body');
     }
 
     private function createImageAnswer(EnquireAnswer $enquireAnswer, $answers, $image): void
@@ -309,5 +320,7 @@ class Create extends ApiController
 
         $enquireAnswer->value = Storage::saveEnquireImage($answers);
         $enquireAnswer->saveOrFail();
+
+        Log::info('Save answer image');
     }
 }
