@@ -30,7 +30,7 @@ class DoctorUnpaused extends QueueableNotification
     {
         return $this->createMailMessage()
             ->subject(__('Account unpaused'))
-            ->line(__('Dear Sir or Madam,'))
+            ->greeting(__('Dear Sir or Madam,'))
             ->line(__('Your account was successfully unpaused and may now receive patients requests.'));
     }
 

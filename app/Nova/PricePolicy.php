@@ -79,7 +79,7 @@ class PricePolicy extends Resource
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
 
-            Text::make(__('1A Price'), 'invoice_1A_factor')
+            Text::make(__('1A Price'), 'invoice_1A_price')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
@@ -89,7 +89,7 @@ class PricePolicy extends Resource
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
 
-            Text::make(__('5A Price'), 'invoice_5A_factor')
+            Text::make(__('5A Price'), 'invoice_5A_price')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
@@ -99,7 +99,7 @@ class PricePolicy extends Resource
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
 
-            Text::make(__('75A Price'), 'invoice_75A_factor')
+            Text::make(__('75A Price'), 'invoice_75A_price')
                 ->hideFromIndex()
                 ->hideFromDetail()
                 ->rules('nullable', 'integer'),
