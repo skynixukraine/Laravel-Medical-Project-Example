@@ -73,6 +73,36 @@ class PricePolicy extends Resource
 
             Text::make(__('Description'), 'description')
                 ->rules('nullable', 'max:255'),
+
+            Text::make(__('1A Factor'), 'invoice_1A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
+
+            Text::make(__('1A Price'), 'invoice_1A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
+
+            Text::make(__('5A Factor'), 'invoice_5A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
+
+            Text::make(__('5A Price'), 'invoice_5A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
+
+            Text::make(__('75A Factor'), 'invoice_75A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
+
+            Text::make(__('75A Price'), 'invoice_75A_factor')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->rules('nullable', 'integer'),
         ];
     }
 

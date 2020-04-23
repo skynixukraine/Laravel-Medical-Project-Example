@@ -179,10 +179,10 @@ class Doctor extends JsonResource
             'specialization' => new Specialization($this->specialization),
             'location' => new Location($this->location),
             'languages' => Language::collection($this->languages),
-            'enquire_price' => $this->pricePolicy->enquire_display_price,
-            'price' => $this->pricePolicy->enquire_total_price,
-            'currency' => $this->pricePolicy->currency,
-            'price_policy' => new PricePolicy($this->pricePolicy),
+            'enquire_price' => $this->pricePolicy()->exists() ? $this->pricePolicy->enquire_display_price : null,
+            'price' => $this->pricePolicy()->exists() ? $this->pricePolicy->enquire_total_price : null,
+            'currency' => $this->pricePolicy()->exists() ? $this->pricePolicy->currency : null,
+            'price_policy' => $this->pricePolicy()->exists() ? new PricePolicy($this->pricePolicy) : null,
             'can_be_approved' => $this->when($this->status === \App\Models\Doctor::STATUS_CREATED, $this->canBeApproved()),
             'lanr' => $this->lanr
         ];
