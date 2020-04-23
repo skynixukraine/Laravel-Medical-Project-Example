@@ -116,7 +116,7 @@ class Doctor extends Resource
                 ->rules('max:176'),
 
             Text::make(__('Lanr'), 'lanr')->hideFromIndex()
-                ->rules('max:255'),
+                ->rules('nullable', 'integer', 'digits_between:1,9'),
 
             Select::make(__('Status'), 'status')
                 ->hideWhenCreating()
