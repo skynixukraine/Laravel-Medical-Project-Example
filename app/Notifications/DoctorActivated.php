@@ -30,7 +30,7 @@ class DoctorActivated extends QueueableNotification
     {
         return $this->createMailMessage()
             ->subject(__('Account successfully verified'))
-            ->line(__('Dear colleague,'))
+            ->greeting(__('Dear colleague,'))
             ->line(__('We appreciate your interest!'))
             ->line(__('Your registration has been successfully verified. Now you can log in at online-hautarzt.de/login.'))
             ->line(__('Please complete the information in your :account, in particular the :billing and request approval from the administrator. You will enter the bank details with our payment provider Stripe, who will handle the automatic payment - so you will receive your remuneration automatically transferred to the bank account almost in real time. We cannot therefore activate this data before it is stored.',
