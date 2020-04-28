@@ -7,6 +7,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
@@ -102,6 +103,8 @@ class Enquire extends Resource
             DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
 
             DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
+
+            HasMany::make(__('Answers'), 'answers', \App\Nova\EnquireAnswer::class)->onlyOnDetail(),
 
             HasOne::make(__('Billing'), 'billing', Billing::class)->onlyOnDetail(),
 
