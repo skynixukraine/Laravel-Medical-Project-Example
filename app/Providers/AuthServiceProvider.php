@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Models\Billing;
 use App\Models\Doctor;
 use App\Models\Enquire;
+use App\Models\EnquireAnswer;
 use App\Models\Location;
 use App\Models\Setting;
 use App\Policies\BillingPolicy;
 use App\Policies\DoctorPolicy;
+use App\Policies\EnquireAnswerPolicy;
 use App\Policies\EnquirePolicy;
 use App\Policies\LocationPolicy;
 use App\Policies\SettingPolicy;
@@ -29,6 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         Billing::class => BillingPolicy::class,
         Location::class => LocationPolicy::class,
         Setting::class => SettingPolicy::class,
+        EnquireAnswer::class => EnquireAnswerPolicy::class,
     ];
 
     /**
