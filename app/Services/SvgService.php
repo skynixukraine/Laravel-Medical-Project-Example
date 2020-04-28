@@ -20,6 +20,15 @@ class SvgService
         
         return base64_encode($frontBody);
     }
+
+    public function setColorNovaByIds(string $fileName, array $ids): string
+    {
+        $frontBody = file_get_contents(public_path() . '/images/' . $fileName);
+
+        $frontBody = str_replace($ids, '" style="fill: ' . $this->color . '' , $frontBody);
+
+        return base64_encode($frontBody);
+    }
     
 
 }
