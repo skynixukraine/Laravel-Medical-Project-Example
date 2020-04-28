@@ -75,12 +75,17 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Password::make('Password')
+            Password::make(__('Password'), 'password')
                 ->onlyOnForms()
                 ->creationRules('required', 'string', 'min:6', 'confirmed')
                 ->updateRules('nullable', 'string', 'min:6', 'confirmed'),
 
-            PasswordConfirmation::make(__('Password confirmation')),
+            PasswordConfirmation::make(__('Password confirmation'), 'password_confirmation')
+                ->hideFromIndex()
+                ->hideFromDetail()
+                ->creationRules('required', 'required_with:password', 'string', 'min:6')
+                ->updateRules('nullable', 'required_with:password', 'string', 'min:6'),
+
         ];
     }
 

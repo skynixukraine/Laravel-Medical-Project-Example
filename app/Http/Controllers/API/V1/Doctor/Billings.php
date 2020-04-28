@@ -200,7 +200,7 @@ class Billings extends ApiController
             });
         }
 
-        $sortableFields = collect(['id', 'enquire_id', 'created_at']);
+        $sortableFields = collect(['id', 'enquire_id', 'created_at', 'status']);
 
         $request->has('order_field') && $sortableFields->contains($request->order_field)
             ? $billings->orderBy($request->order_field, $request->query('order_direction', 'asc'))
