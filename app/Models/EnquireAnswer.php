@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Log;
 use App\Facades\Storage;
 
 class EnquireAnswer extends Model
@@ -36,6 +37,10 @@ class EnquireAnswer extends Model
 
     public function prepareValue()
     {
+        if ($this->message->type == null || $this->message->type == '') {
+            return $this->value;
+        }
+
         if ($this->message->type == \App\Models\Message::TYPE_IMAGE) {
             return Storage::getEnquireImageBase64($this->value);
         }

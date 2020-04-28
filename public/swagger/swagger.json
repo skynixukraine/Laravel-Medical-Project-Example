@@ -1292,6 +1292,11 @@
                                         "format": "boolean",
                                         "example": "1"
                                     },
+                                    "lanr": {
+                                        "description": "A doctor's lanr, (between 1 - 9 digits)",
+                                        "format": "integer",
+                                        "example": 123456789
+                                    },
                                     "board_certification": {
                                         "description": "A doctor's board certification",
                                         "format": "binary"

@@ -228,7 +228,7 @@ class Update extends ApiController
         DB::transaction(function () use ($request, $doctor) {
             $doctor->update($request->only(
                 'title_id', 'first_name', 'last_name', 'description', 'short_description', 'region_id', 'price_policy_id',
-                'specialization_id', 'password', 'photo', 'phone_number', 'medical_degree', 'board_certification'
+                'specialization_id', 'password', 'photo', 'phone_number', 'medical_degree', 'board_certification', 'lanr'
             ));
 
             if ($request->has('language_ids')) {

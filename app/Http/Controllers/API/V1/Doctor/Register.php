@@ -166,7 +166,7 @@ class Register extends ApiController
     public function __invoke(RegisterRequest $request, StorageService $storage)
     {
         $doctor = Doctor::create(
-            $request->only('email', 'phone_number', 'password', 'board_certification', 'medical_degree')
+            $request->only('email', 'phone_number', 'password', 'board_certification', 'medical_degree', 'lanr')
         );
 
         return AuthToken::make($doctor->saveToken())->response()->setStatusCode(201);

@@ -73,9 +73,11 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $fillable = [
-        'photo', 'title_id', 'phone_number', 'board_certification', 'medical_degree',
-        'first_name', 'last_name', 'description', 'short_description', 'email', 'status', 'password',
-        'region_id', 'specialization_id', 'stripe_account_id', 'email_verified_at', 'price_policy_id'
+        'photo', 'title_id', 'phone_number', 'board_certification',
+        'medical_degree', 'first_name', 'last_name', 'description',
+        'short_description', 'email', 'status', 'password', 'region_id',
+        'specialization_id', 'stripe_account_id', 'email_verified_at',
+        'price_policy_id', 'lanr'
     ];
 
     protected $casts = [

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Doctor;
 
 use App\Events\DoctorActivated;
-use App\Events\DoctorClosed;
+use App\Events\DoctorUnpaused;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Models\Doctor;
 use OpenApi\Annotations as OA;
@@ -98,8 +98,18 @@ class Activate extends ApiController
     {
         abort_if($doctor->status === Doctor::STATUS_ACTIVATED, 304);
 
+        $status = $doctor->status;
+        
         $doctor->update(['status' => Doctor::STATUS_ACTIVATED]);
 
-        event(new DoctorActivated($doctor));
+        if ($status == Doctor::STATUS_DEACTIVATED) {
+            
+            event(new DoctorUnpaused($doctor));
+            
+        } else {
+
+            event(new DoctorActivated($doctor));
+        }
+
     }
 }

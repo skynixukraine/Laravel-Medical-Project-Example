@@ -82,17 +82,17 @@ class Enquire extends Resource
             ]),
 
             Select::make(__('Status'), 'status')->sortable()->displayUsingLabels()->options([
-                \App\Models\Enquire::STATUS_NEW => __('New'),
-                \App\Models\Enquire::STATUS_WAIT_PATIENT_RESPONSE => __('Awaiting for patient response'),
-                \App\Models\Enquire::STATUS_WAIT_DOCTOR_RESPONSE => __('Awaiting for doctor response'),
-                \App\Models\Enquire::STATUS_RESOLVED => __('Resolved'),
-                \App\Models\Enquire::STATUS_ARCHIVED => __('Archived'),
+                \App\Models\Enquire::STATUS_NEW => ucfirst(strtolower(__(\App\Models\Enquire::STATUS_NEW))),
+                \App\Models\Enquire::STATUS_WAIT_PATIENT_RESPONSE => ucfirst(strtolower(__(\App\Models\Enquire::STATUS_WAIT_PATIENT_RESPONSE))),
+                \App\Models\Enquire::STATUS_WAIT_DOCTOR_RESPONSE => ucfirst(strtolower(__(\App\Models\Enquire::STATUS_WAIT_DOCTOR_RESPONSE))),
+                \App\Models\Enquire::STATUS_RESOLVED => ucfirst(strtolower(__(\App\Models\Enquire::STATUS_RESOLVED))),
+                \App\Models\Enquire::STATUS_ARCHIVED => ucfirst(strtolower(__(\App\Models\Enquire::STATUS_ARCHIVED))),
             ]),
 
             Select::make(__('Payment'), 'payment_status')->sortable()->displayUsingLabels()->options([
-                \App\Models\Enquire::PAYMENT_STATUS_PAID => __('Paid'),
-                \App\Models\Enquire::PAYMENT_STATUS_FAIL => __('Fail'),
-                \App\Models\Enquire::PAYMENT_STATUS_PENDING => __('Pending'),
+                \App\Models\Enquire::PAYMENT_STATUS_PAID => ucfirst(strtolower(__(\App\Models\Enquire::PAYMENT_STATUS_PAID))),
+                \App\Models\Enquire::PAYMENT_STATUS_FAIL => ucfirst(strtolower(__(\App\Models\Enquire::PAYMENT_STATUS_FAIL))),
+                \App\Models\Enquire::PAYMENT_STATUS_PENDING => ucfirst(strtolower(__(\App\Models\Enquire::PAYMENT_STATUS_PENDING))),
             ]),
 
             BelongsTo::make(__('Doctor'), 'doctor', Doctor::class)->withMeta($this->doctor_id ? [] : ['value' => $this->doctor_info]),
