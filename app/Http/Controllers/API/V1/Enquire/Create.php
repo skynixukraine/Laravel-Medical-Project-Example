@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\API\V1\Enquire;
 
 use App\Events\EnquireCreated;
+use App\Facades\ImageIntervention;
 use App\Facades\Storage;
 use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\Create as CreateRequest;
@@ -318,7 +319,7 @@ class Create extends ApiController
 
         Validator::make(['image' => $answers], ['image' => 'mimes:jpg,png,jpeg|max:50000'])->validate();
 
-        $enquireAnswer->value = Storage::saveEnquireImage($answers);
+        $enquireAnswer->value = Storage::saveEnquireImage(ImageIntervention::makeThumb($answers, 335));
         $enquireAnswer->saveOrFail();
 
         Log::info('Save answer image');
