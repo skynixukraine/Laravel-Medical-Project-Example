@@ -170,11 +170,7 @@ class Doctor extends Resource
             }
         )->resolveUsing(
             function ($value, $resource) use ($fileName, $attribute) {
-                return $this->{$attribute} ? Str::replaceLast(
-                    basename($this->{$attribute}),
-                    $fileName,
-                    $this->{$attribute}
-                ) : null;
+                return $this->{$attribute} ? $fileName : null;
             }
         );
     }
