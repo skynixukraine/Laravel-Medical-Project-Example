@@ -161,7 +161,7 @@ class Enquire extends JsonResource
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
-            'last_contacted_at' => $this->last_contacted_a,
+            'last_contacted_at' => $this->last_contacted_at,
             'is_verified_email' => $this->hasVerifiedEmail(),
             'payment_status' => $this->payment_status,
             'price' => $this->billing()->exists() ? $this->billing->amount : $this->doctor->pricePolicy->enquire_total_price,
