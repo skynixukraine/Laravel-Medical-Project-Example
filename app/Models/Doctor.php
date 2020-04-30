@@ -63,6 +63,8 @@ class Doctor extends Authenticatable implements MustVerifyEmail
     public const STATUS_APPROVED = 'APPROVED';
     public const STATUS_DEACTIVATED = 'DEACTIVATED';
     public const STATUS_CLOSED = 'CLOSED';
+    
+    const DEFAULT_DOCTOR_AVATAR = '/images/doctor-default-avatar.png';
 
     const WIDTH_PHOTO = 285;
     const WIDTH_CERTS = 235;
@@ -237,4 +239,15 @@ class Doctor extends Authenticatable implements MustVerifyEmail
             Storage::removeFile($this->photo);
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultAvatar()
+    {
+        $doctorPhotoPath = public_path() . self::DEFAULT_DOCTOR_AVATAR;
+        
+        return ImageIntervention::getBase64ImageSource('image/png', $doctorPhotoPath);
+    }
+    
 }

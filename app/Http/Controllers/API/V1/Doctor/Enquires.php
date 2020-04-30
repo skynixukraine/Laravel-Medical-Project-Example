@@ -237,7 +237,7 @@ class Enquires extends ApiController
             });
         }
 
-        $sortableFields = ['id', 'first_name', 'last_name', 'created_at', 'last_contacted_at', 'status'];
+        $sortableFields = ['id', 'first_name', 'last_name', 'created_at', 'last_contacted_at', 'status', 'conclusion_created_at'];
 
         $request->has('order_field') && collect($sortableFields)->contains($request->order_field)
             ? $enquires->orderBy($request->order_field, $request->query('order_direction', 'asc'))

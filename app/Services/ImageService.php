@@ -66,4 +66,15 @@ class ImageService
         return in_array($file->getMimeType(), ['image/png', 'image/jpeg', 'image/jpg']);
     }
 
+    /**
+     * @param string $type
+     * @param string $filePath
+     * @return string
+     */
+    public function getBase64ImageSource(string $type, string $filePath)
+    {
+        return 'data:' . $type . ';base64,' . base64_encode(file_get_contents($filePath));
+    }
+    
+
 }

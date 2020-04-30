@@ -160,7 +160,9 @@ class Doctor extends JsonResource
     {
         return [
             'id' => $this->id,
-            'photo' => $this->photo ? BaseStorage::temporaryUrl($this->photo, now()->addMinutes(5)) : null,
+            'photo' => $this->photo ?
+                BaseStorage::temporaryUrl($this->photo, now()->addMinutes(5)) :
+                $this->getDefaultAvatar(),
             'board_certification' => $this->mergeWhen($this->withMedicalDegree,
                 $this->board_certification ? Storage::getDecryptedBase64Uri($this->board_certification) : null),
             'medical_degree' => $this->mergeWhen($this->withBoardCertification,

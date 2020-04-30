@@ -72,11 +72,15 @@ class Doctor extends Resource
                 }
             )->thumbnail(
                 function ($value, $disk) {
-                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
+                    return $value ?
+                        BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) :
+                        app(DoctorModel::class)->getDefaultAvatar();
                 }
             )->preview(
                 function ($value, $disk) {
-                    return $value ? BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) : null;
+                    return $value ?
+                        BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) :
+                        app(DoctorModel::class)->getDefaultAvatar();
                 }
             )->rules('mimes:jpg,png,jpeg', 'max:50000'),
 
@@ -170,11 +174,7 @@ class Doctor extends Resource
             }
         )->resolveUsing(
             function ($value, $resource) use ($fileName, $attribute) {
-                return $this->{$attribute} ? Str::replaceLast(
-                    basename($this->{$attribute}),
-                    $fileName,
-                    $this->{$attribute}
-                ) : null;
+                return $this->{$attribute} ? $fileName : null;
             }
         );
     }
