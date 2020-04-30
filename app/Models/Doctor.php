@@ -239,4 +239,15 @@ class Doctor extends Authenticatable implements MustVerifyEmail
             Storage::removeFile($this->photo);
         }
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultAvatar()
+    {
+        $doctorPhotoPath = public_path() . self::DEFAULT_DOCTOR_AVATAR;
+        
+        return ImageIntervention::getBase64ImageSource('image/png', $doctorPhotoPath);
+    }
+    
 }

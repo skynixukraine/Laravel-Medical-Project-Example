@@ -74,13 +74,13 @@ class Doctor extends Resource
                 function ($value, $disk) {
                     return $value ?
                         BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) :
-                        url(\App\Models\Doctor::DEFAULT_DOCTOR_AVATAR);
+                        app(DoctorModel::class)->getDefaultAvatar();
                 }
             )->preview(
                 function ($value, $disk) {
                     return $value ?
                         BaseStorage::disk($disk)->temporaryUrl($value, now()->addMinutes(5)) :
-                        url(\App\Models\Doctor::DEFAULT_DOCTOR_AVATAR);
+                        app(DoctorModel::class)->getDefaultAvatar();
                 }
             )->rules('mimes:jpg,png,jpeg', 'max:50000'),
 
