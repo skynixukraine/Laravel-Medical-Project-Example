@@ -98,9 +98,9 @@ class Enquire extends Resource
 
             BelongsTo::make(__('Doctor'), 'doctor', Doctor::class)->withMeta($this->doctor_id ? [] : ['value' => $this->doctor_info]),
 
-            Date::make(__('Date of birth'), 'date_of_birth'),
+            Date::make(__('Date of birth'), 'date_of_birth')->onlyOnDetail(),
 
-            DateTime::make(__('Created at'), 'created_at')->onlyOnDetail(),
+            DateTime::make(__('Created at'), 'created_at'),
 
             DateTime::make(__('Updated at'), 'updated_at')->onlyOnDetail(),
 
