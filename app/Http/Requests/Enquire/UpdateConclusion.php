@@ -26,7 +26,7 @@ class UpdateConclusion extends FormRequest
     public function rules(): array
     {
         return [
-            'conclusion' => 'required|string|min:100|max:10000'
+            'conclusion' => 'required|string'
         ];
     }
 }
