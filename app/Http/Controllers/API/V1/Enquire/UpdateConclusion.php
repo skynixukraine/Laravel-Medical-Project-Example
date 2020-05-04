@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Requests\Enquire\UpdateConclusion as UpdateConclusionRequest;
 use App\Http\Resources\Enquire as EnquireResource;
 use App\Models\Enquire;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Patch(
@@ -125,14 +126,19 @@ class UpdateConclusion extends ApiController
 {
     public function __invoke(UpdateConclusionRequest $request, Enquire $enquire)
     {
+        Log::info('Start update Conclusion');
+        Log::info('Conclusion: ' . $request->conclusion);
+
         $enquire->update([
             'conclusion' => $request->conclusion,
             'status' => Enquire::STATUS_RESOLVED,
             'conclusion_created_at' => $enquire->conclusion === null ? now() : $enquire->conclusion_created_at
         ]);
-
+        
         event(new ConclusionUpdated($enquire));
 
+        Log::info('Finish update Conclusion');
+        
         return EnquireResource::make($enquire);
     }
 }
