@@ -10,6 +10,7 @@ use App\Models\Doctor;
 use App\Models\Enquire;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Get(
@@ -242,6 +243,8 @@ class Enquires extends ApiController
         $request->has('order_field') && collect($sortableFields)->contains($request->order_field)
             ? $enquires->orderBy($request->order_field, $request->query('order_direction', 'asc'))
             : $enquires->orderBy('status')->orderByDesc('created_at');
+
+        Log::info('Show enquires, for doctor: ' . $doctor->id);
 
         return EnquireResource::collection($enquires->paginate($request->query('per_page', 50)));
     }

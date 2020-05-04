@@ -8,6 +8,7 @@ use App\Http\Controllers\API\V1\ApiController;
 use App\Http\Resources\Enquire as EnquireResource;
 use App\Models\Doctor;
 use App\Models\Enquire;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Get(
@@ -109,6 +110,8 @@ class Show extends ApiController
     public function __invoke(Enquire $enquire): EnquireResource
     {
         $enquire->update(['is_seen' => true]);
+
+        Log::info('Show enquire: ' . $enquire->id);
 
         return EnquireResource::make($enquire->load('answers'));
     }
