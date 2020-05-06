@@ -23,7 +23,7 @@ class ApproveDoctor extends Action
     {
 
         foreach ($doctors as $doctor) {
-            if ($doctor->getOriginal('status') === Doctor::STATUS_ACTIVATION_REQUESTED) {
+            if ($doctor->getOriginal('status') != Doctor::STATUS_APPROVED) {
                 $doctor->update(['status' => Doctor::STATUS_APPROVED]);
                 event(new DoctorApproved($doctor));
             }
