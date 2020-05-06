@@ -7,6 +7,7 @@ namespace App\Http\Resources;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use OpenApi\Annotations as OA;
 
 /**
@@ -149,19 +150,19 @@ class Enquire extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'gender' => $this->gender,
-            'date_of_birth' => $this->date_of_birth,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'date_of_birth' => Carbon::parse($this->date_of_birth)->format('Y/m/d'),
+            'created_at' => Carbon::parse($this->created_at)->format('Y/m/d H:i'),
+            'updated_at' => Carbon::parse($this->updated_at)->format('Y/m/d H:i'),
             'phone_number' => $this->phone_number,
             'email' => $this->email,
             'conclusion' => $this->conclusion,
-            'conclusion_created_at' => $this->conclusion_created_at,
+            'conclusion_created_at' => $this->conclusion_created_at ? Carbon::parse($this->conclusion_created_at)->format('Y/m/d H:i') : '',
             'status' => __($this->status),
             'is_seen' => $this->is_seen,
             'is_paid' => $this->billing()->exists(),
             'location' => Location::make($this->location),
             'answers' => EnquireAnswer::collection($this->whenLoaded('answers')),
-            'last_contacted_at' => $this->last_contacted_at,
+            'last_contacted_at' => $this->last_contacted_at ? Carbon::parse($this->last_contacted_at)->format('Y/m/d H:i') : '',
             'is_verified_email' => $this->hasVerifiedEmail(),
             'payment_status' => $this->payment_status,
             'price' => $this->billing()->exists() ? $this->billing->amount : $this->doctor->pricePolicy->enquire_total_price,
