@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => env('SYSTEM_MAIL_FROM_ADDRESS', 'info@online-hautarzt.net'),
-        'name' => env('SYSTEM_MAIL_FROM_NAME', 'Online Hautarzt - Systemnachricht'),
+        'name' => env('SYSTEM_MAIL_FROM_NAME', 'Medical Example - Systemnachricht'),
     ],
 
     'cc' => [

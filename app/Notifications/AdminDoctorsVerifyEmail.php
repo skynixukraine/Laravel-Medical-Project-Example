@@ -40,7 +40,7 @@ class AdminDoctorsVerifyEmail extends QueueableNotification
     {
         return $this->createMailMessage()
             ->subject('New doctor')
-            ->greeting('Hi Titus,')
+            ->greeting('Hi Admin,')
             ->line('New user has registered on online-hautarzt.de')
             ->line($this->doctor->first_name . $this->doctor->last_name)
             ->line($this->doctor->email);

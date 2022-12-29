@@ -177,7 +177,7 @@
                                             <textarea class="form-control" rows="10" id="comment" v-model="formdata.answer"></textarea>
                                         </div>
                                         <div class="form-group" style="margin-top: 40px">
-                                            <h4>Zusätzliche Angaben für Online Hautarzt (nicht für den Patienten sichtbar)</h4>
+                                            <h4>Zusätzliche Angaben für Medical Example (nicht für den Patienten sichtbar)</h4>
                                             <label class="control-label" for="diagnosis_possible">War es Ihnen möglich eine Ferndiagnose mitzuteilen?</label>
                                             <select class="form-control" id="diagnosis_possible" v-model="formdata.diagnosis_possible" required>
                                                 <option value="1">Ja</option>

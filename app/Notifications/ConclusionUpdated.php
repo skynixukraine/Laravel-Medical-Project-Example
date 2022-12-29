@@ -25,7 +25,7 @@ class ConclusionUpdated extends QueueableNotification
     public function toMail(): MailMessage
     {
         $mail = $this->createMailMessage()
-            ->subject(__('Your Online Hautarzt case was answered'))
+            ->subject(__('Your Medical Example case was answered'))
             ->greeting(__('Dear patient,'))
             ->line(__('Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist\'s answer. The bill is attached.', [
                 'link' => $this->conclusionUrl(),

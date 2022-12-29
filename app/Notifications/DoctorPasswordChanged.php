@@ -23,7 +23,7 @@ class DoctorPasswordChanged extends QueueableNotification
                 'first_name' => $doctor->first_name,
                 'last_name' => $doctor->last_name,
             ]))
-            ->line(__('You recently made changes to your Online Hautarzt account. Our records indicate that you changed the following information:'))
+            ->line(__('You recently made changes to your Medical Example account. Our records indicate that you changed the following information:'))
             ->line(new HtmlString('<ul><li><b>' . __('Password') . '</b></li></ul>'))
             ->line(__("If this wasn't you:"))
             ->line(__('Please contact support immediately.'));

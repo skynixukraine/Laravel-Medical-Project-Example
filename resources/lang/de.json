@@ -65,7 +65,7 @@
   "Login to the doctors portal to answer it: :link": "Zum Ärzteportal: :link",
   
   "Please verify your e-mail address to login": "Please verify your e-mail address to login",
-  "Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.": "Ihr Online Hautarzt Konto wurde erfolgreich gelöscht. Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.",
+  "Your Medical Example Account was terminated successfully. Thank you for giving Medical Example a try.": "Ihr Medical Example Konto wurde erfolgreich gelöscht. Vielen Dank, dass Sie Medical Example ausprobiert haben.",
   "All rights reserved.": "Alle Rechte vorbehalten.",
   "Your account has been closed": "Ihr Konto wurde geschlossen",
   
@@ -127,8 +127,8 @@
 
   "Online-Hautarzt.de Account Closed": "Online-Hautarzt.de Konto gelöscht",
   "Dear :title :first_name :last_name,": "Sehr geehrter :title :first_name :last_name,",
-  "Your online dermatologist account was successfully deleted.": "Ihr Online Hautarzt Konto wurde erfolgreich gelöscht.",  
-  "Thank you for trying online dermatologist.": "Vielen Dank, dass Sie Online Hautarzt ausprobiert haben.",  
+  "Your online dermatologist account was successfully deleted.": "Ihr Medical Example Konto wurde erfolgreich gelöscht.",
+  "Thank you for trying online dermatologist.": "Vielen Dank, dass Sie Medical Example ausprobiert haben.",
   "We would be happy if you let us know why you deleted your account. Just send an email to hilfe@online-hautarzt.de": "Wir würden uns freuen, falls Sie uns mitteilen, warum Sie Ihr Konto gelöscht haben. Schicken Sie einfach eine E-Mail an hilfe@online-hautarzt.de",  
   "Many Thanks": "Vielen Dank",  
  
@@ -137,10 +137,10 @@
   "Verify Email Address": "Email Adresse bestätigen",
   "If you have previously requested to change your e-mail address, only the link contained in this e-mail is valid.": "Falls Sie vorher bereits eine Anfrage gestartet haben, beachten Sie, dass nur der Link in dieser E-Mail gültig ist.",  
   "If this was not you:": "Falls Sie keine Anfrage gestellt hatten:",  
-  "Your Online Hautarzt account may have been compromised and you should take steps to make sure it is secure. Please reset your password now.": "Auf Ihr Online Hautarzt Konto wurde vielleicht von einer dritten Person zugegriffen. Bitte setzen Sie Ihr Passwort jetzt zurück.",  
+  "Your Medical Example account may have been compromised and you should take steps to make sure it is secure. Please reset your password now.": "Auf Ihr Medical Example Konto wurde vielleicht von einer dritten Person zugegriffen. Bitte setzen Sie Ihr Passwort jetzt zurück.",
  
   "Your account information has been changed": "Ihre Kontoinformationen wurden geändert",  
-  "You recently made changes to your Online Hautarzt account. Our records indicate that you changed the following information:": "Sie haben kürzlich Ihre Kontoinformationen geändert. Unsere Aufzeichnungen zeigen, dass Sie die folgenden Informationen geändert haben:",  
+  "You recently made changes to your Medical Example account. Our records indicate that you changed the following information:": "Sie haben kürzlich Ihre Kontoinformationen geändert. Unsere Aufzeichnungen zeigen, dass Sie die folgenden Informationen geändert haben:",
   "If this wasn't you:": "Falls Sie das nicht waren:",  
   "Your account may have been compromised. Please change your password now.": "Jemand könnte Zugriff auf Ihr Konto haben. Bitte ändern Sie jetzt Ihr Passwort.",  
   "Please contact support immediately.": "Falls Sie das nicht waren: Kontaktieren Sie bitte sofort unseren Support.",
@@ -148,7 +148,7 @@
   "Your case has been processed and the assessment by the dermatologist of your choice has been completed. Please open this link: :link to access the dermatologist's answer. The bill is attached." : "Ihr Fall wurde bearbeitet und die Beurteilung durch den von Ihnen ausgewählten Hautarzt ist abgeschlossen. Bitte öffnen Sie diesen Link: :link um auf die Antwort des Hautarztes zuzugreifen. Die Rechnung befindet sich im Anhang.",
   "Dear patient," : "Sehr geehrter Patient, sehr geehrte Patientin,",
   "Get well!" : "Gute Besserung!",
-  "Your Online Hautarzt case was answered" : "Betreff: Ihr Fall wurde beantwortet",
+  "Your Medical Example case was answered" : "Betreff: Ihr Fall wurde beantwortet",
   "Regards" : "Beste Grüße,",
   "NEW" : "Neu",
   "AWATING_DOCTOR_RESPONSE" : "ERWARTUNG_DER_ARZTANTWORT",
@@ -182,7 +182,7 @@
   "Your profile has been released and you can view it at online-hautarzt.de/hautarzt. Congratulations & welcome on board!" : "Ihr Profil wurde freigegeben und Sie können es auf online-hautarzt.de/hautarzt einsehen. Herzlichen Glückwunsch & Willkommen an Board!",
   "What's next now? You should inform your patients that you can also be reached online for their medical problems if they cannot or do not want to come in - for example, because you are on vacation or your patients are not in town or because of a pandemic is in progress, or or or. How do you best do that? You can find out about this in the doctor portal under  : “More Patients” (bottom left), log in here and get started: https://online-hautarzt.de/login" : "Wie geht es jetzt weiter? Sie sollten Ihre Patienten informieren, dass Sie auch online für ihre medizinischen Probleme erreichbar sind, wenn diese grade nicht reinkommen können oder wollen - zum Beispiel, weil Sie im Urlaub sind, oder Ihre Patienten grade nicht in der Stadt sind, oder weil gerade eine Pandemie im Gange ist, oder oder oder. Wie machen Sie das am Besten? Dies erfahren Sie im Doktorportal unter “Mehr Patienten” (unten links), loggen Sie sich hier ein und legen Sie los: https://online-hautarzt.de/einloggen",
   "Have fun with the online treatment and good luck!" : "Viel Spaß bei der Online Behandlung und viel Erfolg!",
-  "Your team of online dermatologist on site" : "Ihr Team von Online Hautarzt vor Ort",
+  "Your team of online dermatologist on site" : "Ihr Team von Medical Example vor Ort",
   "If you have any questions, please write to: hilfe@online-hautarzt.de" : "Bei Fragen schreiben Sie gerne an: hilfe@online-hautarzt.de",
   "AWAITING_PATIENT_RESPONSE" : "ERWARTUNG DER PATIENTENANTWORT",
   "AWAITING_DOCTOR_RESPONSE" : "ERWARTUNG DER ARZTANTWORT",

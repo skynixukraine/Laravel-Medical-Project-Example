@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
- *     title="Online hautarzt API",
+ *     title="Medical Example API",
  *     version="1.0.0",
  * )
  * @OA\SecurityScheme(

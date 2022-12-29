@@ -144,7 +144,7 @@
     </TABLE>
     <P class="p10 ft1">Vielen Dank für Ihr Vertrauen!</P>
     <P class="p11 ft1">Freundliche Grüße</P>
-    <P class="p12 ft1">Ihr Team von Online Hautarzt vor Ort</P>
+    <P class="p12 ft1">Ihr Team von Medical Example vor Ort</P>
 </DIV>
 <style>
     .page-break {

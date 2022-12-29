@@ -27,7 +27,7 @@ class DoctorDeleted extends QueueableNotification
         return $this->createMailMessage()
             ->subject(__('Online-Hautarzt.org Account Closed'))
             ->greeting(__('Dear :title :first_name :last_name,', $doctor))
-            ->line(__('Your Online Hautarzt Account was terminated successfully. Thank you for giving Online Hautarzt a try.'));
+            ->line(__('Your Medical Example Account was terminated successfully. Thank you for giving Medical Example a try.'));
     }
 
     /**

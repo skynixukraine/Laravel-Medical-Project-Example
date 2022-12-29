@@ -20,7 +20,7 @@ class DoctorChangedEmail extends QueueableNotification
         return $this->createMailMessage()
             ->subject(__('Your account information has been changed'))
             ->greeting(__('Hi,'))
-            ->line(__('You recently made changes to your Online Hautarzt account. Our records indicate that you changed the following information:'))
+            ->line(__('You recently made changes to your Medical Example account. Our records indicate that you changed the following information:'))
             ->line(new HtmlString('<ul><li><b>' . __('E-mail') . '</b></li></ul>'))
             ->line(__("If this wasn't you:"))
             ->line(new HtmlString(__('Your account may have been compromised. Please change your password now.')));
